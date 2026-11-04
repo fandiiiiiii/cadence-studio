@@ -4120,8 +4120,8 @@ tr:hover .row-actions,
 
 .taxonomy-row {
   display: grid;
-  grid-template-columns: 78px minmax(0, 1fr) 56px;
-  gap: 10px;
+  grid-template-columns: 16px 24px minmax(0, 1fr) 56px;
+  gap: 7px;
   align-items: center;
   padding: 9px 13px;
   border-bottom: 1px solid var(--line);
@@ -4135,6 +4135,47 @@ tr:hover .row-actions,
 
 .taxonomy-row.active {
   background: var(--accent-soft);
+}
+
+.taxonomy-row.tree-parent {
+  cursor: default;
+}
+
+.tax-arrow {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  color: var(--faint);
+  flex: none;
+}
+
+.tax-arrow:hover {
+  color: var(--text);
+  background: var(--panel-3);
+}
+
+.tax-arrow svg {
+  width: 11px;
+  height: 11px;
+  transition: transform 0.18s var(--ease);
+}
+
+.tax-arrow.open svg {
+  transform: rotate(90deg);
+}
+
+.tax-arrow.empty {
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.taxonomy-seq {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
 }
 
 .taxonomy-id {
@@ -4218,6 +4259,60 @@ tr:hover .row-actions,
   flex-wrap: wrap;
   gap: 4px;
   margin-top: 12px;
+}
+
+.taxonomy-lineage {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.taxonomy-lineage > svg {
+  width: 10px;
+  height: 10px;
+  color: var(--faint);
+}
+
+.taxonomy-path-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  border-radius: 5px;
+  padding: 3px 6px;
+  font-size: 9px;
+  color: var(--muted);
+}
+
+.taxonomy-path-step b {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 500;
+  color: var(--faint);
+}
+
+.taxonomy-path-step.current {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+  background: var(--accent-soft);
+}
+
+.taxonomy-internal {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--faint);
+  line-height: 1.7;
+}
+
+.taxonomy-internal code {
+  color: var(--muted);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 4px;
 }
 
 .taxonomy-empty {

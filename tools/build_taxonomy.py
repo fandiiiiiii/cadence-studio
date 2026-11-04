@@ -219,6 +219,12 @@ def main() -> None:
         )
     tags.sort(key=lambda tag: (list(CATEGORY_META).index(tag["category"]), tag["row"], tag["id"]))
     attach_genre_hierarchy(tags)
+    # Human-facing numbering starts at 1 in every category. The canonical
+    # source IDs (e.g. genre-2) remain stable for machines and old exports.
+    sequence: Counter[str] = Counter()
+    for tag in tags:
+        sequence[tag["category"]] += 1
+        tag["seq"] = sequence[tag["category"]]
     counts = Counter(tag["category"] for tag in tags)
     groups = OrderedDict()
     for category in CATEGORY_META:

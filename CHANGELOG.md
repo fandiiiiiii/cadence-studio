@@ -10,6 +10,12 @@ All notable changes to Cadence Studio are documented here.
 - Genre hierarchy: every result keeps multiple independent genres with
   level-1/2/3 lineage (`Pop › K-Pop`), while `primary`/`secondary` are only
   convenience projections.
+- Collapsible taxonomy browser: level-1 styles first, arrows expand
+  level-2/3 children; expand-all/collapse controls.
+- Human-facing sequence numbers start at 01 in every category. Stable internal
+  IDs (e.g. `genre-2`) are retained and shown only as technical IDs.
+- The vendored taxonomy reference now has a 1-based `序号` column before the
+  stable ID; IDs remain unchanged for traceability.
 - Supplemental `Extra` tags are automatically included in the Genre
   normalizer catalog; the audio model is not separately prompted for them.
 - Native audio-model prompts: no 641-tag catalog, tag IDs, or standard

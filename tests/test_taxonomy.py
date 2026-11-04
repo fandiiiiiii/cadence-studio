@@ -10,6 +10,9 @@ def test_taxonomy_counts_and_version():
     assert len(tax.tags) == 641
     counts = {category: len(tax.category_tags(category)) for category in tax.categories}
     assert counts == {"Genre": 273, "Mood": 33, "Scene": 103, "Instrument": 136, "Vocal": 45, "Language": 23, "Extra": 28}
+    assert tax.category_tags("Genre")[0]["seq"] == 1
+    assert tax.category_tags("Scene")[0]["seq"] == 1
+    assert tax.get("genre-6")["seq"] == 5
 
 
 def test_taxonomy_resolve_aliases():

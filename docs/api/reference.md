@@ -25,7 +25,7 @@
 | GET | `/api/hardware-profiles` | T4–H200 的并发/音频上限/参考价预设 |
 | GET | `/api/workspace` | 工作区名称、负责人、每日目标 |
 | PATCH | `/api/workspace` | 快速修改 `daily_goal`（1–10000） |
-| GET | `/api/taxonomy` | 完整 641 标签 payload |
+| GET | `/api/taxonomy` | 完整 641 标签 payload；`seq` 为 1-based 展示序号，`id` 为稳定机器 ID |
 | GET | `/api/taxonomy?category=Genre&q=jazz` | 过滤 |
 | GET | `/api/taxonomy/meta` | 版本、类别、结构词表、规则数 |
 | GET | `/api/activity?limit=100` | 最近事件 |

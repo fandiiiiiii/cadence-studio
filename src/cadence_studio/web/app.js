@@ -199,7 +199,7 @@
     endpoint: null,
     endpointTimer: null,
     taxonomy: null,
-    tax: { category: "all", query: "", group: "", tagId: null },
+    tax: { category: "Genre", query: "", group: "", tagId: null, expanded: new Set() },
     activity: [],
     activityLevel: "",
     route: { name: "overview", id: null },
@@ -1314,6 +1314,8 @@
           <div class="taxonomy-toolbar">
             <label class="search-field">${icon("search")}<input id="tax-search" placeholder="搜索中文名、英文名、标签 ID 或定义" value="${attr(state.tax.query)}"></label>
             <span class="table-count" id="tax-count">${total} tags</span>
+            <button class="btn small" data-action="tax-expand-all">展开全部</button>
+            <button class="btn small" data-action="tax-collapse-all">收起</button>
           </div>
           <div class="category-tabs" id="category-tabs">${renderCategoryTabs()}</div>
           <div class="taxonomy-list" id="taxonomy-list"></div>
@@ -1333,11 +1335,21 @@
       if (!button) return;
       state.tax.category = button.dataset.taxCategory;
       state.tax.tagId = null;
+      state.tax.expanded = new Set();
       renderCategoryTabs();
       renderTaxonomyRows();
       renderTaxonomyDetail();
     });
     $("#taxonomy-list").addEventListener("click", (event) => {
+      const toggle = event.target.closest("[data-tax-toggle]");
+      if (toggle) {
+        event.stopPropagation();
+        const id = toggle.dataset.taxToggle;
+        if (state.tax.expanded.has(id)) state.tax.expanded.delete(id);
+        else state.tax.expanded.add(id);
+        renderTaxonomyRows();
+        return;
+      }
       const row = event.target.closest("[data-tax-id]");
       if (!row) return;
       state.tax.tagId = row.dataset.taxId;
@@ -1365,20 +1377,66 @@
     });
   }
 
+  function genreChildrenMap() {
+    const all = (state.taxonomy?.tags || []).filter((tag) => tag.category === "Genre");
+    const map = new Map();
+    all.forEach((tag) => {
+      const parent = tag.genre_parent_id || "";
+      if (!map.has(parent)) map.set(parent, []);
+      map.get(parent).push(tag);
+    });
+    for (const list of map.values()) list.sort((a, b) => (a.seq || 0) - (b.seq || 0));
+    return map;
+  }
+
+  function taxonomyRowHtml(tag, options = {}) {
+    const depth = Number(options.depth || 0);
+    const children = options.children || [];
+    const hasChildren = children.length > 0;
+    const expanded = state.tax.expanded.has(tag.id);
+    const isActive = state.tax.tagId === tag.id;
+    const seq = String(tag.seq || options.index || 1).padStart(2, "0");
+    return `<div class="taxonomy-row ${hasChildren ? "tree-parent" : ""} ${isActive ? "active" : ""}" data-tax-id="${attr(tag.id)}" style="padding-left:${13 + depth * 18}px">
+      <button class="tax-arrow ${hasChildren ? "" : "empty"} ${expanded ? "open" : ""}" ${hasChildren ? `data-tax-toggle="${attr(tag.id)}"` : ""} aria-label="${hasChildren ? "展开子风格" : ""}" aria-expanded="${expanded}">${hasChildren ? icon("chevron") : ""}</button>
+      <span class="taxonomy-seq">${seq}</span>
+      <div class="taxonomy-name"><strong>${escapeHtml(tag.zh)}</strong><span>${escapeHtml(tag.en)}${tag.category === "Genre" ? ` · L${tag.genre_level || 1}` : ""}</span></div>
+      <span class="taxonomy-group">${hasChildren ? `${children.length} 子级` : escapeHtml(tag.group || tag.category)}</span>
+    </div>${hasChildren && expanded ? children.map((child) => taxonomyRowHtml(child, { depth: depth + 1, children: (genreChildrenMap().get(child.id) || []) })).join("") : ""}`;
+  }
+
+  function renderGenreTree(tags) {
+    const list = $("#taxonomy-list");
+    const children = genreChildrenMap();
+    const roots = tags.filter((tag) => !tag.genre_parent_id);
+    const expandedCount = tags.filter((tag) => state.tax.expanded.has(tag.id)).length;
+    $("#tax-count").textContent = `${tags.length} tags · ${roots.length} 个一级风格${expandedCount ? ` · 已展开 ${expandedCount}` : ""}`;
+    if (!roots.length) {
+      list.innerHTML = `<div class="taxonomy-empty">没有匹配的标签。</div>`;
+      return;
+    }
+    list.innerHTML = roots.map((tag) => taxonomyRowHtml(tag, { children: children.get(tag.id) || [] })).join("");
+  }
+
   function renderTaxonomyRows() {
     const list = $("#taxonomy-list");
     if (!list) return;
     const tags = filteredTaxonomy();
-    $("#tax-count").textContent = `${tags.length} tags`;
     if (!tags.length) {
+      $("#tax-count").textContent = "0 tags";
       list.innerHTML = `<div class="taxonomy-empty">没有匹配的标签。</div>`;
       return;
     }
+    if (state.tax.category === "Genre" && !state.tax.query.trim()) {
+      renderGenreTree(tags);
+      return;
+    }
+    $("#tax-count").textContent = `${tags.length} tags`;
     list.innerHTML = tags
       .map(
-        (tag) => `<div class="taxonomy-row ${state.tax.tagId === tag.id ? "active" : ""}" data-tax-id="${attr(tag.id)}">
-          <span class="taxonomy-id">${escapeHtml(tag.id)}</span>
-          <div class="taxonomy-name"><strong>${escapeHtml(tag.zh)}</strong><span>${escapeHtml(tag.en)}</span></div>
+        (tag, index) => `<div class="taxonomy-row ${state.tax.tagId === tag.id ? "active" : ""}" data-tax-id="${attr(tag.id)}">
+          <button class="tax-arrow empty" aria-hidden="true"></button>
+          <span class="taxonomy-seq">${String(tag.seq || index + 1).padStart(2, "0")}</span>
+          <div class="taxonomy-name"><strong>${escapeHtml(tag.zh)}</strong><span>${escapeHtml(tag.en)}${tag.category === "Genre" ? ` · L${tag.genre_level || 1}` : ""}</span></div>
           <span class="taxonomy-group">${escapeHtml(tag.group || tag.category)}</span>
         </div>`
       )
@@ -1396,15 +1454,21 @@
       return;
     }
     const category = state.taxonomy.categories[tag.category] || {};
+    const lineage = (tag.genre_lineage || []).map((id) => (state.taxonomy.tags || []).find((item) => item.id === id)).filter(Boolean);
+    const pathHtml = tag.category === "Genre" && lineage.length
+      ? `<div class="taxonomy-lineage">${lineage.map((item, index) => `<span class="taxonomy-path-step ${item.id === tag.id ? "current" : ""}"><b>L${item.genre_level || index + 1}</b> ${escapeHtml(item.zh)}</span>${index < lineage.length - 1 ? icon("chevron") : ""}`).join("")}</div>`
+      : "";
     root.innerHTML = `
-      <div class="eyebrow"><span class="status-dot"></span> ${escapeHtml(category.label_zh || tag.category)} / ${escapeHtml(tag.group || "未分组")}</div>
+      <div class="eyebrow"><span class="status-dot"></span> ${escapeHtml(category.label_zh || tag.category)} / ${escapeHtml(tag.group || "未分组")} · #${tag.seq || 1}</div>
       <h2>${escapeHtml(tag.zh)}</h2>
-      <div class="en">${escapeHtml(tag.en)} · ${escapeHtml(tag.id)}</div>
+      <div class="en">${escapeHtml(tag.en)} · ${tag.category === "Genre" ? `L${tag.genre_level || 1}` : escapeHtml(category.label_en || tag.category)}</div>
+      ${pathHtml}
       <div class="definition">${escapeHtml(tag.definition || "该标签没有额外定义，按名称与所属分组使用。")}</div>
       ${tag.features ? `<div class="features">${escapeHtml(tag.features)}</div>` : ""}
       ${tag.sentiment && tag.sentiment !== "/" ? `<div class="features">情绪倾向：${escapeHtml(tag.sentiment)}</div>` : ""}
       ${tag.aliases?.length ? `<div class="aliases">${tag.aliases.slice(0, 10).map((alias) => `<span class="tag">${escapeHtml(alias)}</span>`).join("")}</div>` : ""}
       <div class="divider-h"></div>
+      <div class="taxonomy-internal">展示序号 #${tag.seq || 1} · 内部稳定 ID <code>${escapeHtml(tag.id)}</code></div>
       <div class="taxonomy-mini-foot"><span>${escapeHtml(category.description || "")}</span></div>`;
   }
 
@@ -2425,6 +2489,16 @@
           return;
         case "apply-hardware-profile":
           applyHardwareProfile(actionEl.dataset.id);
+          return;
+        case "tax-expand-all": {
+          const all = (state.taxonomy?.tags || []).filter((tag) => tag.category === "Genre");
+          state.tax.expanded = new Set(all.filter((tag) => all.some((child) => child.genre_parent_id === tag.id)).map((tag) => tag.id));
+          renderTaxonomyRows();
+          return;
+        }
+        case "tax-collapse-all":
+          state.tax.expanded = new Set();
+          renderTaxonomyRows();
           return;
         case "endpoint-panel":
           await openEndpointPanel();
