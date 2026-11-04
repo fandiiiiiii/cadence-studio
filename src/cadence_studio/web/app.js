@@ -1395,13 +1395,13 @@
     const hasChildren = children.length > 0;
     const expanded = state.tax.expanded.has(tag.id);
     const isActive = state.tax.tagId === tag.id;
-    const seq = String(tag.seq || options.index || 1).padStart(2, "0");
+    const seq = options.code || String(tag.seq || options.index || 1).padStart(2, "0");
     return `<div class="taxonomy-row ${hasChildren ? "tree-parent" : ""} ${isActive ? "active" : ""}" data-tax-id="${attr(tag.id)}" style="padding-left:${13 + depth * 18}px">
       <button class="tax-arrow ${hasChildren ? "" : "empty"} ${expanded ? "open" : ""}" ${hasChildren ? `data-tax-toggle="${attr(tag.id)}"` : ""} aria-label="${hasChildren ? "展开子风格" : ""}" aria-expanded="${expanded}">${hasChildren ? icon("chevron") : ""}</button>
       <span class="taxonomy-seq">${seq}</span>
       <div class="taxonomy-name"><strong>${escapeHtml(tag.zh)}</strong><span>${escapeHtml(tag.en)}${tag.category === "Genre" ? ` · L${tag.genre_level || 1}` : ""}</span></div>
       <span class="taxonomy-group">${hasChildren ? `${children.length} 子级` : escapeHtml(tag.group || tag.category)}</span>
-    </div>${hasChildren && expanded ? children.map((child) => taxonomyRowHtml(child, { depth: depth + 1, children: (genreChildrenMap().get(child.id) || []) })).join("") : ""}`;
+    </div>${hasChildren && expanded ? children.map((child, index) => taxonomyRowHtml(child, { depth: depth + 1, code: `${seq}.${String(index + 1).padStart(2, "0")}`, children: (genreChildrenMap().get(child.id) || []) })).join("") : ""}`;
   }
 
   function renderGenreTree(tags) {
@@ -1414,7 +1414,9 @@
       list.innerHTML = `<div class="taxonomy-empty">没有匹配的标签。</div>`;
       return;
     }
-    list.innerHTML = roots.map((tag) => taxonomyRowHtml(tag, { children: children.get(tag.id) || [] })).join("");
+    list.innerHTML = roots
+      .map((tag, index) => taxonomyRowHtml(tag, { code: String(index + 1).padStart(2, "0"), children: children.get(tag.id) || [] }))
+      .join("");
   }
 
   function renderTaxonomyRows() {
