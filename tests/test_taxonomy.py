@@ -45,7 +45,8 @@ def test_prompt_metrics_shrink_with_modules():
     large = prompt_metrics(BatchSpec(modules=["caption", "genre", "mood", "scene", "instruments", "vocal", "language", "extra"]))
     assert small["catalog_chars"] == 0
     assert large["catalog_chars"] > small["catalog_chars"]
-    assert large["taxonomy_tags"] == 641
+    assert large["taxonomy_tags"] == 641  # Extra is included in genre, but not double-counted
+
 
 
 def test_extract_json_tolerates_fence():
@@ -82,6 +83,43 @@ def test_normalize_governs_unknown_tags_and_exclusive_moods():
     mood_ids = [tag["id"] for tag in result["mood"]["tags"]]
     assert len([m for m in mood_ids if m in MUTUALLY_EXCLUSIVE_MOOD_IDS]) == 1
     assert result["_meta"]["validated"] is True
+
+
+def test_genre_hierarchy_and_multiple_independent_genres():
+    normalizer = Normalizer(get_taxonomy())
+    spec = BatchSpec(modules=["genre"])
+    payload = {
+        "genre": {
+            "items": [
+                {"id": "genre-6", "source_label": "K-Pop", "confidence": 0.9},
+                {"id": "genre-19", "source_label": "City Pop", "confidence": 0.8},
+                {"id": "extra-15", "source_label": "Live", "confidence": 0.7},
+            ],
+            "reason": "音频中同时出现了两种曲风线索。",
+        }
+    }
+    result = normalizer.validate(payload, spec)
+    items = result["genre"]["items"]
+    assert len(items) == 3
+    kpop = next(item for item in items if item["id"] == "genre-6")
+    assert kpop["level"] == 2
+    assert kpop["parent_id"] == "genre-2"
+    assert kpop["path"] == ["Pop", "K-Pop"]
+    assert [entry["name_en"] for entry in kpop["hierarchy"]] == ["Pop", "K-Pop"]
+    live = next(item for item in items if item["id"] == "extra-15")
+    assert live["category"] == "Extra"
+    assert live["supplemental"] is True
+    assert len(result["genre"]["secondary"]) == 2
+
+
+def test_audio_prompt_does_not_leak_taxonomy_or_standard_structure_labels():
+    spec = BatchSpec(modules=["caption", "genre", "structure", "extra"])
+    prompt = build_audio_prompt(spec, {"file_name": "x.mp3", "duration_sec": 240})
+    assert "genre-" not in prompt
+    assert "Intro" not in prompt
+    assert "Chorus" not in prompt
+    assert "补充" not in prompt
+    assert "主曲风" not in prompt
 
 
 def test_summary_is_denormalized():

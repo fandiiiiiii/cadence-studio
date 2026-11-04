@@ -1,4 +1,4 @@
-﻿"""Build the normalized Cadence taxonomy from the vendored workbench snapshot.
+"""Build the normalized Cadence taxonomy from the vendored workbench snapshot.
 
 Run from the repository root:
     python tools/build_taxonomy.py
@@ -137,6 +137,64 @@ def aliases_for(record: dict) -> list[str]:
     return sorted(cleaned)
 
 
+def _norm(value: str) -> str:
+    return re.sub(r"[\s\-_/·•,，.。:：;；'\"“”‘’()（）\[\]【】›]+", "", (value or "").lower())
+
+
+def attach_genre_hierarchy(tags: list[dict]) -> None:
+    """Add deterministic level-1/2/3 lineage to every Genre tag.
+
+    The source table stores a path like ``Pop`` or ``Electronic › House``.
+    A path equal to the tag's own name is a top-level genre; a child such as
+    K-Pop (path ``Pop``) gets Pop as its parent. The normalizer never invents
+    a parent: it copies these IDs from the taxonomy.
+    """
+    genres = [tag for tag in tags if tag["category"] == "Genre"]
+    by_path: dict[str, list[dict]] = {}
+    by_name: dict[str, dict] = {}
+    for tag in genres:
+        by_path.setdefault(_norm(tag.get("path", "")), []).append(tag)
+        for value in (tag["en"], tag["zh"]):
+            by_name.setdefault(_norm(value), tag)
+
+    def lineage_for(tag: dict) -> list[str]:
+        parent_id = tag.get("genre_parent_id")
+        if not parent_id:
+            return [tag["id"]]
+        parent = next((item for item in genres if item["id"] == parent_id), None)
+        return (lineage_for(parent) if parent else []) + [tag["id"]]
+
+    for tag in genres:
+        path = (tag.get("path") or "").strip()
+        segments = [part.strip() for part in re.split(r"›", path) if part.strip()]
+        names = {_norm(tag["en"]), _norm(tag["zh"])}
+        if not segments or _norm(path) in names or (len(segments) == 1 and _norm(segments[0]) in names):
+            tag["genre_level"] = 1
+            tag["genre_parent_id"] = ""
+            continue
+        parent_path = "›".join(segments[:-1]) if len(segments) > 1 else segments[0]
+        parent = None
+        candidates = by_path.get(_norm(parent_path), [])
+        for candidate in candidates:
+            if candidate is tag:
+                continue
+            if _norm(candidate["en"]) == _norm(segments[-1]) or _norm(candidate["zh"]) == _norm(segments[-1]):
+                parent = candidate
+                break
+        if parent is None:
+            parent = next((candidate for candidate in candidates if candidate is not tag), None)
+        if parent is None:
+            parent = by_name.get(_norm(segments[-1]))
+        if parent is None or parent is tag:
+            tag["genre_level"] = 1
+            tag["genre_parent_id"] = ""
+        else:
+            tag["genre_parent_id"] = parent["id"]
+            tag["genre_level"] = int(parent.get("genre_level", 1)) + 1
+    for tag in genres:
+        tag["genre_lineage"] = lineage_for(tag)
+
+
 def main() -> None:
     raw = SOURCE.read_bytes()
     data = json.loads(raw.decode("utf-8"))
@@ -160,6 +218,7 @@ def main() -> None:
             }
         )
     tags.sort(key=lambda tag: (list(CATEGORY_META).index(tag["category"]), tag["row"], tag["id"]))
+    attach_genre_hierarchy(tags)
     counts = Counter(tag["category"] for tag in tags)
     groups = OrderedDict()
     for category in CATEGORY_META:

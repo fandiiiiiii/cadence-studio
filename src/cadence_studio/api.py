@@ -19,6 +19,7 @@ from . import __version__
 from .config import AUDIO_DIR, DATA_DIR, TMP_DIR
 from .demo import create_demo_batch, remove_demo
 from .exports import export_batch
+from .hardware import PROFILES
 from .media import (
     ALLOWED_EXTENSIONS,
     MIME_BY_EXT,
@@ -49,6 +50,12 @@ class SettingsPayload(BaseModel):
 class BatchPatch(BaseModel):
     name: str | None = Field(default=None, max_length=200)
     note: str | None = Field(default=None, max_length=4000)
+
+
+class WorkspacePatch(BaseModel):
+    name: str | None = Field(default=None, max_length=120)
+    owner: str | None = Field(default=None, max_length=120)
+    daily_goal: int | None = Field(default=None, ge=1, le=10000)
 
 
 class ItemPatch(BaseModel):
@@ -99,6 +106,19 @@ def _validate_settings(config: dict[str, Any]) -> None:
             concurrency = 1
         if not 1 <= concurrency <= 8:
             _raise("单路由并发必须在 1–8 之间。A10G 建议 1。")
+        try:
+            max_audio = int(route.get("max_audio_seconds", 1200))
+            max_tokens = int(route.get("max_new_tokens", 900))
+        except (TypeError, ValueError):
+            _raise("音频上限与最大输出 tokens 必须是整数。")
+        if not 10 <= max_audio <= 1200:
+            _raise("音频上限必须在 10–1200 秒之间。")
+        if not 128 <= max_tokens <= 4096:
+            _raise("最大输出 tokens 必须在 128–4096 之间。")
+        if route.get("hardware_profile") and not any(
+            profile["id"] == route["hardware_profile"] for profile in PROFILES
+        ):
+            _raise(f"未知硬件预设：{route['hardware_profile']}")
     if inference.get("active_route_id") not in ids:
         _raise("当前推理路由不存在，请重新选择。")
     llm = config.get("llm") or {}
@@ -120,6 +140,13 @@ def _validate_settings(config: dict[str, Any]) -> None:
             _raise("文字模型名称不能为空。")
     if llm.get("active_route_id") not in llm_ids:
         _raise("当前文字模型路由不存在，请重新选择。")
+    workspace = config.get("workspace") or {}
+    try:
+        goal = int(workspace.get("daily_goal", 500))
+    except (TypeError, ValueError):
+        goal = 0
+    if not 1 <= goal <= 10000:
+        _raise("每日目标必须是 1–10000 首。")
     processing = config.get("processing") or {}
     for key, low, high in (("max_parallel_items", 1, 8), ("max_attempts", 1, 6)):
         try:
@@ -182,6 +209,38 @@ def system_overview() -> dict[str, Any]:
         "data_dir": str(DATA_DIR),
     }
     return overview
+
+
+@router.get("/hardware-profiles")
+def hardware_profiles() -> dict[str, Any]:
+    return {
+        "profiles": PROFILES,
+        "checked_at": "2026-11-05",
+        "source": "Hugging Face Inference Endpoints provider API (public list, prices vary)",
+        "note": "These are recommendations. The custom Cadence server serializes generation; 1 concurrent request per replica is the safe default.",
+    }
+
+
+@router.get("/workspace")
+def get_workspace() -> dict[str, Any]:
+    return SERVICES.config.get().get("workspace", {})
+
+
+@router.patch("/workspace")
+def patch_workspace(payload: WorkspacePatch) -> dict[str, Any]:
+    config = SERVICES.config.get()
+    workspace = config.setdefault("workspace", {})
+    if payload.name is not None:
+        if not payload.name.strip():
+            _raise("工作区名称不能为空。")
+        workspace["name"] = payload.name.strip()
+    if payload.owner is not None:
+        workspace["owner"] = payload.owner.strip()
+    if payload.daily_goal is not None:
+        workspace["daily_goal"] = payload.daily_goal
+    SERVICES.config.replace(config)
+    SERVICES.db.add_event("workspace_updated", f"每日目标更新为 {workspace.get('daily_goal')} 首")
+    return {"workspace": workspace, "overview": SERVICES.db.overview()}
 
 
 @router.get("/modules")
@@ -399,12 +458,17 @@ def create_batch(
                 "name": inference_route.get("name"),
                 "model": inference_route.get("model"),
                 "adapter": inference_route.get("adapter"),
+                "hardware_profile": inference_route.get("hardware_profile", ""),
+                "max_concurrency": inference_route.get("max_concurrency", 1),
+                "max_audio_seconds": inference_route.get("max_audio_seconds", 1200),
+                "max_new_tokens": inference_route.get("max_new_tokens", 900),
             },
             "llm_route_id": llm_route["id"],
             "llm_route": {
                 "id": llm_route["id"],
                 "name": llm_route.get("name"),
                 "model": llm_route.get("model"),
+                "thinking_mode": llm_route.get("thinking_mode", ""),
             },
             "created_at": datetime.now(UTC).isoformat(timespec="seconds"),
         }

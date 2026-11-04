@@ -168,7 +168,7 @@ TAXONOMY_MODULES = {"genre", "mood", "scene", "instruments", "vocal", "language"
 
 JSON_CONTRACTS: dict[str, str] = {
     "caption": '"caption": {"text": "字符串，自然且具体，不堆砌标签", "short": "不超过 40 字", "language": "zh|en"}',
-    "genre": '"genre": {"primary": TAG, "secondary": [TAG], "fusion": ["融合风格描述"], "reason": "判断依据"}',
+    "genre": '"genre": {"items": [GENRE_TAG], "reason": "判断依据"}',
     "mood": '"mood": {"tags": [TAG], "dominant": TAG, "valence": -1.0到1.0, "energy": 0.0到1.0, "reason": "依据"}',
     "scene": '"scene": {"primary": TAG, "secondary": [TAG], "reason": "依据"}',
     "instruments": '"instruments": {"primary": [TAG], "secondary": [TAG], "notes": "音色与演奏特征"}',
@@ -188,6 +188,12 @@ TAG_CONTRACT = (
     'TAG = {"id": "严格来自目录的 ID，例如 genre-2", '
     '"name_zh": "目录中文名", "name_en": "目录英文名", '
     '"confidence": 0.0到1.0, "source_label": "音频模型原始说法", "mapped": true|false}'
+)
+GENRE_TAG_CONTRACT = (
+    'GENRE_TAG = TAG 加上 "category": "Genre|Extra"。'
+    "服务端会自动补全 level / hierarchy / parent_id，你不要编造层级，也不要为了补全层级而额外加入父级曲风。"
+    "同一首歌可以输出多个 items；不要因为“只能有一个主曲风”而删减模型听到的曲风。"
+    "只列音频模型原始观察或明确听感中出现的曲风；没有证据的父级、子级不要添加。"
 )
 
 

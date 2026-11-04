@@ -82,7 +82,7 @@ class AudioInferenceClient:
         data = {
             "prompt": prompt,
             "model": route.get("model", ""),
-            "max_new_tokens": "900",
+            "max_new_tokens": str(int(route.get("max_new_tokens", 900))),
             "temperature": "0.1",
             "response_format": "text",
         }

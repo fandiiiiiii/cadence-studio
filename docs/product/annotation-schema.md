@@ -1,8 +1,8 @@
-# 标注字段契约（Annotation Schema v1.0）
+# 标注字段契约（Annotation Schema v1.1）
 
 本文件是 Cadence Studio 的**产品契约**，不是模型说明书。任何 UI、API、导出或自动化改动都必须遵守这里定义的字段、状态和治理规则。
 
-- 结果 schema：`1.0.0`
+- 结果 schema：`1.1.0`
 - 标签体系：`workbench-2026-11-03`（641 tags / 15 rules / 7 formulas）
 - 结构词表：20 个结构标签
 - 存储：`items.normalized_json` + `items.raw_text` + `items.llm_raw_text`
@@ -15,7 +15,7 @@
 | 模块 ID | 中文 | 输出键 | 标签类别 | 主要约束 |
 | --- | --- | --- | --- | --- |
 | `caption` | 描述 | `caption` | — | 自然语言；可短/中/长；中英双语可选 |
-| `genre` | 曲风 | `genre` | Genre（273） | 1 个 primary + 最多 4 个 secondary；允许 fusion 描述 |
+| `genre` | 曲风 | `genre` | Genre（273）+ Extra（28） | `items` 完整保留所有曲风；每项带一级/二级 path；不强制单个主曲风 |
 | `mood` | 情绪 | `mood` | Mood（33） | 多个 tags；互为互斥的 5 个心情节奏标签最多保留 1 个 |
 | `scene` | 场景与用途 | `scene` | Scene（103） | 1 个 primary + 最多 4 个 secondary |
 | `instruments` | 乐器 | `instruments` | Instrument（136） | 主奏/伴奏分层；去重 |
@@ -31,6 +31,12 @@
 | `custom` | 自定义 | `custom` | — | 用户提示词 + 自定义字段；必须是 JSON 对象 |
 
 模块定义见 `GET /api/modules`。
+
+### 1.1 两个模型的分工
+
+- **音频模型**只接收原生任务提示：例如“列出所有曲风与更具体的风格”，不接收 641 目录、标签 ID、规则文档或标准结构词表。原因是它的输入上下文有限，且规范映射是文字模型的职责。
+- **文字模型**接收音频模型原文 + 本次请求的紧凑目录/规则，输出规范 JSON；服务端再做确定性校验。
+- 用户选择 `genre` 时，规范化目录自动包含 `Genre + Extra`；但音频提示中不会额外提醒补充曲风。
 
 ## 2. 规范标签对象
 
@@ -88,6 +94,39 @@
     "language": "zh"
   },
   "genre": {
+    "items": [
+      {
+        "id": "genre-71",
+        "name_zh": "合成器潮",
+        "name_en": "Synthwave",
+        "category": "Genre",
+        "level": 3,
+        "path": ["Electronic", "Midtempo", "Synthwave"],
+        "hierarchy": [
+          {"id": "genre-48", "name_zh": "电子", "name_en": "Electronic", "level": 1},
+          {"id": "genre-69", "name_zh": "中速节奏", "name_en": "Midtempo", "level": 2},
+          {"id": "genre-71", "name_zh": "合成器潮", "name_en": "Synthwave", "level": 3}
+        ],
+        "confidence": 0.84,
+        "source_label": "synthwave / ambient electronic",
+        "mapped": false
+      },
+      {
+        "id": "genre-77",
+        "name_zh": "氛围电子",
+        "name_en": "Ambient",
+        "category": "Genre",
+        "level": 2,
+        "path": ["Electronic", "Ambient"],
+        "hierarchy": [
+          {"id": "genre-48", "name_zh": "电子", "name_en": "Electronic", "level": 1},
+          {"id": "genre-77", "name_zh": "氛围电子", "name_en": "Ambient", "level": 2}
+        ],
+        "confidence": 0.78,
+        "source_label": "ambient",
+        "mapped": false
+      }
+    ],
     "primary": {
       "id": "genre-71",
       "name_zh": "合成器潮",
@@ -215,7 +254,7 @@
   },
   "unmapped": [],
   "_meta": {
-    "schema_version": "1.0.0",
+    "schema_version": "1.1.0",
     "taxonomy_version": "workbench-2026-11-03",
     "requested_modules": ["caption", "genre", "mood", "bpm_key", "instruments", "structure"],
     "warnings": [],
@@ -239,10 +278,40 @@
 
 ### genre / scene / extra
 
-- `primary`：可为 `null`（确实无法判断）。
-- `secondary`：数组，最多 4 个；与 primary 去重。
-- `fusion`：仅 genre，允许自由描述融合风格。
+**genre 是层级数组，不是单选。**
+
+- `items`：音频模型观察到的所有曲风，逐个独立保留；不因为“只能有一个主曲风”而删除。
+- 每个 item 由服务端从目录回填：
+  - `category`: `Genre` 或 `Extra`；
+  - `level`: 1 = 一级曲风，2 = 二级，3 = 三级；
+  - `parent_id`: 上一级 ID；
+  - `path`: 例如 `["Pop", "K-Pop"]`；
+  - `hierarchy`: 从一级到当前级的完整对象数组。
+- 示例：K-Pop → `level=2`, `parent_id=genre-2`, `path=["Pop","K-Pop"]`。
+- `primary` / `secondary` 只是**展示便利字段**（第一项/其余项），不限制 `items` 数量，也不表示模型只能输出一个主曲风。
+- `fusion` 允许自由描述融合风格，不替代 `items`。
+- `Extra` 标签默认随 Genre 进入规范化目录；音频模型不会被单独提示“补充曲风”。
 - `reason`：解释听感依据，不写营销文案。
+
+**scene / extra** 仍是 `primary` + `secondary` 结构；`extra` 单独请求时使用。
+
+#### 多曲风与补充曲风
+
+```json
+{
+  "genre": {
+    "items": [
+      {"id": "genre-6", "category": "Genre", "level": 2, "path": ["Pop", "K-Pop"]},
+      {"id": "genre-19", "category": "Genre", "level": 2, "path": ["Pop", "City Pop"]},
+      {"id": "extra-15", "category": "Extra", "level": 1, "path": ["Live"], "supplemental": true}
+    ],
+    "primary": {"id": "genre-6", "name_zh": "韩国流行"},
+    "secondary": [{"id": "genre-19"}, {"id": "extra-15"}]
+  }
+}
+```
+
+上面三项都会保留；不会因为有两个 Genre 就把其中一个丢掉。
 
 ### mood
 
@@ -319,7 +388,7 @@
 | 字段 | 何时出现 | 说明 |
 | --- | --- | --- |
 | `unmapped` | 有无法映射标签时 | 原词、类别、最近提示、原因 |
-| `_meta.schema_version` | 总是 | 当前 `1.0.0` |
+| `_meta.schema_version` | 总是 | 当前 `1.1.0` |
 | `_meta.taxonomy_version` | 总是 | 批次冻结的标签版本 |
 | `_meta.requested_modules` | 总是 | 校验“只请求所需字段” |
 | `_meta.warnings` | 可选 | 互斥移除、缺失模块、数值修正等 |

@@ -17,7 +17,7 @@ from openpyxl.utils import get_column_letter
 from .config import EXPORT_DIR
 from .taxonomy import get_taxonomy
 
-EXPORT_VERSION = "1.0.0"
+EXPORT_VERSION = "1.1.0"
 
 
 def _safe_name(value: str) -> str:
@@ -25,10 +25,45 @@ def _safe_name(value: str) -> str:
     return value[:80] or "batch"
 
 
+def _genre_items(genre: dict[str, Any]) -> list[dict[str, Any]]:
+    items = genre.get("items")
+    if isinstance(items, list) and items:
+        return [item for item in items if isinstance(item, dict)]
+    fallback = []
+    if isinstance(genre.get("primary"), dict):
+        fallback.append(genre["primary"])
+    if isinstance(genre.get("secondary"), list):
+        fallback.extend(item for item in genre["secondary"] if isinstance(item, dict))
+    return fallback
+
+
 def _item_row(item: dict[str, Any], index: int) -> dict[str, Any]:
     result = item.get("normalized") or {}
     summary = item.get("summary") or {}
     genre = result.get("genre") or {}
+    genre_items = _genre_items(genre)
+    genre_paths = []
+    for entry in genre_items:
+        raw_path = entry.get("path")
+        path_parts = raw_path if isinstance(raw_path, list) else [raw_path] if raw_path else []
+        if not path_parts:
+            path_parts = [entry.get("name_en") or entry.get("name_zh") or ""]
+        genre_paths.append(" › ".join(str(item) for item in path_parts))
+    level_one = list(dict.fromkeys(
+        entry.get("name_zh") or entry.get("name_en")
+        for entry in genre_items
+        if entry.get("category") != "Extra" and int(entry.get("level") or 1) == 1
+    ))
+    level_two = list(dict.fromkeys(
+        entry.get("name_zh") or entry.get("name_en")
+        for entry in genre_items
+        if entry.get("category") != "Extra" and int(entry.get("level") or 1) == 2
+    ))
+    supplemental = list(dict.fromkeys(
+        entry.get("name_zh") or entry.get("name_en")
+        for entry in genre_items
+        if entry.get("category") == "Extra" or entry.get("supplemental")
+    ))
     bpm_key = result.get("bpm_key") or {}
     instruments = result.get("instruments") or {}
     vocal = result.get("vocal") or {}
@@ -43,10 +78,11 @@ def _item_row(item: dict[str, Any], index: int) -> dict[str, Any]:
         "状态": item.get("status", ""),
         "阶段": item.get("stage", ""),
         "时长(秒)": round(float(item.get("duration_sec") or 0), 2),
-        "主曲风": summary.get("genre", ""),
-        "次曲风": " / ".join(
-            tag.get("name_zh") or tag.get("name_en") or "" for tag in (genre.get("secondary") or [])
-        ),
+        "主曲风（参考）": summary.get("genre", ""),
+        "一级曲风": " / ".join(str(value) for value in level_one if value),
+        "二级曲风": " / ".join(str(value) for value in level_two if value),
+        "补充曲风": " / ".join(str(value) for value in supplemental if value),
+        "曲风路径（全部）": " | ".join(path for path in genre_paths if path),
         "主情绪": summary.get("mood", ""),
         "情绪标签": " / ".join(tag.get("name_zh") or tag.get("name_en") or "" for tag in tags),
         "BPM": bpm_key.get("bpm"),
@@ -238,12 +274,18 @@ def export_xlsx(batch, items, path: Path) -> Path:
         for module in ("genre", "mood", "scene", "instruments", "vocal", "language", "extra"):
             value = normalized.get(module) or {}
             tags = []
+            if isinstance(value.get("items"), list):
+                tags.extend(tag for tag in value["items"] if isinstance(tag, dict))
             if isinstance(value.get("primary"), dict):
                 tags.append(value["primary"])
             for key in ("secondary", "tags"):
                 if isinstance(value.get(key), list):
                     tags.extend(tag for tag in value[key] if isinstance(tag, dict))
+            seen = set()
             for tag in tags:
+                if tag.get("id") in seen:
+                    continue
+                seen.add(tag.get("id"))
                 mappings.append(
                     [
                         item.get("file_name", ""),
@@ -285,12 +327,21 @@ def export_markdown(batch, items, path: Path) -> Path:
     for index, item in enumerate(items, 1):
         result = item.get("normalized") or {}
         summary = item.get("summary") or {}
+        genre = result.get("genre") or {}
+        genre_items = _genre_items(genre)
+        genre_paths = []
+        for entry in genre_items:
+            raw_path = entry.get("path")
+            path_parts = raw_path if isinstance(raw_path, list) else [raw_path] if raw_path else []
+            if not path_parts:
+                path_parts = [entry.get("name_en") or entry.get("name_zh") or ""]
+            genre_paths.append(" › ".join(str(item) for item in path_parts))
         lines.extend(
             [
                 f"### {index:03d} · {item.get('file_name')}",
                 "",
                 f"- 状态：`{item.get('status')}` · 时长：{item.get('duration_sec') or 0:.1f}s",
-                f"- 主曲风：{summary.get('genre') or '—'} · 主情绪：{summary.get('mood') or '—'}",
+                f"- 曲风：{' | '.join(genre_paths) or summary.get('genre') or '—'} · 主情绪：{summary.get('mood') or '—'}",
                 f"- BPM / 调性：{summary.get('bpm') or '—'} / {summary.get('key') or '—'}",
                 "",
             ]

@@ -1,4 +1,4 @@
-"""JSON extraction and deterministic governance of LLM-normalized annotations."""
+﻿"""JSON extraction and deterministic governance of LLM-normalized annotations."""
 
 from __future__ import annotations
 
@@ -115,13 +115,46 @@ class Normalizer:
     def __init__(self, taxonomy: Taxonomy | None = None):
         self.taxonomy = taxonomy or get_taxonomy()
 
+    def _hierarchy(self, tag: dict[str, Any], *, include_hierarchy: bool) -> dict[str, Any]:
+        if not include_hierarchy:
+            return {}
+        if tag["category"] == "Genre":
+            lineage = self.taxonomy.hierarchy_for(tag["id"])
+            return {
+                "category": "Genre",
+                "level": int(tag.get("genre_level", 1) or 1),
+                "parent_id": tag.get("genre_parent_id", ""),
+                "path": [item.get("en", "") for item in lineage],
+                "hierarchy": [
+                    {
+                        "id": item["id"],
+                        "name_zh": item["zh"],
+                        "name_en": item["en"],
+                        "level": int(item.get("genre_level", 1) or 1),
+                    }
+                    for item in lineage
+                ],
+            }
+        return {
+            "category": tag["category"],
+            "level": 1,
+            "parent_id": "",
+            "path": [tag.get("en", "")],
+            "hierarchy": [
+                {"id": tag["id"], "name_zh": tag["zh"], "name_en": tag["en"], "level": 1}
+            ],
+            "supplemental": tag["category"] == "Extra",
+        }
+
     def _tag(
         self,
         value: Any,
-        category: str,
+        category: str | None,
         *,
         default_confidence: float = 0.65,
         warnings: list[str],
+        categories: tuple[str, ...] | None = None,
+        include_hierarchy: bool = False,
     ) -> dict[str, Any] | None:
         if not value:
             return None
@@ -136,14 +169,19 @@ class Normalizer:
             source_label = _text(value.get("source_label"), 200)
         else:
             raw_label = _text(value, 200)
-        tag = self.taxonomy.resolve(raw_label, category)
+        tag = None
+        allowed_categories = categories or ((category,) if category else ())
+        for candidate_category in allowed_categories or (None,):
+            tag = self.taxonomy.resolve(raw_label, candidate_category)
+            if tag:
+                break
         if not tag:
-            warnings.append(f"{category} 标签无法映射：{raw_label[:80]}")
+            warnings.append(f"{'/'.join(allowed_categories) or '标签'} 无法映射：{raw_label[:80]}")
             return None
         source_label = source_label or raw_label
         if tag["id"] != raw_label and not mapped:
             mapped = True
-        return {
+        result = {
             "id": tag["id"],
             "name_zh": tag["zh"],
             "name_en": tag["en"],
@@ -151,19 +189,36 @@ class Normalizer:
             "source_label": source_label,
             "mapped": mapped,
         }
+        result.update(self._hierarchy(tag, include_hierarchy=include_hierarchy))
+        return result
 
-    def _tag_list(self, values: Any, category: str, warnings: list[str], limit: int = 8) -> list[dict[str, Any]]:
+    def _tag_list(
+        self,
+        values: Any,
+        category: str | None,
+        warnings: list[str],
+        limit: int = 8,
+        *,
+        categories: tuple[str, ...] | None = None,
+        include_hierarchy: bool = False,
+    ) -> list[dict[str, Any]]:
         if values is None:
             return []
         if isinstance(values, (str, dict)):
             values = [values]
         if not isinstance(values, list):
-            warnings.append(f"{category} 字段不是数组，已忽略")
+            warnings.append(f"{category or '标签'} 字段不是数组，已忽略")
             return []
         result: list[dict[str, Any]] = []
         seen: set[str] = set()
         for value in values[: limit * 2]:
-            tag = self._tag(value, category, warnings=warnings)
+            tag = self._tag(
+                value,
+                category,
+                warnings=warnings,
+                categories=categories,
+                include_hierarchy=include_hierarchy,
+            )
             if tag and tag["id"] not in seen:
                 seen.add(tag["id"])
                 result.append(tag)
@@ -209,16 +264,43 @@ class Normalizer:
 
             elif module in {"genre", "scene", "extra"}:
                 if not isinstance(value, dict):
-                    value = {"primary": value}
+                    value = {"items": value} if module == "genre" else {"primary": value}
                 category = CATEGORY_FOR_MODULE[module]
-                primary = self._tag(value.get("primary"), category, warnings=warnings)
-                secondary = self._tag_list(value.get("secondary") or value.get("tags"), category, warnings, 4)
-                primary, secondary = self._dedupe_primary(primary, secondary)
-                item: dict[str, Any] = {"primary": primary, "secondary": secondary}
-                if module == "genre" and isinstance(value.get("fusion"), list):
-                    item["fusion"] = [_text(x, 80) for x in value["fusion"][:5] if _text(x)]
-                item["reason"] = _text(value.get("reason") or value.get("notes"), 1500)
-                output[key] = item
+                if module == "genre":
+                    raw_items = value.get("items")
+                    if raw_items is None:
+                        raw_items = []
+                        if value.get("primary"):
+                            raw_items.append(value["primary"])
+                        if isinstance(value.get("secondary"), list):
+                            raw_items.extend(value["secondary"])
+                    items = self._tag_list(
+                        raw_items,
+                        None,
+                        warnings,
+                        limit=12,
+                        categories=("Genre", "Extra"),
+                        include_hierarchy=True,
+                    )
+                    # No primary/secondary cap: `items` is the complete,
+                    # independent set observed by the audio model. primary and
+                    # secondary are convenience projections only.
+                    item: dict[str, Any] = {
+                        "items": items,
+                        "primary": items[0] if items else None,
+                        "secondary": items[1:],
+                    }
+                    if isinstance(value.get("fusion"), list):
+                        item["fusion"] = [_text(x, 80) for x in value["fusion"][:5] if _text(x)]
+                    item["reason"] = _text(value.get("reason") or value.get("notes"), 1500)
+                    output[key] = item
+                else:
+                    primary = self._tag(value.get("primary"), category, warnings=warnings)
+                    secondary = self._tag_list(value.get("secondary") or value.get("tags"), category, warnings, 4)
+                    primary, secondary = self._dedupe_primary(primary, secondary)
+                    item = {"primary": primary, "secondary": secondary}
+                    item["reason"] = _text(value.get("reason") or value.get("notes"), 1500)
+                    output[key] = item
 
             elif module == "mood":
                 if not isinstance(value, dict):
@@ -442,7 +524,7 @@ class Normalizer:
         if isinstance(unmapped, list):
             cleaned["unmapped"] = [item for item in unmapped[:30] if isinstance(item, dict)]
         cleaned["_meta"] = {
-            "schema_version": "1.0.0",
+            "schema_version": "1.1.0",
             "taxonomy_version": self.taxonomy.version,
             "requested_modules": spec.modules,
             "warnings": warnings,

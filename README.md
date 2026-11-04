@@ -3,7 +3,7 @@
 **企业级、本地优先的 AI 音乐 / 音频标注工作台。**
 把专用音频理解模型、可治理的标签体系、批量队列与可交付导出放进一个双击即用的界面。
 
-> 当前版本：`0.1.0` · 标签体系：`workbench-2026-11-03`（641 tags / 15 rules / 7 formulas）
+> 当前版本：`0.2.0` · 标签体系：`workbench-2026-11-03`（641 tags / 15 rules / 7 formulas）
 >
 > **重要状态**：工作台、队列、标签治理、导出与自定义推理服务已完成并通过本地端到端测试；**尚未在真实 A10G / Hugging Face Endpoint 上验证显存、吞吐和模型质量**。首次部署请只跑 1 首，按 [基准测试计划](docs/quality/benchmark.md)记录结果。
 
@@ -24,9 +24,12 @@
 
 - **按需输出**：只要 Caption 就只返回 Caption；不会夹带曲风、BPM。模块可自由组合。
 - **双轨结果**：每条音频都保留音频模型原文、规范化模型原文、最终 JSON 与标签映射。
+- **曲风层级**：输出 `Pop › K-Pop` 这样的一级/二级路径；一首歌有几个曲风就保留几个，不强制单个主曲风；补充曲风随 Genre 默认进入规范化目录。
+- **只约束大模型**：音频模型收到的是原生任务提示（如“列出所有曲风”），**不接收 641 标签目录、标签 ID 或标准结构词表**；只有 DeepSeek 读取规范文档并做映射与校验。
 - **标签治理**：641 个正式标签只允许目录内 ID；近似标签（如 `Modal Jazz`）会留下原词、规范 ID 与置信度，不会静默改写。
-- **批量生产**：持久化队列、自动重试、暂停/继续、断点恢复、SSE 实时进度；目标 500 首/日。
+- **批量生产**：持久化队列、自动重试、暂停/继续、断点恢复、SSE 实时进度；每日目标可随时修改。
 - **端点费用守卫**：批次开始时自动 Resume，队列空闲后自动 Pause；界面始终显示当前 State。
+- **硬件推荐**：T4 / L4 / A10G / L40S / A100 / H100 / H200 / RTX PRO 6000 预设并发、音频上限、超时与参考价格。
 - **本地数据**：音频、结果、SQLite、导出文件和密钥都在本机；API Key 使用 Windows DPAPI 加密。
 - **可交付导出**：XLSX 工作簿、JSON 数据包、Markdown 报告、CSV 平表和完整 ZIP。
 
@@ -58,7 +61,7 @@
 1. 确认已安装 Python 3.11+（推荐 3.12），并且 `ffmpeg` / `ffprobe` 在 PATH 中。
 2. 双击仓库根目录的 **`启动 Cadence.cmd`**。
 3. 首次启动会创建 `.venv` 并安装依赖，随后浏览器自动打开工作台。
-4. 打开 **设置 → 推理端点**，填入 Hugging Face Token、Namespace、Endpoint 名称；在 **文字模型** 填入 DeepSeek API Key。
+4. 打开 **设置 → 推理端点**，填入 Hugging Face Token、Namespace、Endpoint 名称；在 **文字模型** 使用 `deepseek-flash` 与 DeepSeek API Key。
 5. 点 **验证令牌** / **测试**，然后新建批次。
 
 > 如果 `8765` 被占用，启动器会自动使用 `8766–8794`。关闭终端窗口即停止服务。
@@ -115,13 +118,15 @@ docker push your-docker-user/cadence-moss:0.1
 
 环境变量：`MODEL_FAMILY=moss`（或 `flamingo`）、`MAX_AUDIO_SECONDS=1200`、`MAX_NEW_TOKENS=1024`。完整步骤、Token 权限、A10G 风险、成本与容量计算见 **[Hugging Face 端点部署教程](docs/operations/huggingface-setup.md)**。
 
-> A10G 24GB 只是首个测试候选，不是已验证配置。8B 权重约 16–18GB；4 分钟音频、长上下文和输出可能触发 OOM。首个真实测试必须记录 GPU、模型 revision、音频长度、耗时与账单。若 OOM，使用 48GB 卡、缩短音频，或仅试验性开启 4-bit。
+> A10G 24GB 只是首个测试候选，不是已验证配置。8B 权重约 16–18GB；4 分钟音频、长上下文和输出可能触发 OOM。首个真实测试必须记录 GPU、模型 revision、音频长度、耗时与账单。若 OOM，使用 48GB 卡、缩短音频，或仅试验性开启 4-bit。**设置 → 推理端点 → 硬件预设**会按卡型给出并发、音频上限与参考价，但仍是推荐值，不是实测保证。
 >
 > Music Flamingo 模型卡标注 **NVIDIA OneWay Noncommercial License**；商业使用前请自行核对许可。MOSS-Music 为 Apache-2.0。
 
-## 500 首/日怎么算
+## 每日目标与容量
 
-系统不会把“目标”写成“已达成”。按 3–4 分钟/首、单卡 batch=1 估算：
+每日目标不是固定 500：可在 **总览 → Daily runway → 目标** 或 **设置 → 工作区** 随时修改。目标只影响进度展示，不决定实际吞吐。
+
+按 3–4 分钟/首、单卡 batch=1 估算：
 
 | 单首端到端 | 500 首所需 GPU 时间 | 单 A10G 结论 |
 | --- | ---: | --- |
@@ -137,7 +142,7 @@ docker push your-docker-user/cadence-moss:0.1
 3. 上传前转码为紧凑 MP3，减少传输；
 4. 持久队列支持过夜运行，失败自动重试，端点空闲自动暂停。
 
-要稳定日更 500 首，建议两条端点（MOSS + Flamingo）各 1 并发，总计 2 路；或使用更大显存/更高吞吐的卡。**不要**在单张 A10G 上把并发设为 2，显存会直接竞争。
+要稳定完成较高的日目标，建议两条端点（MOSS + Flamingo）各 1 并发，总计 2 路；或使用更大显存/更高吞吐的卡。**不要**在单张 A10G 上把并发设为 2，显存会直接竞争。硬件预设与依据见 [基准测试计划](docs/quality/benchmark.md)。
 
 ## 项目结构
 
@@ -170,6 +175,7 @@ tools/build_taxonomy.py        从快照生成规范化 taxonomy.json
 - [用户操作指南](docs/product/user-guide.md)
 - [Windows 快速开始](docs/operations/quickstart.md)
 - [Hugging Face 端点部署（新手版）](docs/operations/huggingface-setup.md)
+- [硬件预设与并发推荐](docs/operations/hardware-presets.md)
 - [DeepSeek 配置](docs/operations/deepseek-setup.md)
 - [系统架构](docs/architecture/system.md) / [数据模型](docs/architecture/data-model.md)
 - [容量、成本与基准](docs/quality/benchmark.md)

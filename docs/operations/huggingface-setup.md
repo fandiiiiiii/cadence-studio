@@ -24,7 +24,7 @@
 - Hugging Face 账号，已绑定有效付款方式（专用端点要求）。
 - 可以构建并推送 Docker 镜像的仓库（Docker Hub、GHCR 等）。
 - Docker Desktop（Windows）或 Linux 构建机。
-- 目标显卡：AWS A10G 24GB（首个候选）。更大的 L40S/A100 更稳。
+- 目标显卡：AWS A10G 24GB（首个候选）。更大的 L40S/A100 更稳。工作台里的硬件预设见 [硬件预设与并发推荐](hardware-presets.md)。
 - 能访问 Hugging Face、Docker Hub、PyPI。
 
 > 模型权重不需要下载到你的电脑。Endpoint 会把所选模型仓库挂载到容器内的 `/repository`；容器只包含代码和依赖。

@@ -164,6 +164,11 @@
       "aliases": [
         "Pop",
         "流行"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-2"
       ]
     },
     {
@@ -181,6 +186,12 @@
         "Chinese Ballad Pop",
         "Pop",
         "国语抒情歌曲"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-3"
       ]
     },
     {
@@ -198,6 +209,12 @@
         "Chinese Pop",
         "Pop",
         "国语流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-4"
       ]
     },
     {
@@ -215,6 +232,12 @@
         "Modern Pop Ballad",
         "Pop",
         "现代流行抒情"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-5"
       ]
     },
     {
@@ -232,6 +255,12 @@
         "K-Pop",
         "Pop",
         "韩国流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-6"
       ]
     },
     {
@@ -249,6 +278,12 @@
         "J Pop",
         "Pop",
         "日本流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-7"
       ]
     },
     {
@@ -266,6 +301,12 @@
         "Indian Pop",
         "Pop",
         "印度流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-8"
       ]
     },
     {
@@ -283,6 +324,12 @@
         "African Pop",
         "Pop",
         "非洲流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-9"
       ]
     },
     {
@@ -300,6 +347,12 @@
         "French Pop",
         "Pop",
         "法国流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-10"
       ]
     },
     {
@@ -317,6 +370,12 @@
         "Italian Pop",
         "Pop",
         "意大利流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-11"
       ]
     },
     {
@@ -334,6 +393,12 @@
         "German Pop",
         "Pop",
         "德国流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-12"
       ]
     },
     {
@@ -351,6 +416,12 @@
         "Pop",
         "Russian Pop",
         "俄罗斯流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-13"
       ]
     },
     {
@@ -368,6 +439,12 @@
         "Pop",
         "Turkish Pop",
         "土耳其流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-14"
       ]
     },
     {
@@ -385,6 +462,12 @@
         "Arabic Pop",
         "Pop",
         "阿拉伯流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-15"
       ]
     },
     {
@@ -402,6 +485,12 @@
         "Pop",
         "Teen Pop",
         "青少年流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-16"
       ]
     },
     {
@@ -419,6 +508,12 @@
         "Indie Pop",
         "Pop",
         "独立流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-17"
       ]
     },
     {
@@ -436,6 +531,12 @@
         "Dream Pop",
         "Pop",
         "梦幻流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-18"
       ]
     },
     {
@@ -453,6 +554,12 @@
         "City Pop",
         "Pop",
         "都市流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-19"
       ]
     },
     {
@@ -470,6 +577,12 @@
         "Pop",
         "Synth Pop",
         "合成器流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-20"
       ]
     },
     {
@@ -487,6 +600,12 @@
         "Celtic Pop",
         "Pop",
         "凯尔特流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-21"
       ]
     },
     {
@@ -504,6 +623,12 @@
         "Dance Pop",
         "Pop",
         "流行舞曲"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-22"
       ]
     },
     {
@@ -521,6 +646,12 @@
         "Deep Dance Pop",
         "Pop",
         "深流行舞曲"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-23"
       ]
     },
     {
@@ -538,6 +669,12 @@
         "Electropop",
         "Pop",
         "电音流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-24"
       ]
     },
     {
@@ -555,6 +692,12 @@
         "Chamber Pop",
         "Pop",
         "室内流行"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-25"
       ]
     },
     {
@@ -572,6 +715,12 @@
         "Acapella",
         "Pop",
         "无伴奏合唱"
+      ],
+      "genre_parent_id": "genre-2",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-2",
+        "genre-26"
       ]
     },
     {
@@ -588,6 +737,11 @@
       "aliases": [
         "Country",
         "乡村"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-27"
       ]
     },
     {
@@ -605,6 +759,12 @@
         "Country",
         "Country Pop",
         "乡村流行"
+      ],
+      "genre_parent_id": "genre-27",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-27",
+        "genre-28"
       ]
     },
     {
@@ -622,6 +782,12 @@
         "Blue Grass",
         "Country",
         "蓝草音乐"
+      ],
+      "genre_parent_id": "genre-27",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-27",
+        "genre-29"
       ]
     },
     {
@@ -639,6 +805,12 @@
         "Country",
         "Country Rock",
         "乡村摇滚"
+      ],
+      "genre_parent_id": "genre-27",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-27",
+        "genre-30"
       ]
     },
     {
@@ -656,6 +828,12 @@
         "Country",
         "Yodeling",
         "约德尔乡村"
+      ],
+      "genre_parent_id": "genre-27",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-27",
+        "genre-31"
       ]
     },
     {
@@ -673,6 +851,12 @@
         "Country",
         "Country Folk",
         "乡村民谣"
+      ],
+      "genre_parent_id": "genre-27",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-27",
+        "genre-32"
       ]
     },
     {
@@ -690,6 +874,12 @@
         "Country",
         "Early Country",
         "早期乡村"
+      ],
+      "genre_parent_id": "genre-27",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-27",
+        "genre-33"
       ]
     },
     {
@@ -706,6 +896,11 @@
       "aliases": [
         "Folk",
         "民谣"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-34"
       ]
     },
     {
@@ -723,6 +918,12 @@
         "Chinese Folk",
         "Folk",
         "国语民谣"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-35"
       ]
     },
     {
@@ -740,6 +941,12 @@
         "Folk",
         "Folk Pop",
         "民谣流行"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-36"
       ]
     },
     {
@@ -757,6 +964,12 @@
         "Folk",
         "Indie Folk",
         "独立民谣"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-37"
       ]
     },
     {
@@ -774,6 +987,12 @@
         "Contemporary Folk",
         "Folk",
         "当代民谣"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-38"
       ]
     },
     {
@@ -791,6 +1010,12 @@
         "English Folk",
         "Folk",
         "英国民谣"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-39"
       ]
     },
     {
@@ -808,6 +1033,12 @@
         "Folk",
         "Irish Folk",
         "爱尔兰民谣"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-40"
       ]
     },
     {
@@ -825,6 +1056,12 @@
         "Folk",
         "French Folk",
         "法国民谣"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-41"
       ]
     },
     {
@@ -842,6 +1079,12 @@
         "Folk",
         "Korean Folk",
         "韩国民谣"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-42"
       ]
     },
     {
@@ -859,6 +1102,12 @@
         "Folk",
         "Japanese Folk",
         "日本民谣"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-43"
       ]
     },
     {
@@ -876,6 +1125,12 @@
         "African Folk",
         "Folk",
         "非洲民谣"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-44"
       ]
     },
     {
@@ -893,6 +1148,12 @@
         "Arabic Folk",
         "Folk",
         "阿拉伯民谣"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-45"
       ]
     },
     {
@@ -910,6 +1171,12 @@
         "Folk",
         "Traditional Folk",
         "传统民谣"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-46"
       ]
     },
     {
@@ -927,6 +1194,12 @@
         "Celtic Folk",
         "Folk",
         "凯尔特民谣"
+      ],
+      "genre_parent_id": "genre-34",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-34",
+        "genre-47"
       ]
     },
     {
@@ -943,6 +1216,11 @@
       "aliases": [
         "Electronic",
         "电子"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-48"
       ]
     },
     {
@@ -960,6 +1238,12 @@
         "EDM",
         "Electronic",
         "电子舞曲"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-49"
       ]
     },
     {
@@ -977,6 +1261,13 @@
         "EDM Trap",
         "Electronic › EDM",
         "陷阱舞曲"
+      ],
+      "genre_parent_id": "genre-49",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-49",
+        "genre-50"
       ]
     },
     {
@@ -994,6 +1285,13 @@
         "Deep Pop Edm",
         "Electronic › EDM",
         "流行电子舞曲"
+      ],
+      "genre_parent_id": "genre-49",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-49",
+        "genre-51"
       ]
     },
     {
@@ -1011,6 +1309,12 @@
         "Electronic",
         "House",
         "浩室舞曲"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-52"
       ]
     },
     {
@@ -1028,6 +1332,13 @@
         "Electronic › House",
         "Tropical House",
         "热带浩室"
+      ],
+      "genre_parent_id": "genre-52",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-52",
+        "genre-53"
       ]
     },
     {
@@ -1045,6 +1356,13 @@
         "Electronic › House",
         "Future House",
         "未来浩室"
+      ],
+      "genre_parent_id": "genre-52",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-52",
+        "genre-54"
       ]
     },
     {
@@ -1062,6 +1380,13 @@
         "Bass House",
         "Electronic › House",
         "贝斯浩室"
+      ],
+      "genre_parent_id": "genre-52",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-52",
+        "genre-55"
       ]
     },
     {
@@ -1079,6 +1404,13 @@
         "Electronic › House",
         "Lo-Fi House",
         "低保真浩室"
+      ],
+      "genre_parent_id": "genre-52",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-52",
+        "genre-56"
       ]
     },
     {
@@ -1096,6 +1428,13 @@
         "Electronic › House",
         "Melbourne Bounce",
         "墨尔本弹跳"
+      ],
+      "genre_parent_id": "genre-52",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-52",
+        "genre-57"
       ]
     },
     {
@@ -1113,6 +1452,13 @@
         "Electronic › House",
         "Future Bounce",
         "未来弹跳"
+      ],
+      "genre_parent_id": "genre-52",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-52",
+        "genre-58"
       ]
     },
     {
@@ -1130,6 +1476,13 @@
         "Big Room House",
         "Electronic › House",
         "大空间浩室"
+      ],
+      "genre_parent_id": "genre-52",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-52",
+        "genre-59"
       ]
     },
     {
@@ -1147,6 +1500,13 @@
         "Deep House",
         "Electronic › House",
         "深邃浩室"
+      ],
+      "genre_parent_id": "genre-52",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-52",
+        "genre-60"
       ]
     },
     {
@@ -1164,6 +1524,13 @@
         "Electronic › House",
         "Traditional Progressive House",
         "传统前卫浩室"
+      ],
+      "genre_parent_id": "genre-52",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-52",
+        "genre-61"
       ]
     },
     {
@@ -1181,6 +1548,13 @@
         "EDM Progressive House",
         "Electronic › House",
         "舞曲前卫浩室"
+      ],
+      "genre_parent_id": "genre-52",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-52",
+        "genre-62"
       ]
     },
     {
@@ -1198,6 +1572,12 @@
         "Electronic",
         "Future Bass",
         "未来贝斯"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-63"
       ]
     },
     {
@@ -1215,6 +1595,13 @@
         "Electronic › Future Bass",
         "Kawaii Bass",
         "可爱贝斯"
+      ],
+      "genre_parent_id": "genre-63",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-63",
+        "genre-64"
       ]
     },
     {
@@ -1232,6 +1619,13 @@
         "Bubblegum Bass",
         "Electronic › Future Bass",
         "泡泡糖贝斯"
+      ],
+      "genre_parent_id": "genre-63",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-63",
+        "genre-65"
       ]
     },
     {
@@ -1249,6 +1643,12 @@
         "Downtempo",
         "Electronic",
         "缓拍"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-66"
       ]
     },
     {
@@ -1266,6 +1666,13 @@
         "Electronic › Downtempo",
         "Trip Hop",
         "神游舞曲"
+      ],
+      "genre_parent_id": "genre-66",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-66",
+        "genre-67"
       ]
     },
     {
@@ -1283,6 +1690,13 @@
         "Chillout",
         "Electronic › Downtempo",
         "驰放"
+      ],
+      "genre_parent_id": "genre-66",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-66",
+        "genre-68"
       ]
     },
     {
@@ -1300,6 +1714,12 @@
         "Electronic",
         "Midtempo",
         "中速节奏"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-69"
       ]
     },
     {
@@ -1317,6 +1737,13 @@
         "Electronic › Midtempo",
         "Vaporwave",
         "蒸汽波"
+      ],
+      "genre_parent_id": "genre-69",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-69",
+        "genre-70"
       ]
     },
     {
@@ -1334,6 +1761,13 @@
         "Electronic › Midtempo",
         "Synthwave",
         "合成器潮"
+      ],
+      "genre_parent_id": "genre-69",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-69",
+        "genre-71"
       ]
     },
     {
@@ -1351,6 +1785,13 @@
         "Chillwave",
         "Electronic › Midtempo",
         "寒潮"
+      ],
+      "genre_parent_id": "genre-69",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-69",
+        "genre-72"
       ]
     },
     {
@@ -1368,6 +1809,13 @@
         "Electronic › Midtempo",
         "Melodic Bass",
         "旋律贝斯"
+      ],
+      "genre_parent_id": "genre-69",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-69",
+        "genre-73"
       ]
     },
     {
@@ -1385,6 +1833,12 @@
         "Dubstep",
         "Electronic",
         "回响贝斯"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-74"
       ]
     },
     {
@@ -1402,6 +1856,13 @@
         "Color Bass",
         "Electronic › Dubstep",
         "彩色贝斯"
+      ],
+      "genre_parent_id": "genre-74",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-74",
+        "genre-75"
       ]
     },
     {
@@ -1419,6 +1880,13 @@
         "Electronic › Dubstep",
         "Melodic Dubstep",
         "旋律回响贝斯"
+      ],
+      "genre_parent_id": "genre-74",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-74",
+        "genre-76"
       ]
     },
     {
@@ -1436,6 +1904,12 @@
         "Ambient",
         "Electronic",
         "氛围电子"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-77"
       ]
     },
     {
@@ -1453,6 +1927,13 @@
         "Dark Ambient",
         "Electronic › Ambient",
         "黑暗氛围"
+      ],
+      "genre_parent_id": "genre-77",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-77",
+        "genre-78"
       ]
     },
     {
@@ -1470,6 +1951,13 @@
         "Drone Ambient",
         "Electronic › Ambient",
         "嗡鸣氛围"
+      ],
+      "genre_parent_id": "genre-77",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-77",
+        "genre-79"
       ]
     },
     {
@@ -1487,6 +1975,13 @@
         "Ambient House",
         "Electronic › Ambient",
         "氛围浩室"
+      ],
+      "genre_parent_id": "genre-77",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-77",
+        "genre-80"
       ]
     },
     {
@@ -1504,6 +1999,13 @@
         "Ambient Techno",
         "Electronic › Ambient",
         "氛围科技"
+      ],
+      "genre_parent_id": "genre-77",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-77",
+        "genre-81"
       ]
     },
     {
@@ -1521,6 +2023,12 @@
         "Breakbeat",
         "Electronic",
         "碎拍"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-82"
       ]
     },
     {
@@ -1538,6 +2046,12 @@
         "Electronic",
         "Trance",
         "出神舞曲"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-83"
       ]
     },
     {
@@ -1555,6 +2069,12 @@
         "Electronic",
         "Techno",
         "科技舞曲"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-84"
       ]
     },
     {
@@ -1572,6 +2092,12 @@
         "Drum&Bass",
         "Electronic",
         "鼓与贝斯舞曲"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-85"
       ]
     },
     {
@@ -1589,6 +2115,12 @@
         "8 Bit",
         "8比特",
         "Electronic"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-86"
       ]
     },
     {
@@ -1606,6 +2138,12 @@
         "Electronic",
         "Folktronica",
         "电子民谣"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-87"
       ]
     },
     {
@@ -1623,6 +2161,12 @@
         "Electronic",
         "Glitch",
         "脉冲"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-88"
       ]
     },
     {
@@ -1640,6 +2184,12 @@
         "Electronic",
         "Hardstyle",
         "硬派舞曲"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-89"
       ]
     },
     {
@@ -1657,6 +2207,12 @@
         "Electronic",
         "Hardcore",
         "硬核"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-90"
       ]
     },
     {
@@ -1674,6 +2230,12 @@
         "Electronic",
         "Hi-NRG",
         "高能舞曲"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-91"
       ]
     },
     {
@@ -1691,6 +2253,12 @@
         "Electronic",
         "IDM",
         "智能舞曲"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-92"
       ]
     },
     {
@@ -1708,6 +2276,12 @@
         "Disco",
         "Electronic",
         "迪斯科舞曲"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-93"
       ]
     },
     {
@@ -1725,6 +2299,12 @@
         "Electronic",
         "Phonk",
         "冯克"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-94"
       ]
     },
     {
@@ -1742,6 +2322,13 @@
         "Brazilian Phonk",
         "Electronic › Phonk",
         "巴西冯克"
+      ],
+      "genre_parent_id": "genre-94",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-94",
+        "genre-95"
       ]
     },
     {
@@ -1759,6 +2346,13 @@
         "Drift Phonk",
         "Electronic › Phonk",
         "漂移冯克"
+      ],
+      "genre_parent_id": "genre-94",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-48",
+        "genre-94",
+        "genre-96"
       ]
     },
     {
@@ -1776,6 +2370,12 @@
         "Electronic",
         "Jersey Club",
         "泽西俱乐部"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-97"
       ]
     },
     {
@@ -1793,6 +2393,12 @@
         "Electronic",
         "UK Garage",
         "英伦车库"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-98"
       ]
     },
     {
@@ -1810,6 +2416,12 @@
         "Electronic",
         "Moombahton",
         "蒙巴顿"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-99"
       ]
     },
     {
@@ -1827,6 +2439,12 @@
         "Electronic",
         "Sci-Fi",
         "科幻音乐"
+      ],
+      "genre_parent_id": "genre-48",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-48",
+        "genre-100"
       ]
     },
     {
@@ -1843,6 +2461,11 @@
       "aliases": [
         "Chinese Style",
         "国风音乐"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-101"
       ]
     },
     {
@@ -1860,6 +2483,12 @@
         "China-Wave",
         "Chinese Style",
         "中国风流行音乐"
+      ],
+      "genre_parent_id": "genre-101",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-101",
+        "genre-102"
       ]
     },
     {
@@ -1877,6 +2506,12 @@
         "Chinese Style",
         "GuFeng Music",
         "古风音乐"
+      ],
+      "genre_parent_id": "genre-101",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-101",
+        "genre-103"
       ]
     },
     {
@@ -1894,6 +2529,12 @@
         "Chinese Style",
         "Chinoiserie Rap",
         "国风嘻哈"
+      ],
+      "genre_parent_id": "genre-101",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-101",
+        "genre-104"
       ]
     },
     {
@@ -1911,6 +2552,12 @@
         "Chinese Style",
         "Chinoiserie Electronic",
         "国风电子"
+      ],
+      "genre_parent_id": "genre-101",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-101",
+        "genre-105"
       ]
     },
     {
@@ -1928,6 +2575,12 @@
         "Chinese Style",
         "Chinoiserie Rock",
         "国风摇滚"
+      ],
+      "genre_parent_id": "genre-101",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-101",
+        "genre-106"
       ]
     },
     {
@@ -1944,6 +2597,11 @@
       "aliases": [
         "Rock",
         "摇滚"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-107"
       ]
     },
     {
@@ -1961,6 +2619,12 @@
         "Hard Rock",
         "Rock",
         "硬摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-108"
       ]
     },
     {
@@ -1978,6 +2642,12 @@
         "Psychedelic Rock",
         "Rock",
         "迷幻摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-109"
       ]
     },
     {
@@ -1995,6 +2665,12 @@
         "Pop Rock",
         "Rock",
         "流行摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-110"
       ]
     },
     {
@@ -2012,6 +2688,12 @@
         "Brit Pop",
         "Rock",
         "英伦流行"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-111"
       ]
     },
     {
@@ -2029,6 +2711,12 @@
         "Alternative Rock",
         "Rock",
         "另类摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-112"
       ]
     },
     {
@@ -2046,6 +2734,12 @@
         "Indie Rock",
         "Rock",
         "独立摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-113"
       ]
     },
     {
@@ -2063,6 +2757,12 @@
         "Post-Rock",
         "Rock",
         "后摇"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-114"
       ]
     },
     {
@@ -2080,6 +2780,12 @@
         "Lo-Fi Rock",
         "Rock",
         "低保真摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-115"
       ]
     },
     {
@@ -2097,6 +2803,12 @@
         "J Rock",
         "Rock",
         "日本摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-116"
       ]
     },
     {
@@ -2114,6 +2826,12 @@
         "Rock",
         "Shoegaze-Rock",
         "自赏"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-117"
       ]
     },
     {
@@ -2131,6 +2849,12 @@
         "Math Rock",
         "Rock",
         "数学摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-118"
       ]
     },
     {
@@ -2148,6 +2872,12 @@
         "Rock",
         "Surf Rock",
         "冲浪摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-119"
       ]
     },
     {
@@ -2165,6 +2895,12 @@
         "Progressive Rock",
         "Rock",
         "前卫摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-120"
       ]
     },
     {
@@ -2182,6 +2918,12 @@
         "Rock",
         "Soft Rock",
         "轻摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-121"
       ]
     },
     {
@@ -2199,6 +2941,12 @@
         "Grunge Rock",
         "Rock",
         "油渍摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-122"
       ]
     },
     {
@@ -2216,6 +2964,12 @@
         "Glam Rock",
         "Rock",
         "华丽摇滚"
+      ],
+      "genre_parent_id": "genre-107",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-107",
+        "genre-123"
       ]
     },
     {
@@ -2232,6 +2986,11 @@
       "aliases": [
         "Punk",
         "朋克"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-124"
       ]
     },
     {
@@ -2249,6 +3008,12 @@
         "Pop Punk",
         "Punk",
         "流行朋克"
+      ],
+      "genre_parent_id": "genre-124",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-124",
+        "genre-125"
       ]
     },
     {
@@ -2266,6 +3031,12 @@
         "Post-Punk",
         "Punk",
         "后朋克"
+      ],
+      "genre_parent_id": "genre-124",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-124",
+        "genre-126"
       ]
     },
     {
@@ -2283,6 +3054,12 @@
         "New Wave",
         "Punk",
         "新浪潮"
+      ],
+      "genre_parent_id": "genre-124",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-124",
+        "genre-127"
       ]
     },
     {
@@ -2300,6 +3077,12 @@
         "Hardcore Punk",
         "Punk",
         "硬核朋克"
+      ],
+      "genre_parent_id": "genre-124",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-124",
+        "genre-128"
       ]
     },
     {
@@ -2317,6 +3100,12 @@
         "Punk",
         "Ska Punk",
         "斯卡朋克"
+      ],
+      "genre_parent_id": "genre-124",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-124",
+        "genre-129"
       ]
     },
     {
@@ -2334,6 +3123,12 @@
         "No Wave",
         "Punk",
         "无浪潮"
+      ],
+      "genre_parent_id": "genre-124",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-124",
+        "genre-130"
       ]
     },
     {
@@ -2351,6 +3146,12 @@
         "Dance Punk",
         "Punk",
         "舞曲朋克"
+      ],
+      "genre_parent_id": "genre-124",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-124",
+        "genre-131"
       ]
     },
     {
@@ -2368,6 +3169,12 @@
         "Emo Punk",
         "Punk",
         "情绪朋克"
+      ],
+      "genre_parent_id": "genre-124",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-124",
+        "genre-132"
       ]
     },
     {
@@ -2385,6 +3192,12 @@
         "Melodic Hardcore",
         "Punk",
         "旋律硬核"
+      ],
+      "genre_parent_id": "genre-124",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-124",
+        "genre-133"
       ]
     },
     {
@@ -2401,6 +3214,11 @@
       "aliases": [
         "Jazz",
         "爵士"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-134"
       ]
     },
     {
@@ -2418,6 +3236,12 @@
         "Jazz",
         "Jazz Pop",
         "流行爵士"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-135"
       ]
     },
     {
@@ -2435,6 +3259,12 @@
         "Bebop",
         "Jazz",
         "波普"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-136"
       ]
     },
     {
@@ -2452,6 +3282,12 @@
         "Jazz",
         "Ragtime",
         "根源爵士"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-137"
       ]
     },
     {
@@ -2469,6 +3305,12 @@
         "Jazz",
         "Traditional Jazz",
         "传统爵士"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-138"
       ]
     },
     {
@@ -2486,6 +3328,12 @@
         "Jazz",
         "Jazz Fusion",
         "爵士融合"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-139"
       ]
     },
     {
@@ -2503,6 +3351,12 @@
         "Bossa Nova",
         "Jazz",
         "巴塞诺瓦"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-140"
       ]
     },
     {
@@ -2520,6 +3374,12 @@
         "Avant-Garde Jazz",
         "Jazz",
         "前卫爵士"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-141"
       ]
     },
     {
@@ -2537,6 +3397,12 @@
         "Jazz",
         "Swing",
         "摇摆乐"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-142"
       ]
     },
     {
@@ -2554,6 +3420,12 @@
         "Big Band",
         "Jazz",
         "大乐队"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-143"
       ]
     },
     {
@@ -2571,6 +3443,12 @@
         "Jazz",
         "Post-Bop",
         "后波普"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-144"
       ]
     },
     {
@@ -2588,6 +3466,12 @@
         "Jazz",
         "Smooth Jazz",
         "柔顺爵士"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-145"
       ]
     },
     {
@@ -2605,6 +3489,12 @@
         "Cool Jazz",
         "Jazz",
         "冷爵士"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-146"
       ]
     },
     {
@@ -2622,6 +3512,12 @@
         "Jazz",
         "Vocal Jazz",
         "人声爵士"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-147"
       ]
     },
     {
@@ -2639,6 +3535,12 @@
         "Jazz",
         "Nu Jazz",
         "新爵士"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-148"
       ]
     },
     {
@@ -2656,6 +3558,12 @@
         "Free Jazz",
         "Jazz",
         "自由爵士"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-149"
       ]
     },
     {
@@ -2673,6 +3581,12 @@
         "Acid Jazz",
         "Jazz",
         "酸性爵士"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-150"
       ]
     },
     {
@@ -2690,6 +3604,12 @@
         "Gypsy Jazz",
         "Jazz",
         "吉普赛爵士"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-151"
       ]
     },
     {
@@ -2707,6 +3627,12 @@
         "Hard Bop",
         "Jazz",
         "硬波普爵士"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-152"
       ]
     },
     {
@@ -2724,6 +3650,12 @@
         "Japanese Jazz Fusion",
         "Jazz",
         "日本爵士融合"
+      ],
+      "genre_parent_id": "genre-134",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-134",
+        "genre-153"
       ]
     },
     {
@@ -2742,6 +3674,11 @@
         "Hip Hop/Rap",
         "Rap",
         "嘻哈"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-154"
       ]
     },
     {
@@ -2759,6 +3696,12 @@
         "Rap",
         "Trap Rap",
         "陷阱说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-155"
       ]
     },
     {
@@ -2776,6 +3719,13 @@
         "Rage",
         "Rap › Trap Rap",
         "愤怒说唱"
+      ],
+      "genre_parent_id": "genre-155",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-154",
+        "genre-155",
+        "genre-156"
       ]
     },
     {
@@ -2793,6 +3743,13 @@
         "Memphis Rap",
         "Rap › Trap Rap",
         "孟菲斯说唱"
+      ],
+      "genre_parent_id": "genre-155",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-154",
+        "genre-155",
+        "genre-157"
       ]
     },
     {
@@ -2810,6 +3767,12 @@
         "Old School",
         "Rap",
         "老派说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-158"
       ]
     },
     {
@@ -2827,6 +3790,12 @@
         "R&B Rap",
         "Rap",
         "旋律性说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-159"
       ]
     },
     {
@@ -2844,6 +3813,12 @@
         "Boombap",
         "Rap",
         "蹦啪说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-160"
       ]
     },
     {
@@ -2861,6 +3836,12 @@
         "Jazz Hip Hop",
         "Rap",
         "爵士嘻哈"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-161"
       ]
     },
     {
@@ -2878,6 +3859,12 @@
         "Alternative Hip Hop",
         "Rap",
         "另类嘻哈"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-162"
       ]
     },
     {
@@ -2895,6 +3882,12 @@
         "Pop Rap",
         "Rap",
         "流行说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-163"
       ]
     },
     {
@@ -2912,6 +3905,12 @@
         "Hardcore Rap",
         "Rap",
         "硬核说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-164"
       ]
     },
     {
@@ -2929,6 +3928,12 @@
         "Comedy Hip Hop",
         "Rap",
         "喜剧说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-165"
       ]
     },
     {
@@ -2946,6 +3951,12 @@
         "Hip House",
         "Rap",
         "说唱浩室"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-166"
       ]
     },
     {
@@ -2963,6 +3974,12 @@
         "Chill Beats",
         "Rap",
         "弛放节拍"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-167"
       ]
     },
     {
@@ -2980,6 +3997,12 @@
         "Gangsta Rap",
         "Rap",
         "匪帮说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-168"
       ]
     },
     {
@@ -2997,6 +4020,12 @@
         "Rap",
         "West Coast Hip Hop",
         "西海岸说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-169"
       ]
     },
     {
@@ -3014,6 +4043,12 @@
         "East Coast Hip Hop",
         "Rap",
         "东海岸说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-170"
       ]
     },
     {
@@ -3031,6 +4066,12 @@
         "Rap",
         "Southern Hip Hop",
         "南部说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-171"
       ]
     },
     {
@@ -3048,6 +4089,12 @@
         "Midwest Hip Hop",
         "Rap",
         "中西部说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-172"
       ]
     },
     {
@@ -3065,6 +4112,12 @@
         "Drill Rap",
         "Rap",
         "钻头说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-173"
       ]
     },
     {
@@ -3082,6 +4135,12 @@
         "Emo Rap",
         "Rap",
         "情绪说唱"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-174"
       ]
     },
     {
@@ -3099,6 +4158,12 @@
         "Afrobeats",
         "Rap",
         "非洲节奏"
+      ],
+      "genre_parent_id": "genre-154",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-154",
+        "genre-175"
       ]
     },
     {
@@ -3115,6 +4180,11 @@
       "aliases": [
         "Classical",
         "古典"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-176"
       ]
     },
     {
@@ -3132,6 +4202,12 @@
         "Classical",
         "Middle Ages",
         "中世纪音乐"
+      ],
+      "genre_parent_id": "genre-176",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-176",
+        "genre-177"
       ]
     },
     {
@@ -3149,6 +4225,12 @@
         "Classical",
         "Renaissance",
         "文艺复兴音乐"
+      ],
+      "genre_parent_id": "genre-176",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-176",
+        "genre-178"
       ]
     },
     {
@@ -3166,6 +4248,12 @@
         "Baroque",
         "Classical",
         "巴洛克音乐"
+      ],
+      "genre_parent_id": "genre-176",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-176",
+        "genre-179"
       ]
     },
     {
@@ -3183,6 +4271,12 @@
         "Classical",
         "Classical period",
         "古典主义音乐"
+      ],
+      "genre_parent_id": "genre-176",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-176",
+        "genre-180"
       ]
     },
     {
@@ -3200,6 +4294,12 @@
         "Classical",
         "Romantic music",
         "浪漫主义音乐"
+      ],
+      "genre_parent_id": "genre-176",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-176",
+        "genre-181"
       ]
     },
     {
@@ -3217,6 +4317,13 @@
         "Classical › Romantic music",
         "Musical Nationalism",
         "民族乐派"
+      ],
+      "genre_parent_id": "genre-181",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-176",
+        "genre-181",
+        "genre-182"
       ]
     },
     {
@@ -3234,6 +4341,12 @@
         "Classical",
         "Impressionism",
         "印象主义音乐"
+      ],
+      "genre_parent_id": "genre-176",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-176",
+        "genre-183"
       ]
     },
     {
@@ -3251,6 +4364,12 @@
         "Classical",
         "Modernism",
         "现代主义音乐"
+      ],
+      "genre_parent_id": "genre-176",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-176",
+        "genre-184"
       ]
     },
     {
@@ -3268,6 +4387,12 @@
         "Classical",
         "Contemporary Classical Music",
         "现代古典音乐"
+      ],
+      "genre_parent_id": "genre-176",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-176",
+        "genre-185"
       ]
     },
     {
@@ -3288,6 +4413,11 @@
         "灵魂",
         "节奏蓝调",
         "节奏蓝调/灵魂"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-186"
       ]
     },
     {
@@ -3305,6 +4435,12 @@
         "Funk",
         "Soul",
         "放克音乐"
+      ],
+      "genre_parent_id": "genre-186",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-186",
+        "genre-187"
       ]
     },
     {
@@ -3322,6 +4458,12 @@
         "Contemporary R&B",
         "Soul",
         "当代节奏布鲁斯"
+      ],
+      "genre_parent_id": "genre-186",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-186",
+        "genre-188"
       ]
     },
     {
@@ -3339,6 +4481,12 @@
         "Neo Soul",
         "Soul",
         "新灵魂乐"
+      ],
+      "genre_parent_id": "genre-186",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-186",
+        "genre-189"
       ]
     },
     {
@@ -3355,6 +4503,12 @@
       "aliases": [
         "Soul",
         "灵魂乐"
+      ],
+      "genre_parent_id": "genre-186",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-186",
+        "genre-190"
       ]
     },
     {
@@ -3372,6 +4526,12 @@
         "Pop Soul",
         "Soul",
         "流行灵魂乐"
+      ],
+      "genre_parent_id": "genre-186",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-186",
+        "genre-191"
       ]
     },
     {
@@ -3389,6 +4549,12 @@
         "Doo-Wop",
         "Soul",
         "嘟喔普"
+      ],
+      "genre_parent_id": "genre-186",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-186",
+        "genre-192"
       ]
     },
     {
@@ -3406,6 +4572,12 @@
         "Gospel",
         "Soul",
         "福音音乐"
+      ],
+      "genre_parent_id": "genre-186",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-186",
+        "genre-193"
       ]
     },
     {
@@ -3426,6 +4598,12 @@
         "传统节奏布鲁斯",
         "传统节奏布鲁斯/灵魂乐",
         "灵魂乐"
+      ],
+      "genre_parent_id": "genre-186",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-186",
+        "genre-194"
       ]
     },
     {
@@ -3443,6 +4621,12 @@
         "Progressive R&B",
         "Soul",
         "前卫节奏布鲁斯"
+      ],
+      "genre_parent_id": "genre-186",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-186",
+        "genre-195"
       ]
     },
     {
@@ -3460,6 +4644,12 @@
         "Neo Funk",
         "Soul",
         "新放克"
+      ],
+      "genre_parent_id": "genre-186",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-186",
+        "genre-196"
       ]
     },
     {
@@ -3476,6 +4666,11 @@
       "aliases": [
         "Blues",
         "布鲁斯"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-197"
       ]
     },
     {
@@ -3493,6 +4688,12 @@
         "Blues",
         "Country Blues",
         "乡村布鲁斯"
+      ],
+      "genre_parent_id": "genre-197",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-197",
+        "genre-198"
       ]
     },
     {
@@ -3510,6 +4711,12 @@
         "Blues",
         "Jazz Blues",
         "爵士布鲁斯"
+      ],
+      "genre_parent_id": "genre-197",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-197",
+        "genre-199"
       ]
     },
     {
@@ -3527,6 +4734,12 @@
         "Blues",
         "Contemporary Blues",
         "当代布鲁斯"
+      ],
+      "genre_parent_id": "genre-197",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-197",
+        "genre-200"
       ]
     },
     {
@@ -3544,6 +4757,12 @@
         "Blues",
         "Rock Blues",
         "摇滚布鲁斯"
+      ],
+      "genre_parent_id": "genre-197",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-197",
+        "genre-201"
       ]
     },
     {
@@ -3561,6 +4780,12 @@
         "Blues",
         "Traditional Blues",
         "传统布鲁斯"
+      ],
+      "genre_parent_id": "genre-197",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-197",
+        "genre-202"
       ]
     },
     {
@@ -3578,6 +4803,12 @@
         "Blues",
         "Boogie Woogie",
         "布基乌基"
+      ],
+      "genre_parent_id": "genre-197",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-197",
+        "genre-203"
       ]
     },
     {
@@ -3594,6 +4825,11 @@
       "aliases": [
         "Reggae",
         "雷鬼"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-204"
       ]
     },
     {
@@ -3611,6 +4847,12 @@
         "Dancehall",
         "Reggae",
         "舞场雷鬼"
+      ],
+      "genre_parent_id": "genre-204",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-204",
+        "genre-205"
       ]
     },
     {
@@ -3628,6 +4870,12 @@
         "Dub",
         "Reggae",
         "回响"
+      ],
+      "genre_parent_id": "genre-204",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-204",
+        "genre-206"
       ]
     },
     {
@@ -3644,6 +4892,11 @@
       "aliases": [
         "Metal",
         "金属"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-207"
       ]
     },
     {
@@ -3661,6 +4914,12 @@
         "Black Metal",
         "Metal",
         "黑金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-208"
       ]
     },
     {
@@ -3678,6 +4937,12 @@
         "Death Metal",
         "Metal",
         "死亡金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-209"
       ]
     },
     {
@@ -3695,6 +4960,13 @@
         "Melodic Death Metal",
         "Metal › Death Metal",
         "旋律死亡金属"
+      ],
+      "genre_parent_id": "genre-209",
+      "genre_level": 3,
+      "genre_lineage": [
+        "genre-207",
+        "genre-209",
+        "genre-210"
       ]
     },
     {
@@ -3712,6 +4984,12 @@
         "Doom Metal",
         "Metal",
         "厄运金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-211"
       ]
     },
     {
@@ -3729,6 +5007,12 @@
         "Glam Metal",
         "Metal",
         "华丽金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-212"
       ]
     },
     {
@@ -3746,6 +5030,12 @@
         "Grindcore",
         "Metal",
         "碾核"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-213"
       ]
     },
     {
@@ -3763,6 +5053,12 @@
         "Metal",
         "Power Metal",
         "力量金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-214"
       ]
     },
     {
@@ -3780,6 +5076,12 @@
         "Metal",
         "Progressive Metal",
         "前卫金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-215"
       ]
     },
     {
@@ -3797,6 +5099,12 @@
         "Metal",
         "Speed Metal",
         "速度金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-216"
       ]
     },
     {
@@ -3814,6 +5122,12 @@
         "Metal",
         "Thrash Metal",
         "激流金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-217"
       ]
     },
     {
@@ -3831,6 +5145,12 @@
         "Industrial Metal",
         "Metal",
         "工业金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-218"
       ]
     },
     {
@@ -3848,6 +5168,12 @@
         "Folk Metal",
         "Metal",
         "民谣金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-219"
       ]
     },
     {
@@ -3865,6 +5191,12 @@
         "Metal",
         "Rap Metal",
         "说唱金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-220"
       ]
     },
     {
@@ -3882,6 +5214,12 @@
         "Heavy Metal",
         "Metal",
         "重金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-221"
       ]
     },
     {
@@ -3899,6 +5237,12 @@
         "Metal",
         "Nu Metal",
         "新金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-222"
       ]
     },
     {
@@ -3916,6 +5260,12 @@
         "Metal",
         "Metalcore",
         "金属核"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-223"
       ]
     },
     {
@@ -3933,6 +5283,12 @@
         "Metal",
         "Post-hardcore",
         "后硬核"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-224"
       ]
     },
     {
@@ -3950,6 +5306,12 @@
         "Deathcore",
         "Metal",
         "死核"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-225"
       ]
     },
     {
@@ -3967,6 +5329,12 @@
         "Gothic Metal",
         "Metal",
         "哥特金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-226"
       ]
     },
     {
@@ -3984,6 +5352,12 @@
         "Kawaii Metal",
         "Metal",
         "可爱金属"
+      ],
+      "genre_parent_id": "genre-207",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-207",
+        "genre-227"
       ]
     },
     {
@@ -4000,6 +5374,11 @@
       "aliases": [
         "Childhood",
         "儿童音乐"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-228"
       ]
     },
     {
@@ -4016,6 +5395,11 @@
       "aliases": [
         "Devotional",
         "宗教"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-229"
       ]
     },
     {
@@ -4033,6 +5417,12 @@
         "Devotional",
         "Holiday Music",
         "圣诞节日音乐"
+      ],
+      "genre_parent_id": "genre-229",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-229",
+        "genre-230"
       ]
     },
     {
@@ -4050,6 +5440,12 @@
         "Christian Music",
         "Devotional",
         "基督教音乐"
+      ],
+      "genre_parent_id": "genre-229",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-229",
+        "genre-231"
       ]
     },
     {
@@ -4067,6 +5463,12 @@
         "Buddhist music",
         "Devotional",
         "佛教音乐"
+      ],
+      "genre_parent_id": "genre-229",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-229",
+        "genre-232"
       ]
     },
     {
@@ -4083,6 +5485,11 @@
       "aliases": [
         "Chinese Tradition",
         "中国传统"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-233"
       ]
     },
     {
@@ -4100,6 +5507,12 @@
         "Chinese Opera",
         "Chinese Tradition",
         "中国戏曲"
+      ],
+      "genre_parent_id": "genre-233",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-233",
+        "genre-234"
       ]
     },
     {
@@ -4117,6 +5530,12 @@
         "Chinese Tradition",
         "Traditional Chinese Folk",
         "传统民歌"
+      ],
+      "genre_parent_id": "genre-233",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-233",
+        "genre-235"
       ]
     },
     {
@@ -4134,6 +5553,12 @@
         "Chinese Tradition",
         "Chinese Traditional Instrumental Music",
         "中国传统器乐曲"
+      ],
+      "genre_parent_id": "genre-233",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-233",
+        "genre-236"
       ]
     },
     {
@@ -4151,6 +5576,12 @@
         "Chinese Quyi",
         "Chinese Tradition",
         "中国曲艺"
+      ],
+      "genre_parent_id": "genre-233",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-233",
+        "genre-237"
       ]
     },
     {
@@ -4170,6 +5601,12 @@
         "军旅歌曲",
         "红歌",
         "红歌/军旅歌曲"
+      ],
+      "genre_parent_id": "genre-233",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-233",
+        "genre-238"
       ]
     },
     {
@@ -4187,6 +5624,12 @@
         "Chinese Tradition",
         "New Chinese Folk",
         "新民歌"
+      ],
+      "genre_parent_id": "genre-233",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-233",
+        "genre-239"
       ]
     },
     {
@@ -4204,6 +5647,12 @@
         "Chinese Tradition",
         "Shi Dai Qu",
         "时代曲"
+      ],
+      "genre_parent_id": "genre-233",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-233",
+        "genre-240"
       ]
     },
     {
@@ -4221,6 +5670,12 @@
         "Chinese Tradition",
         "Prairie Style",
         "草原风情"
+      ],
+      "genre_parent_id": "genre-233",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-233",
+        "genre-241"
       ]
     },
     {
@@ -4237,6 +5692,11 @@
       "aliases": [
         "Easy Listening",
         "轻音乐"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-242"
       ]
     },
     {
@@ -4253,6 +5713,11 @@
       "aliases": [
         "New Age",
         "新世纪"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-243"
       ]
     },
     {
@@ -4269,6 +5734,11 @@
       "aliases": [
         "Latin",
         "拉丁"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-244"
       ]
     },
     {
@@ -4286,6 +5756,12 @@
         "Latin",
         "Latin Pop",
         "拉丁流行"
+      ],
+      "genre_parent_id": "genre-244",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-244",
+        "genre-245"
       ]
     },
     {
@@ -4303,6 +5779,12 @@
         "Latin",
         "Latin Rock",
         "拉丁摇滚"
+      ],
+      "genre_parent_id": "genre-244",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-244",
+        "genre-246"
       ]
     },
     {
@@ -4320,6 +5802,12 @@
         "Latin",
         "Tango",
         "探戈"
+      ],
+      "genre_parent_id": "genre-244",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-244",
+        "genre-247"
       ]
     },
     {
@@ -4337,6 +5825,12 @@
         "Latin",
         "Reggaeton",
         "雷击顿"
+      ],
+      "genre_parent_id": "genre-244",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-244",
+        "genre-248"
       ]
     },
     {
@@ -4354,6 +5848,12 @@
         "Brazilian Funk Style",
         "Latin",
         "巴西放克音乐"
+      ],
+      "genre_parent_id": "genre-244",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-244",
+        "genre-249"
       ]
     },
     {
@@ -4371,6 +5871,12 @@
         "Cha-Cha-Cha",
         "Latin",
         "恰恰舞曲"
+      ],
+      "genre_parent_id": "genre-244",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-244",
+        "genre-250"
       ]
     },
     {
@@ -4388,6 +5894,12 @@
         "Latin",
         "Samba",
         "桑巴"
+      ],
+      "genre_parent_id": "genre-244",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-244",
+        "genre-251"
       ]
     },
     {
@@ -4405,6 +5917,12 @@
         "Latin",
         "Rumba",
         "伦巴"
+      ],
+      "genre_parent_id": "genre-244",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-244",
+        "genre-252"
       ]
     },
     {
@@ -4423,6 +5941,11 @@
         "Alternative/Indie",
         "Indie",
         "另类独立"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-253"
       ]
     },
     {
@@ -4439,6 +5962,11 @@
       "aliases": [
         "Epic",
         "史诗音乐"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-254"
       ]
     },
     {
@@ -4455,6 +5983,11 @@
       "aliases": [
         "World Music",
         "世界音乐"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-255"
       ]
     },
     {
@@ -4472,6 +6005,12 @@
         "Korea Trot",
         "World Music",
         "韩国演歌"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-256"
       ]
     },
     {
@@ -4489,6 +6028,12 @@
         "Shima Uta",
         "World Music",
         "日本岛歌"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-257"
       ]
     },
     {
@@ -4506,6 +6051,12 @@
         "Enka",
         "World Music",
         "日本演歌"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-258"
       ]
     },
     {
@@ -4523,6 +6074,12 @@
         "Japanese Traditional Music",
         "World Music",
         "日本传统音乐"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-259"
       ]
     },
     {
@@ -4540,6 +6097,12 @@
         "Bhangra",
         "World Music",
         "印度舞曲"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-260"
       ]
     },
     {
@@ -4557,6 +6120,12 @@
         "Flamenco",
         "World Music",
         "弗拉明戈"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-261"
       ]
     },
     {
@@ -4574,6 +6143,12 @@
         "Chanson",
         "World Music",
         "香颂"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-262"
       ]
     },
     {
@@ -4591,6 +6166,12 @@
         "Son cubano",
         "World Music",
         "古巴和声"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-263"
       ]
     },
     {
@@ -4608,6 +6189,12 @@
         "World Music",
         "Worldbeat",
         "世界打击乐"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-264"
       ]
     },
     {
@@ -4625,6 +6212,12 @@
         "Mongolian Folk Songs",
         "World Music",
         "蒙古民歌"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-265"
       ]
     },
     {
@@ -4642,6 +6235,12 @@
         "Uygur Folk Songs",
         "World Music",
         "维吾尔民歌"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-266"
       ]
     },
     {
@@ -4659,6 +6258,12 @@
         "Fado",
         "World Music",
         "法朵"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-267"
       ]
     },
     {
@@ -4676,6 +6281,12 @@
         "Ainu Folk",
         "World Music",
         "阿伊努民谣"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-268"
       ]
     },
     {
@@ -4693,6 +6304,12 @@
         "Okinawan Pop",
         "World Music",
         "冲绳流行"
+      ],
+      "genre_parent_id": "genre-255",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-255",
+        "genre-269"
       ]
     },
     {
@@ -4708,6 +6325,11 @@
       "sentiment": "",
       "aliases": [
         "DJ"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-270"
       ]
     },
     {
@@ -4725,6 +6347,12 @@
         "DJ",
         "VinaHouse",
         "越南鼓"
+      ],
+      "genre_parent_id": "genre-270",
+      "genre_level": 2,
+      "genre_lineage": [
+        "genre-270",
+        "genre-271"
       ]
     },
     {
@@ -4741,6 +6369,11 @@
       "aliases": [
         "MC",
         "喊麦"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-272"
       ]
     },
     {
@@ -4757,6 +6390,11 @@
       "aliases": [
         "Score",
         "配乐"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-273"
       ]
     },
     {
@@ -4773,6 +6411,11 @@
       "aliases": [
         "Other",
         "其他"
+      ],
+      "genre_level": 1,
+      "genre_parent_id": "",
+      "genre_lineage": [
+        "genre-274"
       ]
     },
     {

@@ -1,4 +1,4 @@
-﻿/* Cadence Studio — editorial workspace UI
+/* Cadence Studio — editorial workspace UI
    Dark-first, warm graphite, signal lime. No external assets. */
 
 :root {
@@ -1088,6 +1088,30 @@ svg {
 .runway-head strong {
   color: var(--accent);
   font-weight: 500;
+}
+
+.runway-target {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  margin-right: 10px;
+  color: rgba(243, 241, 232, 0.5);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.02em;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.runway-target:hover {
+  color: var(--accent);
+  background: rgba(201, 245, 106, 0.08);
+}
+
+.runway-target svg {
+  width: 9px;
+  height: 9px;
 }
 
 .runway-main {
@@ -2708,6 +2732,58 @@ tr:hover .row-actions,
   margin-top: 2px;
   font-size: 8.5px;
   color: var(--faint);
+}
+
+.genre-hierarchy {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.genre-hierarchy-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 8px 10px;
+}
+
+.genre-hierarchy-item .badge {
+  flex: none;
+  min-width: 30px;
+  justify-content: center;
+}
+
+.genre-hierarchy-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.genre-hierarchy-main strong {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+.genre-hierarchy-main small {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.genre-conf {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--faint);
+  flex: none;
 }
 
 .structure-list {

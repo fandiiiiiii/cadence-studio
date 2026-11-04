@@ -1,4 +1,4 @@
-"""First-run demo batch: original synthesized audio plus clearly labelled mock annotations."""
+﻿"""First-run demo batch: original synthesized audio plus clearly labelled mock annotations."""
 
 from __future__ import annotations
 
@@ -95,17 +95,38 @@ _DEMO_TRACKS = [
 
 
 def _tag(tag_id: str, source: str, confidence: float = 0.82) -> dict[str, Any] | None:
-    tag = get_taxonomy().get(tag_id)
+    taxonomy = get_taxonomy()
+    tag = taxonomy.get(tag_id)
     if not tag:
         return None
-    return {
+    result = {
         "id": tag["id"],
         "name_zh": tag["zh"],
         "name_en": tag["en"],
         "confidence": confidence,
-        "source_label": source,
+        "source_label": tag["en"] if len(source) > 60 else source,
         "mapped": False,
     }
+    if tag["category"] == "Genre":
+        lineage = taxonomy.hierarchy_for(tag_id)
+        result.update(
+            {
+                "category": "Genre",
+                "level": int(tag.get("genre_level", 1) or 1),
+                "parent_id": tag.get("genre_parent_id", ""),
+                "path": [entry.get("en", "") for entry in lineage],
+                "hierarchy": [
+                    {
+                        "id": entry["id"],
+                        "name_zh": entry["zh"],
+                        "name_en": entry["en"],
+                        "level": int(entry.get("genre_level", 1) or 1),
+                    }
+                    for entry in lineage
+                ],
+            }
+        )
+    return result
 
 
 def create_demo_batch(db: Database) -> dict[str, Any]:
@@ -202,6 +223,7 @@ def create_demo_batch(db: Database) -> dict[str, Any]:
         normalized = {
             "caption": {"text": track["caption"], "short": track["short"], "language": "zh"},
             "genre": {
+                "items": tags_genre,
                 "primary": tags_genre[0] if tags_genre else None,
                 "secondary": tags_genre[1:],
                 "reason": "演示样例：按音频特征手动构造，用于展示界面与导出格式。",
@@ -247,7 +269,7 @@ def create_demo_batch(db: Database) -> dict[str, Any]:
             "extra": {"tags": [], "notes": ""},
             "unmapped": [],
             "_meta": {
-                "schema_version": "1.0.0",
+                "schema_version": "1.1.0",
                 "taxonomy_version": get_taxonomy().version,
                 "requested_modules": spec["modules"],
                 "warnings": ["这是演示数据，不是音频模型的真实输出。"],

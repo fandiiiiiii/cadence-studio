@@ -28,6 +28,8 @@ def test_taxonomy_endpoint():
 def test_settings_round_trip():
     with TestClient(app) as client:
         config = client.get("/api/settings").json()
+        assert config["llm"]["routes"][0]["model"] == "deepseek-flash"
+        assert config["llm"]["routes"][0]["thinking_mode"] == "disabled"
         config["workspace"]["name"] = "Test Studio"
         response = client.put("/api/settings", json={"config": config, "secrets": {"hf_token": "hf_test"}})
         assert response.status_code == 200
@@ -35,6 +37,18 @@ def test_settings_round_trip():
         assert updated["workspace"]["name"] == "Test Studio"
         assert updated["inference"]["routes"][0]["secret_configured"] is True
         assert "hf_test" not in response.text
+
+
+def test_hardware_profiles_and_workspace_goal():
+    with TestClient(app) as client:
+        profiles = client.get("/api/hardware-profiles").json()
+        assert any(profile["id"] == "a10g-24gb" for profile in profiles["profiles"])
+        assert any(profile["id"] == "l40s-48gb" for profile in profiles["profiles"])
+        response = client.patch("/api/workspace", json={"daily_goal": 137})
+        assert response.status_code == 200
+        assert response.json()["workspace"]["daily_goal"] == 137
+        overview = client.get("/api/system/overview").json()
+        assert overview["daily_goal"] == 137
 
 
 def test_demo_and_exports():

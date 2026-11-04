@@ -7,6 +7,7 @@
 | [用户操作指南](product/user-guide.md) | 标注员、运营 | 首次使用、批次、审听、导出、快捷键 |
 | [Windows 快速开始](operations/quickstart.md) | 所有人 | 双击启动、配置、第一首、500 首 |
 | [Hugging Face 部署](operations/huggingface-setup.md) | 运维、工程 | 自定义容器、A10G、Token、生命周期 |
+| [硬件预设与并发](operations/hardware-presets.md) | 运维 | T4–H200 的并发、音频上限、参考价 |
 | [DeepSeek 配置](operations/deepseek-setup.md) | 工程 | API Key、模型、错误处理 |
 | [故障排查](operations/troubleshooting.md) | 运维 | 启动、端点、队列、数据 |
 | [系统架构](architecture/system.md) | 工程 | 组件、流程、并发、安全、扩展 |

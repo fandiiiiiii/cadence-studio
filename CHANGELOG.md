@@ -2,6 +2,38 @@
 
 All notable changes to Cadence Studio are documented here.
 
+## [0.2.0] — 2026-11-05
+
+### Added
+
+- Editable daily target on the overview runway and in Settings → Workspace.
+- Genre hierarchy: every result keeps multiple independent genres with
+  level-1/2/3 lineage (`Pop › K-Pop`), while `primary`/`secondary` are only
+  convenience projections.
+- Supplemental `Extra` tags are automatically included in the Genre
+  normalizer catalog; the audio model is not separately prompted for them.
+- Native audio-model prompts: no 641-tag catalog, tag IDs, or standard
+  structure vocabulary is sent to the audio model.
+- Hardware presets for T4, L4, A10G, L40S, A100, H100, H200, RTX PRO 6000,
+  multi-GPU, and custom hardware, with recommended concurrency, audio cap,
+  output tokens, timeout, and reference hourly price.
+- Per-route `max_new_tokens` and `max_audio_seconds` controls.
+- DeepSeek defaults updated to `deepseek-flash`; automatic migration from
+  retired `deepseek-chat` / `deepseek-reasoner` defaults.
+- DeepSeek thinking mode toggle; normalization uses `thinking=disabled` by
+  default for lower latency.
+- Result schema `1.1.0` for genre `items` / hierarchy fields.
+
+### Fixed
+
+- Settings save bar no longer remains visible after a successful save.
+- Success toasts auto-dismiss after 3 seconds and duplicate success toasts are
+  removed.
+- Existing configs are migrated with hardware profile and output-token
+  defaults.
+- Export columns include first-level, second-level, supplemental, and complete
+  genre paths.
+
 ## [0.1.0] — 2026-11-05
 
 ### Added

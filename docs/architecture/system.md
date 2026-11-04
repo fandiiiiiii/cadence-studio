@@ -43,7 +43,8 @@ flowchart LR
 | Normalizer | `normalizer.py` | JSON 提取、标签校验、互斥、时间裁剪、映射 |
 | Taxonomy | `taxonomy.py` | 641 标签加载、别名解析、紧凑目录、规则 |
 | Media | `media.py` | 上传、探测、转码、演示音频 |
-| Exports | `exports.py` | XLSX/JSON/MD/CSV/ZIP |
+| Exports | `exports.py` | XLSX/JSON/MD/CSV/ZIP；曲风层级列 |
+| Hardware presets | `hardware.py` | T4–H200 的并发/音频上限/参考价 |
 
 ## 3. 请求流程
 
@@ -66,7 +67,14 @@ Browser multipart
 - `route_snapshot`（音频模型 / 文字模型路由 ID、名称、模型）
 - 创建时间、文件名、SHA-256、音频技术信息
 
-### 3.2 单项处理
+### 3.2 曲风层级
+
+- 标签表为每个 Genre 计算 `genre_parent_id`、`genre_level`、`genre_lineage`。
+- 例：K-Pop 的 path=`Pop`，父级为 Pop，level=2；输出 `path=["Pop","K-Pop"]`。
+- `genre.items` 完整保留模型观察到的多个曲风；`primary`/`secondary` 只是展示投影，不参与删减。
+- `Extra` 是补充曲风词表，默认随 Genre 注入规范化目录；音频模型不会被单独提醒。
+
+### 3.3 单项处理
 
 ```text
 claim (queued → preprocessing)
@@ -90,7 +98,7 @@ claim (queued → preprocessing)
 - 规范化失败时可将阶段设为 `resume_normalize`，下次只重跑 LLM；
 - 非可重试错误（媒体损坏、401、413、配置缺失）直接 failed。
 
-### 3.3 实时进度
+### 3.4 实时进度
 
 - `items.status` / `stage` / `progress` 写入 SQLite；
 - 每次状态变化写 `events`；
@@ -159,6 +167,8 @@ stateDiagram-v2
 5. **持久队列**：不需要浏览器常开；关闭页面后任务继续。
 6. **可恢复**：重启不丢任务；只重跑需要重跑的阶段。
 7. **N+1 避免**：列表接口不返回 raw/normalized 大字段；详情按需取。
+8. **硬件预设**：后端 `hardware.py` 给出 T4–H200 的并发/音频上限/超时参考；设置页可一键填入，但仍需真实测速。
+9. **原生音频提示**：音频模型只接收任务文本，不接收标签目录；规范化模型才读取目录与规则，避免挤占音频模型上下文。
 
 ## 9. 扩展点
 

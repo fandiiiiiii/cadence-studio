@@ -1,4 +1,4 @@
-﻿/* Cadence Studio — local workbench UI */
+/* Cadence Studio — local workbench UI */
 (() => {
   "use strict";
 
@@ -185,6 +185,7 @@
   const state = {
     overview: null,
     modules: [],
+    hardwareProfiles: [],
     settings: null,
     settingsDraft: null,
     settingsTab: "endpoints",
@@ -225,11 +226,12 @@
     node.className = `toast ${type}`;
     const iconName = type === "error" ? "alert" : type === "warn" ? "alert" : "check";
     node.innerHTML = `${icon(iconName)}<div><strong>${escapeHtml(options.title || (type === "error" ? "操作失败" : type === "warn" ? "请注意" : "已完成"))}</strong><p>${escapeHtml(message)}</p></div>`;
+    if (type === "success") $$(".toast.success").forEach((old) => old.remove());
     root.appendChild(node);
     setTimeout(() => {
       node.classList.add("leaving");
       setTimeout(() => node.remove(), 220);
-    }, options.duration || 4200);
+    }, options.duration || 3000);
   }
 
   function setServerHealth(ok) {
@@ -308,14 +310,16 @@
     applyTheme(localStorage.getItem("cadence.theme") || "dark");
     bindGlobalEvents();
     try {
-      const [modules, taxonomy, settings] = await Promise.all([
+      const [modules, taxonomy, settings, hardware] = await Promise.all([
         api("/modules"),
         api("/taxonomy"),
         api("/settings"),
+        api("/hardware-profiles"),
       ]);
       state.modules = modules.modules;
       state.taxonomy = taxonomy;
       state.settings = settings;
+      state.hardwareProfiles = hardware.profiles || [];
       state.settingsDraft = deepClone(settings);
       state.loaded = true;
       await refreshOverview();
@@ -538,6 +542,16 @@
     return renderTags([tag], cls);
   }
 
+  function renderGenreItem(tag) {
+    const path = Array.isArray(tag.path) && tag.path.length ? tag.path.join(" › ") : (tag.name_en || tag.name_zh || "");
+    const level = Number(tag.level || 1);
+    return `<div class="genre-hierarchy-item">
+      <span class="badge ${tag.category === "Extra" ? "demo" : "neutral"}">${tag.category === "Extra" ? "补充" : `L${level}`}</span>
+      <div class="genre-hierarchy-main"><strong>${escapeHtml(tag.name_zh || tag.name_en || tag.id)}</strong><small>${escapeHtml(path)}${tag.source_label && tag.source_label !== tag.name_en && tag.source_label !== tag.name_zh ? ` · 原始：${escapeHtml(tag.source_label)}` : ""}</small></div>
+      <span class="genre-conf">${Math.round((tag.confidence || 0) * 100)}</span>
+    </div>`;
+  }
+
   // ---------------------------------------------------------------- overview
   function greeting() {
     const hour = new Date().getHours();
@@ -590,7 +604,7 @@
           </div>
         </div>
         <div class="runway-card">
-          <div class="runway-head"><span>Daily runway</span><strong>${Math.round(runway)}%</strong></div>
+          <div class="runway-head"><span>Daily runway</span><button class="runway-target" data-action="edit-goal" title="修改每日目标">目标 ${num(goal)} ${icon("edit")}</button><strong>${Math.round(runway)}%</strong></div>
           <div class="runway-main"><b>${num(today)}</b><span>/ ${num(goal)} tracks</span></div>
           <div class="runway-bar"><i style="width:${runway}%"></i></div>
           <div class="runway-stats">
@@ -1059,6 +1073,7 @@
     }
     const caption = normalized.caption || {};
     const genre = normalized.genre || {};
+    const genreItems = genre.items || [genre.primary, ...(genre.secondary || [])].filter(Boolean);
     const mood = normalized.mood || {};
     const bpm = normalized.bpm_key || {};
     const instruments = normalized.instruments || {};
@@ -1082,14 +1097,14 @@
       <div class="detail-section">
         <h3>${icon("genre")}核心标签</h3>
         <div class="detail-grid">
-          <div class="metric-box"><span>Primary genre</span>${renderTagSingle(genre.primary, "genre")}<small>${escapeHtml(genre.reason || "")}</small></div>
+          <div class="metric-box"><span>Genre · ${genreItems.length} 个</span>${renderTagSingle(genre.primary, "genre")}<small>${escapeHtml(genre.reason || "")}</small></div>
           <div class="metric-box"><span>Mood / energy</span>${renderTagSingle(mood.dominant, "mood")}<small>valence ${mood.valence ?? "—"} · energy ${mood.energy ?? "—"}</small></div>
           <div class="metric-box"><span>Tempo</span><strong>${bpm.bpm ? `${bpm.bpm} BPM` : "—"}</strong><small>${escapeHtml(bpm.groove || "未检测")}</small></div>
           <div class="metric-box"><span>Key / meter</span><strong>${escapeHtml(`${empty(bpm.key, "—")} ${empty(bpm.mode, "")}`.trim())}</strong><small>${escapeHtml(bpm.time_signature || "拍号未知")}</small></div>
         </div>
       </div>
       ${tags.length ? `<div class="detail-section"><h3>${icon("mood")}情绪标签</h3>${renderTags(tags, "mood")}</div>` : ""}
-      ${genre.secondary?.length ? `<div class="detail-section"><h3>${icon("layers")}次曲风</h3>${renderTags(genre.secondary, "genre")}</div>` : ""}
+      ${genreItems.length ? `<div class="detail-section"><h3>${icon("layers")}曲风层级 · 全部保留，不设主次上限</h3><div class="genre-hierarchy">${genreItems.map(renderGenreItem).join("")}</div></div>` : ""}
       <div class="detail-section">
         <h3>${icon("instrument")}乐器与声音</h3>
         ${renderTags([...(instruments.primary || []), ...(instruments.secondary || [])], "instrument")}
@@ -1137,10 +1152,14 @@
     modules.forEach(([key, label]) => {
       const value = normalized[key] || {};
       const tags = [];
+      if (Array.isArray(value.items)) tags.push(...value.items);
       if (value.primary) tags.push(value.primary);
       if (Array.isArray(value.secondary)) tags.push(...value.secondary);
       if (Array.isArray(value.tags)) tags.push(...value.tags);
+      const seenTags = new Set();
       tags.filter(Boolean).forEach((tag) => {
+        if (!tag.id || seenTags.has(tag.id)) return;
+        seenTags.add(tag.id);
         if (tag.mapped || (tag.source_label && tag.source_label !== tag.name_zh && tag.source_label !== tag.name_en)) {
           rows.push(`<div class="mapping-row"><span class="from">${escapeHtml(tag.source_label || "—")}</span><span class="arrow">${icon("arrow-right")}</span><span class="to">${escapeHtml(tag.name_zh)} <em class="muted" style="font-style:normal">${escapeHtml(tag.id)}</em></span><span class="conf">${Math.round((tag.confidence || 0) * 100)}%</span></div>`);
         }
@@ -1429,6 +1448,7 @@
     const draft = state.settingsDraft || state.settings;
     if (!draft) return;
     const tabs = [
+      ["workspace", "工作区", "grid"],
       ["endpoints", "推理端点", "cloud"],
       ["models", "文字模型", "bot"],
       ["processing", "处理与能力", "cpu"],
@@ -1444,10 +1464,11 @@
         <nav class="settings-nav">${tabs.map(([key, label, ic]) => `<button class="${state.settingsTab === key ? "active" : ""}" data-action="settings-tab" data-tab="${key}">${icon(ic)}${label}</button>`).join("")}</nav>
         <div class="settings-content" id="settings-content">${renderSettingsContent(draft)}</div>
       </div>
-      <div class="save-bar"><span>${state.settingsDirty ? "有未保存的更改" : "所有设置已保存到本机"}</span><button class="btn small" data-action="reset-settings">重置更改</button><button class="btn small primary" data-action="save-settings">${icon("check")}保存设置</button></div>`;
+      <div class="save-bar ${state.settingsDirty ? "" : "hidden"}" id="save-bar"><span>有未保存的更改</span><button class="btn small" data-action="reset-settings">重置更改</button><button class="btn small primary" data-action="save-settings">${icon("check")}保存设置</button></div>`;
   }
 
   function renderSettingsContent(draft) {
+    if (state.settingsTab === "workspace") return renderWorkspaceSettings(draft);
     if (state.settingsTab === "models") return renderModelSettings(draft);
     if (state.settingsTab === "processing") return renderProcessingSettings(draft);
     if (state.settingsTab === "data") return renderDataSettings(draft);
@@ -1457,6 +1478,27 @@
 
   function settingSwitch(path, label, description, value) {
     return `<div class="switch-row"><div class="switch-copy"><strong>${label}</strong><span>${description}</span></div><button class="switch ${value ? "on" : ""}" data-action="toggle-setting" data-path="${attr(path)}" aria-label="${attr(label)}" aria-pressed="${value ? "true" : "false"}"></button></div>`;
+  }
+
+  function renderWorkspaceSettings(draft) {
+    const workspace = draft.workspace || {};
+    return `
+      <div class="settings-head"><div><h2>工作区</h2><p>名称与每日目标只影响工作台展示与进度节奏，不会限制并发或模型能力。</p></div></div>
+      <div class="setting-card">
+        <div class="setting-card-head"><div class="setting-card-icon">${icon("grid")}</div><div><h3>工作区信息</h3><p>会显示在左侧工作区切换器与总览中。</p></div></div>
+        <div class="form-grid">
+          <div class="field"><label>工作区名称</label><input data-path="workspace.name" value="${attr(workspace.name || "")}"></div>
+          <div class="field"><label>负责人 / 团队（可选）</label><input data-path="workspace.owner" value="${attr(workspace.owner || "")}"></div>
+        </div>
+      </div>
+      <div class="setting-card">
+        <div class="setting-card-head"><div class="setting-card-icon">${icon("pulse")}</div><div><h3>每日目标</h3><p>随时可改，例如 100、300、500、1000。目标不是产能保证。</p></div></div>
+        <div class="form-grid">
+          <div class="field"><label>每天计划完成（首）</label><input type="number" min="1" max="10000" step="1" data-path="workspace.daily_goal" value="${attr(workspace.daily_goal || 500)}"></div>
+          <div class="field"><label>当前产能提示</label><input value="根据真实单首耗时调整" disabled></div>
+        </div>
+        <p class="route-note">${icon("clock")}总览的 Daily runway 会立即使用这个数字；实际完成量取决于端点、音频长度与重试。</p>
+      </div>`;
   }
 
   function renderEndpointSettings(draft) {
@@ -1483,6 +1525,8 @@
   function renderInferenceRoute(route, draft) {
     const active = draft.inference.active_route_id === route.id;
     const status = state.endpoint?.route_id === route.id ? state.endpoint : null;
+    const profileId = route.hardware_profile || "custom";
+    const profile = state.hardwareProfiles.find((item) => item.id === profileId) || state.hardwareProfiles.find((item) => item.id === "custom") || {};
     return `<div class="route-card ${active ? "active" : ""}">
       <div class="route-card-head">
         <button class="route-radio" data-action="activate-inference-route" data-id="${attr(route.id)}" aria-label="设为主端点" title="设为当前端点"></button>
@@ -1498,13 +1542,16 @@
         <div class="field"><label>模型仓库</label><input data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="model" value="${attr(route.model)}" placeholder="OpenMOSS-Team/MOSS-Music-8B-Instruct"></div>
         <div class="field"><label>适配器</label><select data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="adapter"><option value="cadence" ${route.adapter === "cadence" ? "selected" : ""}>Cadence custom /v1/annotate</option><option value="openai_audio" ${route.adapter === "openai_audio" ? "selected" : ""}>OpenAI-compatible audio</option></select></div>
         <div class="field"><label>最大并发</label><input type="number" min="1" max="8" data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="max_concurrency" value="${attr(route.max_concurrency || 1)}"></div>
+        <div class="field span-2"><label>硬件预设 · 仅用于推荐参数</label><div class="secret-row"><select data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="hardware_profile" style="flex:1">${state.hardwareProfiles.map((item) => `<option value="${attr(item.id)}" ${item.id === profileId ? "selected" : ""}>${escapeHtml(item.label)}${item.reference_price_usd_hour ? ` · ~$${item.reference_price_usd_hour}/h` : ""}</option>`).join("")}</select><button class="btn small" data-action="apply-hardware-profile" data-id="${attr(route.id)}">${icon("spark")}应用推荐</button></div><p class="route-note">${icon("cpu")}${escapeHtml(profile.note || "")}${profile.recommended_concurrency ? ` 建议并发 ${profile.recommended_concurrency} · 音频 ≤${profile.recommended_max_audio_seconds}s · ${escapeHtml(profile.verdict || "")}` : ""}</p></div>
         <div class="field"><label>HF NAMESPACE</label><input data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="hf_namespace" value="${attr(route.hf_namespace)}" placeholder="你的用户名或组织"></div>
         <div class="field"><label>HF ENDPOINT NAME</label><input data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="hf_endpoint_name" value="${attr(route.hf_endpoint_name)}" placeholder="moss-music-a10g"></div>
         <div class="field span-2"><label>INFERENCE URL（可留空，由 HF API 解析）</label><input data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="base_url" value="${attr(route.base_url)}" placeholder="https://xxxxx.us-east-1.aws.endpoints.huggingface.cloud"></div>
         <div class="field"><label>标注路径</label><input data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="infer_path" value="${attr(route.infer_path || "/v1/annotate")}"></div>
         <div class="field"><label>健康检查路径</label><input data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="health_path" value="${attr(route.health_path || "/health")}"></div>
         <div class="field"><label>超时（秒）</label><input type="number" min="30" max="3600" data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="timeout_seconds" value="${attr(route.timeout_seconds || 900)}"></div>
-        <div class="field"><label>端点 API 密钥（留空不修改）</label><input type="password" data-secret="${attr(route.api_key_secret || "hf_token")}" placeholder="${route.secret_configured ? "已保存 · " + route.secret_hint : "可复用 HF Token"}"></div>
+        <div class="field"><label>音频上限（秒）</label><input type="number" min="10" max="1200" data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="max_audio_seconds" value="${attr(route.max_audio_seconds || 1200)}"></div>
+        <div class="field"><label>最大输出 tokens</label><input type="number" min="128" max="4096" data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="max_new_tokens" value="${attr(route.max_new_tokens || 900)}"></div>
+        <div class="field span-2"><label>端点 API 密钥（留空不修改）</label><input type="password" data-secret="${attr(route.api_key_secret || "hf_token")}" placeholder="${route.secret_configured ? "已保存 · " + route.secret_hint : "可复用 HF Token"}"></div>
         <div class="field span-2"><label>备注</label><input data-route-kind="inference" data-route-id="${attr(route.id)}" data-field="notes" value="${attr(route.notes || "")}" placeholder="模型版本、硬件、已知限制"></div>
       </div>
       <div style="display:flex;gap:6px;margin-top:9px;flex-wrap:wrap">
@@ -1540,14 +1587,15 @@
       <div class="route-card-head"><button class="route-radio" data-action="activate-llm-route" data-id="${attr(route.id)}" aria-label="设为当前文字模型"></button><strong>${escapeHtml(route.name || "未命名模型")}</strong><span class="route-model">${escapeHtml(route.model || "")}</span><div class="right"><span class="badge ${route.secret_configured || route.base_url?.includes("localhost") ? "completed" : "neutral"}">${route.secret_configured ? "已配置密钥" : "未保存密钥"}</span><button class="btn small" data-action="test-llm" data-id="${attr(route.id)}">${icon("pulse")}测试</button><button class="btn small" data-action="remove-llm-route" data-id="${attr(route.id)}">${icon("trash")}</button></div></div>
       <div class="route-form">
         <div class="field"><label>显示名称</label><input data-route-kind="llm" data-route-id="${attr(route.id)}" data-field="name" value="${attr(route.name)}"></div>
-        <div class="field"><label>模型名</label><input data-route-kind="llm" data-route-id="${attr(route.id)}" data-field="model" value="${attr(route.model)}" placeholder="deepseek-chat"></div>
-        <div class="field span-2"><label>BASE URL</label><input data-route-kind="llm" data-route-id="${attr(route.id)}" data-field="base_url" value="${attr(route.base_url)}" placeholder="https://api.deepseek.com/v1"></div>
+        <div class="field"><label>模型名</label><input list="deepseek-models" data-route-kind="llm" data-route-id="${attr(route.id)}" data-field="model" value="${attr(route.model)}" placeholder="deepseek-flash"><datalist id="deepseek-models"><option value="deepseek-flash"><option value="deepseek-v4-pro"></datalist></div>
+        <div class="field span-2"><label>BASE URL</label><input data-route-kind="llm" data-route-id="${attr(route.id)}" data-field="base_url" value="${attr(route.base_url)}" placeholder="https://api.deepseek.com"></div>
         <div class="field"><label>API KEY（留空不修改）</label><input type="password" data-secret="${attr(route.api_key_secret || "deepseek_api_key")}" placeholder="${route.secret_configured ? "已保存 · " + route.secret_hint : "sk-..."}"></div>
+        <div class="field"><label>思考模式</label><select data-route-kind="llm" data-route-id="${attr(route.id)}" data-field="thinking_mode"><option value="disabled" ${route.thinking_mode !== "enabled" ? "selected" : ""}>关闭（推荐 · 更快）</option><option value="enabled" ${route.thinking_mode === "enabled" ? "selected" : ""}>开启（更慢，输出推理）</option></select></div>
         <div class="field"><label>TEMPERATURE</label><input type="number" min="0" max="1.5" step="0.05" data-route-kind="llm" data-route-id="${attr(route.id)}" data-field="temperature" value="${attr(route.temperature)}"></div>
         <div class="field"><label>MAX TOKENS</label><input type="number" min="256" max="16000" data-route-kind="llm" data-route-id="${attr(route.id)}" data-field="max_tokens" value="${attr(route.max_tokens)}"></div>
         <div class="field"><label>超时（秒）</label><input type="number" min="30" max="1200" data-route-kind="llm" data-route-id="${attr(route.id)}" data-field="timeout_seconds" value="${attr(route.timeout_seconds || 240)}"></div>
       </div>
-      <p class="route-note">${icon("bot")}推荐 deepseek-chat + JSON 模式。若使用 reasoner，请关闭思考或确认最终 JSON 仍由 content 返回。</p>
+      <p class="route-note">${icon("bot")}DeepSeek 当前模型名是 <strong>deepseek-flash</strong>（V4.1 Flash）或 <strong>deepseek-v4-pro</strong>；API Key 不决定模型类型。默认关闭思考以降低延迟，JSON 模式负责结构化输出。</p>
     </div>`;
   }
 
@@ -1605,7 +1653,7 @@
 
   function renderAboutSettings(draft) {
     return `
-      <div class="settings-head"><div><h2>关于声刻</h2><p>为可审计的音乐数据生产而设计。</p></div><span class="badge neutral">v0.1.0</span></div>
+      <div class="settings-head"><div><h2>关于声刻</h2><p>为可审计的音乐数据生产而设计。</p></div><span class="badge neutral">v0.2.0</span></div>
       <div class="taxonomy-hero" style="grid-template-columns:1fr;padding:28px">
         <div>
           <div class="brand" style="margin-bottom:16px"><span class="brand-mark"><svg><use href="#i-logo"></use></svg></span><div class="brand-word"><strong>Cadence</strong><span>声刻 · STUDIO</span></div></div>
@@ -1615,7 +1663,7 @@
       </div>
       <div class="setting-card" style="margin-top:12px">
         <div class="info-grid">
-          <div class="info-box"><span>VERSION</span><strong>0.1.0</strong></div>
+          <div class="info-box"><span>VERSION</span><strong>0.2.0</strong></div>
           <div class="info-box"><span>TAXONOMY</span><strong>${escapeHtml(state.taxonomy?.version || "")}</strong></div>
           <div class="info-box"><span>DEFAULT AUDIO MODEL</span><strong>MOSS-Music 8B / Music Flamingo</strong></div>
           <div class="info-box"><span>NORMALIZER</span><strong>DeepSeek / OpenAI-compatible</strong></div>
@@ -1666,6 +1714,24 @@
       });
     }
     return cleaned;
+  }
+
+  function applyHardwareProfile(routeId) {
+    if (!state.settingsDraft) return;
+    const route = state.settingsDraft.inference.routes.find((item) => item.id === routeId);
+    if (!route) return;
+    const profile = state.hardwareProfiles.find((item) => item.id === route.hardware_profile) || state.hardwareProfiles.find((item) => item.id === "custom");
+    if (!profile) return;
+    route.max_concurrency = profile.recommended_concurrency;
+    route.max_audio_seconds = profile.recommended_max_audio_seconds;
+    route.max_new_tokens = profile.recommended_max_new_tokens;
+    route.timeout_seconds = profile.recommended_timeout_seconds;
+    state.settingsDirty = true;
+    renderSettingsPage();
+    toast(`${profile.label}：并发 ${profile.recommended_concurrency} · 音频 ≤${profile.recommended_max_audio_seconds}s · 超时 ${profile.recommended_timeout_seconds}s。`, {
+      title: "已应用硬件推荐",
+      type: "success",
+    });
   }
 
   async function saveSettings() {
@@ -1878,16 +1944,45 @@
     });
   }
 
+  function localPromptMetrics(modules) {
+    const categories = new Set();
+    modules.forEach((module) => {
+      if (module === "genre") {
+        categories.add("Genre");
+        categories.add("Extra");
+      } else if (module === "extra") {
+        categories.add("Extra");
+      } else {
+        const map = { mood: "Mood", scene: "Scene", instruments: "Instrument", vocal: "Vocal", language: "Language" };
+        if (map[module]) categories.add(map[module]);
+      }
+    });
+    let tags = 0;
+    let chars = 0;
+    (state.taxonomy?.tags || []).forEach((tag) => {
+      if (!categories.has(tag.category)) return;
+      tags += 1;
+      chars += tag.id.length + tag.zh.length + tag.en.length + (tag.group || "").length + 8;
+      if (tag.category === "Genre") chars += 18; // hierarchy hint in catalog
+    });
+    return { taxonomy_tags: tags, normalizer_tokens_estimate: Math.ceil((chars + 2800) / 2.2) };
+  }
+
   async function updateBatchMetrics() {
     const target = $("#batch-metric");
     if (!target) return;
     const modules = [...state.upload.modules];
+    const local = localPromptMetrics(modules);
+    target.innerHTML = `${icon("tag")}目录 <strong>${local.taxonomy_tags}</strong> 标签 · 规范化上下文约 <strong>${Math.ceil(local.normalizer_tokens_estimate / 1000)}k</strong> tokens`;
     try {
       const data = await api(`/settings/prompt-metrics?modules=${encodeURIComponent(modules.join(","))}`);
       state.upload.metrics = data.metrics;
-      target.innerHTML = `${icon("tag")}目录 <strong>${data.metrics.taxonomy_tags || 0}</strong> 标签 · 规范化上下文约 <strong>${Math.ceil(data.metrics.normalizer_tokens_estimate / 1000)}k</strong> tokens`;
+      if ($("#batch-metric")) {
+        target.innerHTML = `${icon("tag")}目录 <strong>${data.metrics.taxonomy_tags || local.taxonomy_tags}</strong> 标签 · 规范化上下文约 <strong>${Math.ceil(data.metrics.normalizer_tokens_estimate / 1000)}k</strong> tokens`;
+      }
     } catch (error) {
-      target.textContent = "目录体积计算失败";
+      // Local estimate is intentional: the modal must never get stuck on a
+      // slow settings request.
     }
   }
 
@@ -2193,6 +2288,32 @@
     $("#palette-root").innerHTML = "";
   }
 
+  function openGoalDialog() {
+    if (!state.overview) return;
+    const current = Number(state.overview.daily_goal || state.settings?.workspace?.daily_goal || 500);
+    $("#modal-root").innerHTML = `<div class="modal-backdrop" data-action="close-modal"><div class="modal" style="width:min(450px,94vw)" role="dialog" aria-modal="true"><div class="modal-head"><div><div class="eyebrow">DAILY TARGET</div><h2>修改每日目标</h2><p>目标只影响进度展示与节奏，不会改变模型或队列容量。</p></div><button class="drawer-close" data-action="close-modal">${icon("x")}</button></div><div class="modal-body"><div class="field"><label>每天计划完成的音频数</label><input id="daily-goal-input" type="number" min="1" max="10000" value="${current}" autofocus></div><div class="tag-row" style="margin-top:10px">${[100, 300, 500, 800, 1000].map((n) => `<button class="tag" data-action="set-goal-preset" data-goal="${n}" style="cursor:pointer">${n} 首</button>`).join("")}</div><p class="route-note" style="margin-top:12px">${icon("clock")}单卡实际产能取决于模型、音频长度与端点冷启动；目标不是承诺。</p></div><div class="modal-footer"><button class="btn" data-action="close-modal">取消</button><button class="btn primary" data-action="save-goal">${icon("check")}保存目标</button></div></div></div>`;
+    setTimeout(() => $("#daily-goal-input")?.select(), 50);
+  }
+
+  async function saveGoal() {
+    const value = Number($("#daily-goal-input")?.value || 0);
+    if (!Number.isInteger(value) || value < 1 || value > 10000) {
+      toast("请输入 1–10000 之间的整数。", { type: "warn", title: "目标无效" });
+      return;
+    }
+    try {
+      const data = await api("/workspace", { method: "PATCH", body: { daily_goal: value } });
+      if (state.settings?.workspace) state.settings.workspace.daily_goal = value;
+      if (state.overview) state.overview.daily_goal = value;
+      closeModal();
+      await refreshOverview();
+      if (state.route.name === "overview") renderOverview();
+      toast(`每日目标已改为 ${num(value)} 首。`, { title: "目标已更新" });
+    } catch (error) {
+      toast(error.message, { type: "error", title: "保存目标失败" });
+    }
+  }
+
   async function seedDemo() {
     try {
       const data = await api("/demo/seed", { method: "POST" });
@@ -2291,6 +2412,20 @@
         case "seed-demo":
           await seedDemo();
           return;
+        case "edit-goal":
+          openGoalDialog();
+          return;
+        case "set-goal-preset": {
+          const input = $("#daily-goal-input");
+          if (input) input.value = actionEl.dataset.goal;
+          return;
+        }
+        case "save-goal":
+          await saveGoal();
+          return;
+        case "apply-hardware-profile":
+          applyHardwareProfile(actionEl.dataset.id);
+          return;
         case "endpoint-panel":
           await openEndpointPanel();
           return;
@@ -2377,6 +2512,7 @@
           state.settingsDirty = true;
           actionEl.classList.toggle("on", !current);
           actionEl.setAttribute("aria-pressed", String(!current));
+          $("#save-bar")?.classList.remove("hidden");
           return;
         }
         case "save-settings":
@@ -2427,8 +2563,7 @@
       const target = event.target;
       if (target.matches("[data-route-kind], [data-path]")) {
         updateDraftFromInput(event);
-        const saveBar = $(".save-bar span");
-        if (saveBar) saveBar.textContent = "有未保存的更改";
+        $("#save-bar")?.classList.remove("hidden");
       }
       if (target.matches("[data-item-select]")) {
         if (target.checked) state.selected.add(target.dataset.itemSelect);
@@ -2552,9 +2687,11 @@
         health_path: "/health",
         infer_path: "/v1/annotate",
         api_key_secret: "hf_token",
+        hardware_profile: "custom",
         max_concurrency: 1,
         timeout_seconds: 900,
         max_audio_seconds: 1200,
+        max_new_tokens: 900,
         enabled: true,
         notes: "",
       });
@@ -2565,13 +2702,14 @@
         id,
         name: "新文字模型",
         provider: "openai_compatible",
-        base_url: "https://api.deepseek.com/v1",
-        model: "deepseek-chat",
+        base_url: "https://api.deepseek.com",
+        model: "deepseek-flash",
         api_key_secret: `llm_${stamp}_key`,
         temperature: 0.1,
         max_tokens: 4096,
         timeout_seconds: 240,
         json_mode: true,
+        thinking_mode: "disabled",
         enabled: true,
       });
       state.settingsDraft.llm.active_route_id = id;

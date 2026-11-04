@@ -57,6 +57,13 @@ class LLMClient:
         }
         if json_mode and route.get("json_mode", True):
             body["response_format"] = {"type": "json_object"}
+        # DeepSeek V4 enables thinking by default. Normalization wants a fast,
+        # deterministic final JSON, so disable it unless the user explicitly
+        # configured otherwise. Non-DeepSeek providers do not get this field.
+        base_url = str(route.get("base_url") or "")
+        thinking_mode = route.get("thinking_mode", "disabled")
+        if "deepseek.com" in base_url and thinking_mode in {"enabled", "disabled"}:
+            body["thinking"] = {"type": thinking_mode}
         started = time.perf_counter()
         attempts = 0
         tried_without_json = False
@@ -115,7 +122,7 @@ class LLMClient:
                 reasoning = message.get("reasoning_content") if isinstance(message, dict) else ""
                 if reasoning:
                     raise LLMError(
-                        "大模型只返回了推理内容，没有最终 JSON。请换用 deepseek-chat，或关闭推理模式。",
+                        "大模型只返回了推理内容，没有最终 JSON。请关闭思考模式，或换用 deepseek-flash。",
                         code="llm_no_content",
                         retryable=False,
                     )

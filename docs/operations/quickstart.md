@@ -36,7 +36,7 @@ powershell -ExecutionPolicy Bypass -File scripts\build_windows.ps1
 首次启动会显示安装过程（1–3 分钟）：
 
 ```text
-Cadence Studio · 0.1.0
+Cadence Studio · 0.2.0
 http://127.0.0.1:8765/
 data: ...\AI Music Caption\data
 关闭此窗口即可停止工作台。
@@ -69,9 +69,10 @@ powershell -ExecutionPolicy Bypass -File scripts\setup.ps1
 
 1. 打开 **设置 → 文字模型**。
 2. 填写：
-   - BASE URL：`https://api.deepseek.com/v1`
-   - 模型名：`deepseek-chat`
+   - BASE URL：`https://api.deepseek.com`
+   - 模型名：`deepseek-flash`（当前官方名；`deepseek-chat` 是旧名）
    - API KEY：你的 `sk-...`
+   - 思考模式：关闭（推荐）
    - TEMPERATURE：`0.1`
    - MAX TOKENS：`4096`
 3. 点 **测试**。
@@ -96,7 +97,7 @@ powershell -ExecutionPolicy Bypass -File scripts\setup.ps1
 
 ## 5. 第一首真实音频
 
-不要一上来跑 500 首。
+不要一上来跑 500 首（或你当前的每日目标）。
 
 1. 新建批次；
 2. 选一首 30–60 秒、有权使用的音频；
@@ -128,7 +129,9 @@ powershell -ExecutionPolicy Bypass -File scripts\setup.ps1
 
 用 `docs/quality/benchmark.md` 的表格记录，不要凭感觉估算。
 
-## 7. 每日 500 首
+## 7. 每日目标
+
+Cadence 的每日目标可以在 **总览 → Daily runway → 目标** 或 **设置 → 工作区** 中随时修改，不一定是 500。目标只影响进度展示，不决定实际产能。
 
 确认单首耗时后再决定：
 

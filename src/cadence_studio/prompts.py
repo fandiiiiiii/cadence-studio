@@ -5,8 +5,8 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from .modules import JSON_CONTRACTS, TAG_CONTRACT, BatchSpec
-from .taxonomy import Taxonomy, get_taxonomy
+from .modules import GENRE_TAG_CONTRACT, JSON_CONTRACTS, TAG_CONTRACT, BatchSpec
+from .taxonomy import Taxonomy, categories_for_module, get_taxonomy
 
 AUDIO_SYSTEM_NOTE = (
     "你是一台专业音乐审听工作站。请只根据实际听到的声音判断，不要猜测文件名、艺人或版权信息。"
@@ -35,7 +35,10 @@ def build_audio_prompt(
             f"【描述】用{length}写一段完整的音乐描述，覆盖风格、氛围、编曲、人声、制作质感与情绪走向；避免空泛形容词和标签堆砌。"
         )
     if "genre" in spec.modules:
-        tasks.append("【曲风】主曲风与最多 3 个次曲风；说明融合元素与判断依据。若风格模糊，给出最接近的描述。")
+        tasks.append(
+            "【曲风】列出你能确认的所有曲风与更具体的风格（有几个写几个，不设主次，不要为了数量添加）；"
+            "说明融合元素与依据。不要使用任何标准标签体系或标签 ID。"
+        )
     if "mood" in spec.modules:
         tasks.append("【情绪】主要情绪、能量强弱、情绪效价（负向到正向）与动态变化。")
     if "bpm_key" in spec.modules:
@@ -45,9 +48,8 @@ def build_audio_prompt(
     if "structure" in spec.modules:
         detail = "精确到段落与短结构" if spec.structure_detail == "fine" else "主要段落"
         tasks.append(
-            f"【结构】{detail}；给出每段起止秒数、英文与中文段落名、能量变化与功能。"
-            "段落名使用 Intro / Verse / Pre-Chorus / Chorus / Post-Chorus / Interlude / Bridge / "
-            "Instrumental / Breakdown / Build-up / Drop / Outro / Silence / Spoken / Applause / Noise。"
+            f"【结构】{detail}；给出每段起止秒数、你听到的段落名称（自然语言即可）、能量变化与功能。"
+            "不需要套用任何标准结构词表。"
         )
     if "scene" in spec.modules:
         tasks.append("【场景】内容主题、适合的视频/活动/空间/季节场景；区分“音乐本身”与“适合被用在哪里”。")
@@ -64,7 +66,9 @@ def build_audio_prompt(
         tasks.append("【质量】音质、削波、噪声、失真、完整性、是否适合作为标注成品；给出 0–100 分。")
     if "safety" in spec.modules:
         tasks.append("【安全】是否含露骨性内容、暴力、仇恨、自伤或药物内容；只描述可听出的证据。")
-    if "extra" in spec.modules:
+    if "extra" in spec.modules and "genre" not in spec.modules:
+        # Supplemental tags normally travel with genre. Do not separately
+        # remind the audio model when genre is already requested.
         tasks.append("【补充】现场感、ACG、Lo-fi、土味、广场舞等补充属性。")
     if "custom" in spec.modules and spec.custom_instruction.strip():
         tasks.append(f"【自定义要求】{spec.custom_instruction.strip()}")
@@ -157,6 +161,7 @@ def build_normalizer_messages(
 {_contract(spec)}
 }}
 其中 {TAG_CONTRACT}
+{GENRE_TAG_CONTRACT if "genre" in spec.modules else ""}
 
 ## 标签目录（仅这些 ID 有效）
 {catalog}
@@ -199,8 +204,9 @@ def prompt_metrics(spec: BatchSpec | dict[str, Any], taxonomy: Taxonomy | None =
         "normalizer_chars_estimate": message_chars,
         "normalizer_tokens_estimate": int(message_chars / 2.2),
         "taxonomy_tags": sum(
-            len(taxonomy.category_tags({"genre": "Genre", "mood": "Mood", "scene": "Scene", "instruments": "Instrument", "vocal": "Vocal", "language": "Language", "extra": "Extra"}[m]))
-            for m in spec.modules
-            if m in {"genre", "mood", "scene", "instruments", "vocal", "language", "extra"}
+            len(taxonomy.category_tags(category))
+            for category in sorted(
+                {category for module in spec.modules for category in categories_for_module(module)}
+            )
         ),
     }

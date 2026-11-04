@@ -27,6 +27,20 @@ MODULE_CATEGORY = {
 
 CATEGORY_MODULE = {value: key for key, value in MODULE_CATEGORY.items()}
 
+
+def categories_for_module(module: str) -> list[str]:
+    """Supplemental tags travel with Genre by default.
+
+    ``Extra`` is still available as a standalone module, but a genre request
+    includes the supplemental genre vocabulary in the normalizer catalog.
+    """
+    if module == "genre":
+        return ["Genre", "Extra"]
+    if module == "extra":
+        return ["Extra"]
+    category = MODULE_CATEGORY.get(module)
+    return [category] if category else []
+
 _STRIP_RE = re.compile(r"[\s\-_/·•,，.。:：;；'\"“”‘’()（）\[\]【】]+")
 
 
@@ -102,6 +116,19 @@ class Taxonomy:
     def category_tags(self, category: str) -> list[dict[str, Any]]:
         self._ensure_loaded()
         return self._by_category.get(category, [])
+
+    def hierarchy_for(self, tag_id: str) -> list[dict[str, Any]]:
+        """Return the level-1..n lineage for a genre tag.
+
+        Supplemental (Extra) tags are intentionally a one-element lineage;
+        they are not forced into a fake Genre parent.
+        """
+        self._ensure_loaded()
+        tag = self._by_id.get(tag_id)
+        if not tag or tag["category"] != "Genre":
+            return [tag] if tag else []
+        lineage_ids = tag.get("genre_lineage") or [tag_id]
+        return [self._by_id[item] for item in lineage_ids if item in self._by_id]
 
     def resolve(self, value: str | dict[str, Any], category: str | None = None, cutoff: float = 0.9) -> dict[str, Any] | None:
         """Resolve an id/name/alias to a canonical tag, without inventing values."""
@@ -195,7 +222,11 @@ class Taxonomy:
         Full labels are always included; short definitions are added for tags
         that appear in the audio model's raw output to help disambiguation.
         """
-        selected = [m for m in modules if m in MODULE_CATEGORY]
+        selected: list[str] = []
+        for module in modules:
+            for category in categories_for_module(module):
+                if category not in selected:
+                    selected.append(category)
         focus_ids: set[str] = set()
         if focus_text:
             focus_n = _norm(focus_text)
@@ -204,12 +235,16 @@ class Taxonomy:
                     focus_ids.add(tag["id"])
         blocks: list[str] = []
         budget = max(2000, max_chars)
-        for module in selected:
-            category = MODULE_CATEGORY[module]
+        for category in selected:
             meta = self.categories[category]
             lines = [f"## {category} / {meta['label_zh']}（{len(self.category_tags(category))}）"]
             for tag in self.category_tags(category):
                 line = self.tag_line(tag)
+                if category == "Genre":
+                    line += f" [L{tag.get('genre_level', 1)}"
+                    if tag.get("genre_parent_id"):
+                        line += f";parent={tag['genre_parent_id']}"
+                    line += "]"
                 if tag["id"] in focus_ids and tag.get("definition") and tag["definition"] not in {"—", "-"}:
                     line += f" :: {tag['definition'][:120]}"
                 lines.append(line)

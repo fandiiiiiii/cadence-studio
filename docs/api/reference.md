@@ -22,6 +22,9 @@
 | GET | `/api/system/overview` | 统计、缓存端点状态、最近批次/事件 |
 | POST | `/api/system/backup` | 复制 SQLite 到 `data/backups/` |
 | GET | `/api/modules` | 15 个模块与默认值 |
+| GET | `/api/hardware-profiles` | T4–H200 的并发/音频上限/参考价预设 |
+| GET | `/api/workspace` | 工作区名称、负责人、每日目标 |
+| PATCH | `/api/workspace` | 快速修改 `daily_goal`（1–10000） |
 | GET | `/api/taxonomy` | 完整 641 标签 payload |
 | GET | `/api/taxonomy?category=Genre&q=jazz` | 过滤 |
 | GET | `/api/taxonomy/meta` | 版本、类别、结构词表、规则数 |
@@ -35,7 +38,7 @@
 | --- | --- | --- |
 | GET | `/api/settings` | 配置 + 密钥“已配置”状态（不含明文） |
 | PUT | `/api/settings` | `{config, secrets}`；空 secret 表示删除 |
-| GET | `/api/settings/prompt-metrics?modules=caption,genre` | 目录字符/token 估算 |
+| GET | `/api/settings/prompt-metrics?modules=caption,genre` | 目录字符/token 估算；genre 自动含 Extra |
 | POST | `/api/settings/test/hf` | `whoami` 验证 HF token |
 | POST | `/api/settings/test/llm` | `{route_id}` 测试文字模型 |
 
@@ -78,6 +81,8 @@ curl -X POST http://127.0.0.1:8765/api/batches \
   -F "name=第一批" \
   -F "auto_start=true"
 ```
+
+> `genre` 自动包含 `Extra`。结果中每个曲风见 `items[].level`、`items[].path`、`items[].hierarchy`；一首歌可以有多个 `items`。
 
 返回：
 

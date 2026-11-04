@@ -74,9 +74,11 @@ def default_config() -> dict[str, Any]:
                     "health_path": "/health",
                     "infer_path": "/v1/annotate",
                     "api_key_secret": "hf_token",
+                    "hardware_profile": "a10g-24gb",
                     "max_concurrency": 1,
                     "timeout_seconds": 900,
                     "max_audio_seconds": 1200,
+                    "max_new_tokens": 900,
                     "enabled": True,
                     "notes": "推荐先部署自定义推理容器。A10G 上建议并发 1，避免显存竞争。",
                 },
@@ -92,9 +94,11 @@ def default_config() -> dict[str, Any]:
                     "health_path": "/health",
                     "infer_path": "/v1/annotate",
                     "api_key_secret": "hf_token",
+                    "hardware_profile": "l40s-48gb",
                     "max_concurrency": 1,
                     "timeout_seconds": 900,
                     "max_audio_seconds": 1200,
+                    "max_new_tokens": 1024,
                     "enabled": False,
                     "notes": "支持 30 秒窗口、最长 20 分钟；许可为非商业研究，商用前请核实。",
                 },
@@ -112,15 +116,16 @@ def default_config() -> dict[str, Any]:
             "routes": [
                 {
                     "id": "deepseek",
-                    "name": "DeepSeek Chat",
+                    "name": "DeepSeek Flash",
                     "provider": "openai_compatible",
-                    "base_url": "https://api.deepseek.com/v1",
-                    "model": "deepseek-chat",
+                    "base_url": "https://api.deepseek.com",
+                    "model": "deepseek-flash",
                     "api_key_secret": "deepseek_api_key",
                     "temperature": 0.1,
                     "max_tokens": 4096,
                     "timeout_seconds": 240,
                     "json_mode": True,
+                    "thinking_mode": "disabled",
                     "enabled": True,
                 }
             ],
@@ -186,10 +191,37 @@ class ConfigStore:
                 except (OSError, json.JSONDecodeError) as exc:
                     raise RuntimeError(f"配置文件损坏：{self.path} — {exc}") from exc
                 self._data = deep_merge(default_config(), raw)
+                if self._migrate():
+                    self._write()
             else:
                 self._data = default_config()
                 self._write()
             return self._data
+
+    def _migrate(self) -> bool:
+        """Update retired defaults without touching custom routes."""
+        changed = False
+        for route in self._data.get("inference", {}).get("routes", []):
+            if not route.get("hardware_profile"):
+                route["hardware_profile"] = (
+                    "a10g-24gb" if route.get("id") == "moss" else "l40s-48gb" if route.get("id") == "flamingo" else "custom"
+                )
+                changed = True
+            if not route.get("max_new_tokens"):
+                route["max_new_tokens"] = 1024 if route.get("id") == "flamingo" else 900
+                changed = True
+        for route in self._data.get("llm", {}).get("routes", []):
+            base = str(route.get("base_url") or "")
+            if "deepseek.com" in base and route.get("model") in {"deepseek-chat", "deepseek-reasoner"}:
+                route["model"] = "deepseek-flash"
+                if route.get("name") in {"DeepSeek Chat", "DeepSeek Reasoner", "DeepSeek"}:
+                    route["name"] = "DeepSeek Flash"
+                route.setdefault("thinking_mode", "disabled")
+                changed = True
+            if "deepseek.com" in base and "thinking_mode" not in route:
+                route["thinking_mode"] = "disabled"
+                changed = True
+        return changed
 
     def _write(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
