@@ -1,0 +1,39 @@
+# Runtime data — never commit audio, databases, secrets, exports.
+data/*
+!data/.gitkeep
+outputs/*
+!outputs/.gitkeep
+runtime/*
+!runtime/.gitkeep
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.log
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.spec
+*.egg-info/
+.eggs/
+
+# Node / screenshot tooling
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

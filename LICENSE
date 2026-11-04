@@ -1,0 +1,22 @@
+Cadence Studio — Proprietary Source License
+
+Copyright (c) 2026. All rights reserved.
+
+This repository is provided for the owner's internal use. No right is granted
+to redistribute, sublicense, or commercially exploit the source code without
+the owner's prior written permission.
+
+The audio annotation taxonomy definitions vendored in
+src/cadence_studio/resources/taxonomy.source.json originate from a
+user-provided workbench snapshot. The owner is responsible for confirming the
+rights and attribution requirements of that source before redistribution.
+
+Third-party model weights, model code, and services are governed by their own
+licenses, including (but not limited to):
+- MOSS-Music: Apache-2.0 (model card)
+- NVIDIA Music Flamingo: NVIDIA OneWay Noncommercial License (model card)
+- Hugging Face Inference Endpoints: Hugging Face terms
+- DeepSeek API: DeepSeek terms
+
+This software is provided "as is", without warranty of any kind. Model
+outputs are probabilistic and must be reviewed before operational use.

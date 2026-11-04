@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0c0d">
+  <meta name="description" content="Cadence Studio — 企业级 AI 音乐与音频标注工作台">
+  <title>Cadence Studio · 声刻</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-logo" viewBox="0 0 32 32"><path d="M4 18.5c2.8 0 2.8-8 5.6-8s2.8 13 5.6 13 2.8-17 5.6-17 2.8 12 5.2 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 16.5 9 5 9-5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.6 13.7 20.5a2 2 0 0 1-2.8 0l-7.4-7.4V3.5h9.6l7.5 7.5a2 2 0 0 1 0 2.6Z"/><circle cx="8" cy="8" r="1.2" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2.2-6 4.1 12 2.2-6H21"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V21h-4v-.09A1.7 1.7 0 0 0 8.94 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.57 15a1.7 1.7 0 0 0-1.56-1.03H3v-4h.09A1.7 1.7 0 0 0 4.6 8.94a1.7 1.7 0 0 0-.34-1.88L4.2 7l2.83-2.83.06.06a1.7 1.7 0 0 0 1.88.34A1.7 1.7 0 0 0 10 3.01V3h4v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06L19.8 7l-.06.06a1.7 1.7 0 0 0-.34 1.88A1.7 1.7 0 0 0 20.96 10H21v4h-.09A1.7 1.7 0 0 0 19.4 15Z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol>
+    <symbol id="i-command" viewBox="0 0 24 24"><path d="M9 6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6Z"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7V5Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="7" y="5" width="3.5" height="14" rx="1" fill="currentColor" stroke="none"/><rect x="13.5" y="5" width="3.5" height="14" rx="1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.4" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12m0 0 5-5m-5 5-5-5"/><path d="M4 20h16"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.6-4L3 10"/><path d="M3 4v6h6"/><path d="M4 13a8 8 0 0 0 14.6 4L21 14"/><path d="M21 20v-6h-6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.8 20h18.4L12 3Z"/><path d="M12 9v5"/><circle cx="12" cy="17.3" r=".9" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3c.8 5 3 7.2 8 8-5 .8-7.2 3-8 8-.8-5-3-7.2-8-8 5-.8 7.2-3 8-8Z"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/><rect x="10" y="10" width="4" height="4" rx="1"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M6 18a4.5 4.5 0 0 1-.6-8.96A6.5 6.5 0 0 1 18 9.5a4.25 4.25 0 0 1-.5 8.5H6Z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6l-8-3Z"/><path d="m8.5 12 2.4 2.4 4.8-5"/></symbol>
+    <symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4M9 4h6"/><circle cx="9" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1" fill="currentColor" stroke="none"/><path d="M9 16h6"/></symbol>
+    <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 12h2m3-5v10m4-14v18m4-13v8m4-6v4m3-2h2"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M20 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L20 8l-4-4L4 16v4Z"/><path d="m14 6 4 4"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></symbol>
+    <symbol id="i-scene" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 15 5-4 4 3 3-2 6 4"/><circle cx="16" cy="9" r="1.4" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-genre" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></symbol>
+    <symbol id="i-mood" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14c1 1.3 2.3 2 4 2s3-.7 4-2"/><circle cx="9" cy="9.5" r=".9" fill="currentColor" stroke="none"/><circle cx="15" cy="9.5" r=".9" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-tempo" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 13 16 8"/><path d="M9 3h6"/></symbol>
+    <symbol id="i-instrument" viewBox="0 0 24 24"><path d="M9 18V6l10-3v12"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="15" r="3"/></symbol>
+    <symbol id="i-structure" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h13"/><circle cx="18" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="21" cy="18" r="1.5" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-vocal" viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></symbol>
+    <symbol id="i-language" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></symbol>
+    <symbol id="i-lyrics" viewBox="0 0 24 24"><path d="M4 5h16M4 10h12M4 15h16M4 20h9"/><path d="m17 13 2 2 3-3" stroke-width="1.6"/></symbol>
+    <symbol id="i-production" viewBox="0 0 24 24"><path d="M4 20V8l8-4 8 4v12"/><path d="M8 20v-7h8v7M4 20h16"/><circle cx="12" cy="9" r="1.3" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-quality" viewBox="0 0 24 24"><path d="M4 18V9M9 18V5M14 18v-7M19 18V7"/><path d="M2 21h20"/></symbol>
+    <symbol id="i-custom" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h4"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+    <symbol id="i-pause-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/></symbol>
+    <symbol id="i-play-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4V8Z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></symbol>
+    <symbol id="i-caption" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 10h4M7 14h7M15 10h2"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M15 12v2"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/></symbol>
+  </svg>
+
+  <div class="app-shell" id="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-row">
+        <a class="brand" href="#/overview" aria-label="Cadence Studio 首页">
+          <span class="brand-mark"><svg><use href="#i-logo"></use></svg></span>
+          <span class="brand-word">
+            <strong>Cadence</strong>
+            <span>声刻 · STUDIO</span>
+          </span>
+        </a>
+        <button class="icon-button mobile-only" data-action="close-sidebar" aria-label="关闭导航"><svg><use href="#i-x"></use></svg></button>
+      </div>
+
+      <button class="workspace-chip" data-action="open-settings" title="工作区设置">
+        <span class="workspace-avatar" id="workspace-avatar">C</span>
+        <span class="workspace-meta">
+          <strong id="workspace-name">My Music Studio</strong>
+          <small>Personal workspace</small>
+        </span>
+        <svg class="chev"><use href="#i-chevron-down"></use></svg>
+      </button>
+
+      <nav class="main-nav" aria-label="主导航">
+        <span class="nav-label">Workspace</span>
+        <a href="#/overview" class="nav-item" data-nav="overview"><svg><use href="#i-grid"></use></svg><span>总览</span><kbd>G</kbd></a>
+        <a href="#/batches" class="nav-item" data-nav="batches"><svg><use href="#i-layers"></use></svg><span>批次</span><em id="nav-batch-count">0</em></a>
+        <a href="#/taxonomy" class="nav-item" data-nav="taxonomy"><svg><use href="#i-tag"></use></svg><span>标签体系</span><em>641</em></a>
+        <a href="#/activity" class="nav-item" data-nav="activity"><svg><use href="#i-pulse"></use></svg><span>活动</span></a>
+      </nav>
+
+      <div class="sidebar-recent">
+        <div class="sidebar-section-head"><span class="nav-label">Recent batches</span><button class="text-button" data-action="new-batch">New</button></div>
+        <div id="sidebar-batches" class="sidebar-batches"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="endpoint-card" id="endpoint-card" data-action="endpoint-panel" aria-label="端点状态">
+          <span class="endpoint-topline"><span class="status-dot" id="endpoint-dot"></span><span id="endpoint-state">检查端点…</span><span class="endpoint-chevron"><svg><use href="#i-chevron"></use></svg></span></span>
+          <strong id="endpoint-model">MOSS Music 8B</strong>
+          <small id="endpoint-meta">等待连接</small>
+        </button>
+        <a href="#/settings" class="nav-item nav-settings" data-nav="settings"><svg><use href="#i-settings"></use></svg><span>设置</span><kbd>⌘,</kbd></a>
+        <div class="sidebar-foot">
+          <span>v0.1.0</span>
+          <span id="server-health"><span class="status-dot small ok"></span>Local</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-shell">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button mobile-only" data-action="open-sidebar" aria-label="打开导航"><svg><use href="#i-menu"></use></svg></button>
+          <nav class="breadcrumb" id="breadcrumb" aria-label="面包屑"><span>Workspace</span><svg><use href="#i-chevron"></use></svg><b>总览</b></nav>
+        </div>
+        <div class="topbar-right">
+          <button class="command-trigger" data-action="command" aria-label="打开命令面板">
+            <svg><use href="#i-search"></use></svg>
+            <span>搜索批次、曲目或命令</span>
+            <kbd>⌘K</kbd>
+          </button>
+          <div class="top-endpoint" id="top-endpoint" title="端点状态">
+            <span class="status-dot" id="top-dot"></span><span id="top-state">Checking</span>
+          </div>
+          <button class="icon-button" data-action="toggle-theme" aria-label="切换主题"><svg class="theme-icon"><use href="#i-moon"></use></svg></button>
+          <button class="avatar-button" data-action="open-settings" aria-label="工作区设置">Q</button>
+        </div>
+      </header>
+
+      <main id="view" class="view" tabindex="-1">
+        <div class="loading-screen">
+          <span class="brand-mark large"><svg><use href="#i-logo"></use></svg></span>
+          <p>正在打开声刻工作台</p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div id="modal-root"></div>
+  <div id="drawer-root"></div>
+  <div id="toast-root" class="toast-root" aria-live="polite"></div>
+  <div id="palette-root"></div>
+  <div id="drop-overlay" class="drop-overlay" aria-hidden="true">
+    <div class="drop-overlay-inner"><svg><use href="#i-upload"></use></svg><strong>放下音频，创建新批次</strong><span>MP3 · WAV · FLAC · M4A · OGG</span></div>
+  </div>
+  <script src="/assets/app.js" defer></script>
+</body>
+</html>

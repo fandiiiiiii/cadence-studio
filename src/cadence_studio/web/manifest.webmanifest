@@ -1,0 +1,16 @@
+{
+  "name": "Cadence Studio — 声刻",
+  "short_name": "Cadence",
+  "description": "Taxonomy-governed AI music annotation workbench",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0b0c",
+  "theme_color": "#0b0c0d",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
