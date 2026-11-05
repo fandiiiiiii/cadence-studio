@@ -3012,6 +3012,20 @@
     }
   }
 
+  function updateReviewUI(item) {
+    const root = $("#drawer-root");
+    if (!root) return;
+    root.querySelectorAll('[data-action="review-item"]').forEach((button) => {
+      const active = button.dataset.value === item.review_status;
+      button.classList.toggle("primary", active && button.dataset.value === "approved");
+      button.classList.toggle("danger", active && button.dataset.value === "needs_changes");
+    });
+    const strip = root.querySelector(".review-strip");
+    if (strip) {
+      strip.innerHTML = `${icon("check")}人工复核：<strong>${escapeHtml(STATUS[item.review_status]?.[0] || item.review_status)}</strong>${item.review_note ? ` · ${escapeHtml(item.review_note)}` : ""}`;
+    }
+  }
+
   async function reviewItem(value) {
     if (!state.drawer) return;
     try {
@@ -3020,7 +3034,9 @@
         body: { review_status: value },
       });
       state.drawer.item = item;
-      renderDrawer();
+      // Do not rerender the whole drawer: it owns the <audio> element and
+      // replacing it would leave the previous track playing invisibly.
+      updateReviewUI(item);
       toast(value === "approved" ? "已标记为人工通过。" : "已标记为需要修改。", { title: "复核已记录" });
     } catch (error) {
       toast(error.message, { type: "error", title: "复核失败" });

@@ -16,6 +16,9 @@ All notable changes to Cadence Studio are documented here.
   relying only on the scheduler tick. A new batch cancels the timer before it
   can run; the timer records `endpoint_auto_scaled_to_zero` or a warning on
   failure.
+- Reviewing an item (approve / needs changes) no longer rerenders the drawer
+  and replaces its `<audio>` element. Playback continues with the same element;
+  the play/pause icon stays in sync and the old and new tracks cannot overlap.
 - HF endpoint route locks are now reentrant. `ensure_ready()` holds the route
   lock while calling `resume()`, which takes the same lock; the old non-reentrant
   lock deadlocked when an endpoint was `scaledToZero`, leaving items stuck at
