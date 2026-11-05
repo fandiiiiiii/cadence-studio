@@ -4118,6 +4118,39 @@ tr:hover .row-actions,
   overflow-y: auto;
 }
 
+.taxonomy-section + .taxonomy-section {
+  border-top: 6px solid var(--bg-soft);
+}
+
+.taxonomy-section-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 13px;
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(8px);
+}
+
+.taxonomy-section-head strong {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.taxonomy-section-head span {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--faint);
+}
+
 .taxonomy-row {
   display: grid;
   grid-template-columns: 16px 44px minmax(0, 1fr) 56px;

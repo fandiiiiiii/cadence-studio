@@ -32,6 +32,14 @@ All notable changes to Cadence Studio are documented here.
 
 ### Fixed
 
+- Taxonomy category tabs now update their active state immediately; the
+  previously selected category no longer stays highlighted.
+- The first tag is selected when opening a category, so the selected row is
+  visible before the first click.
+- The `全部` view now renders Genre as a collapsible hierarchy (01/01.01)
+  before the other flat categories.
+- Removed the technical “stable ID / display sequence” line from the taxonomy
+  detail panel; internal IDs remain in API/exports for traceability.
 - Settings save bar no longer remains visible after a successful save.
 - Success toasts auto-dismiss after 3 seconds and duplicate success toasts are
   removed.

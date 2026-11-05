@@ -1336,7 +1336,8 @@
       state.tax.category = button.dataset.taxCategory;
       state.tax.tagId = null;
       state.tax.expanded = new Set();
-      renderCategoryTabs();
+      const tabRoot = $("#category-tabs");
+      if (tabRoot) tabRoot.innerHTML = renderCategoryTabs();
       renderTaxonomyRows();
       renderTaxonomyDetail();
     });
@@ -1404,45 +1405,71 @@
     </div>${hasChildren && expanded ? children.map((child, index) => taxonomyRowHtml(child, { depth: depth + 1, code: `${seq}.${String(index + 1).padStart(2, "0")}`, children: (genreChildrenMap().get(child.id) || []) })).join("") : ""}`;
   }
 
+  function genreTreeHtml(tags) {
+    const children = genreChildrenMap();
+    const roots = tags.filter((tag) => !tag.genre_parent_id);
+    if (!roots.length) return `<div class="taxonomy-empty">没有匹配的标签。</div>`;
+    return roots
+      .map((tag, index) => taxonomyRowHtml(tag, { code: String(index + 1).padStart(2, "0"), children: children.get(tag.id) || [] }))
+      .join("");
+  }
+
+  function flatTaxonomyRow(tag, index) {
+    return `<div class="taxonomy-row ${state.tax.tagId === tag.id ? "active" : ""}" data-tax-id="${attr(tag.id)}">
+      <button class="tax-arrow empty" aria-hidden="true"></button>
+      <span class="taxonomy-seq">${String(tag.seq || index + 1).padStart(2, "0")}</span>
+      <div class="taxonomy-name"><strong>${escapeHtml(tag.zh)}</strong><span>${escapeHtml(tag.en)}${tag.category === "Genre" ? ` · L${tag.genre_level || 1}` : ""}</span></div>
+      <span class="taxonomy-group">${escapeHtml(tag.group || tag.category)}</span>
+    </div>`;
+  }
+
   function renderGenreTree(tags) {
     const list = $("#taxonomy-list");
-    const children = genreChildrenMap();
     const roots = tags.filter((tag) => !tag.genre_parent_id);
     const expandedCount = tags.filter((tag) => state.tax.expanded.has(tag.id)).length;
     $("#tax-count").textContent = `${tags.length} tags · ${roots.length} 个一级风格${expandedCount ? ` · 已展开 ${expandedCount}` : ""}`;
-    if (!roots.length) {
-      list.innerHTML = `<div class="taxonomy-empty">没有匹配的标签。</div>`;
-      return;
-    }
-    list.innerHTML = roots
-      .map((tag, index) => taxonomyRowHtml(tag, { code: String(index + 1).padStart(2, "0"), children: children.get(tag.id) || [] }))
-      .join("");
+    list.innerHTML = genreTreeHtml(tags);
+  }
+
+  function renderAllTaxonomy(tags) {
+    const list = $("#taxonomy-list");
+    const genreTags = tags.filter((tag) => tag.category === "Genre");
+    const roots = genreTags.filter((tag) => !tag.genre_parent_id);
+    const expandedCount = genreTags.filter((tag) => state.tax.expanded.has(tag.id)).length;
+    $("#tax-count").textContent = `${tags.length} tags · ${roots.length} 个一级曲风${expandedCount ? ` · 已展开 ${expandedCount}` : ""}`;
+    const sections = [];
+    Object.values(state.taxonomy?.categories || {}).forEach((category) => {
+      const categoryTags = tags.filter((tag) => tag.category === category.key);
+      if (!categoryTags.length) return;
+      if (category.key === "Genre") {
+        sections.push(`<div class="taxonomy-section"><div class="taxonomy-section-head"><strong>${escapeHtml(category.label_zh)}</strong><span>${categoryTags.length} tags · ${roots.length} 一级</span></div>${genreTreeHtml(categoryTags)}</div>`);
+      } else {
+        sections.push(`<div class="taxonomy-section"><div class="taxonomy-section-head"><strong>${escapeHtml(category.label_zh)}</strong><span>${categoryTags.length} tags</span></div>${categoryTags.map((tag, index) => flatTaxonomyRow(tag, index)).join("")}</div>`);
+      }
+    });
+    list.innerHTML = sections.join("");
   }
 
   function renderTaxonomyRows() {
     const list = $("#taxonomy-list");
     if (!list) return;
     const tags = filteredTaxonomy();
+    const scrollTop = list.scrollTop;
+    if (!state.tax.tagId && tags.length) state.tax.tagId = tags[0].id;
     if (!tags.length) {
       $("#tax-count").textContent = "0 tags";
       list.innerHTML = `<div class="taxonomy-empty">没有匹配的标签。</div>`;
       return;
     }
-    if (state.tax.category === "Genre" && !state.tax.query.trim()) {
+    if (!state.tax.query.trim() && state.tax.category === "Genre") {
       renderGenreTree(tags);
-      return;
+    } else if (!state.tax.query.trim() && state.tax.category === "all") {
+      renderAllTaxonomy(tags);
+    } else {
+      $("#tax-count").textContent = `${tags.length} tags`;
+      list.innerHTML = tags.map((tag, index) => flatTaxonomyRow(tag, index)).join("");
     }
-    $("#tax-count").textContent = `${tags.length} tags`;
-    list.innerHTML = tags
-      .map(
-        (tag, index) => `<div class="taxonomy-row ${state.tax.tagId === tag.id ? "active" : ""}" data-tax-id="${attr(tag.id)}">
-          <button class="tax-arrow empty" aria-hidden="true"></button>
-          <span class="taxonomy-seq">${String(tag.seq || index + 1).padStart(2, "0")}</span>
-          <div class="taxonomy-name"><strong>${escapeHtml(tag.zh)}</strong><span>${escapeHtml(tag.en)}${tag.category === "Genre" ? ` · L${tag.genre_level || 1}` : ""}</span></div>
-          <span class="taxonomy-group">${escapeHtml(tag.group || tag.category)}</span>
-        </div>`
-      )
-      .join("");
+    list.scrollTop = scrollTop;
   }
 
   function renderTaxonomyDetail() {
@@ -1461,7 +1488,7 @@
       ? `<div class="taxonomy-lineage">${lineage.map((item, index) => `<span class="taxonomy-path-step ${item.id === tag.id ? "current" : ""}"><b>L${item.genre_level || index + 1}</b> ${escapeHtml(item.zh)}</span>${index < lineage.length - 1 ? icon("chevron") : ""}`).join("")}</div>`
       : "";
     root.innerHTML = `
-      <div class="eyebrow"><span class="status-dot"></span> ${escapeHtml(category.label_zh || tag.category)} / ${escapeHtml(tag.group || "未分组")} · #${tag.seq || 1}</div>
+      <div class="eyebrow"><span class="status-dot"></span> ${escapeHtml(category.label_zh || tag.category)} / ${escapeHtml(tag.group || "未分组")}</div>
       <h2>${escapeHtml(tag.zh)}</h2>
       <div class="en">${escapeHtml(tag.en)} · ${tag.category === "Genre" ? `L${tag.genre_level || 1}` : escapeHtml(category.label_en || tag.category)}</div>
       ${pathHtml}
@@ -1470,7 +1497,6 @@
       ${tag.sentiment && tag.sentiment !== "/" ? `<div class="features">情绪倾向：${escapeHtml(tag.sentiment)}</div>` : ""}
       ${tag.aliases?.length ? `<div class="aliases">${tag.aliases.slice(0, 10).map((alias) => `<span class="tag">${escapeHtml(alias)}</span>`).join("")}</div>` : ""}
       <div class="divider-h"></div>
-      <div class="taxonomy-internal">展示序号 #${tag.seq || 1} · 内部稳定 ID <code>${escapeHtml(tag.id)}</code></div>
       <div class="taxonomy-mini-foot"><span>${escapeHtml(category.description || "")}</span></div>`;
   }
 
