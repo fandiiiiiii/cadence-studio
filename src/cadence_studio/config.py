@@ -153,6 +153,15 @@ def default_config() -> dict[str, Any]:
             "theme": "dark",
             "density": "comfortable",
             "locale": "zh-CN",
+            "label_languages": {
+                "genre": "zh",
+                "mood": "zh",
+                "scene": "zh",
+                "instruments": "zh",
+                "vocal": "zh",
+                "language": "zh",
+                "extra": "zh",
+            },
         },
         "exports": {
             "formats": ["xlsx", "json", "md"],
@@ -211,6 +220,18 @@ class ConfigStore:
             if not route.get("max_new_tokens"):
                 route["max_new_tokens"] = 1024 if route.get("id") == "flamingo" else 900
                 changed = True
+        ui = self._data.setdefault("ui", {})
+        if "label_languages" not in ui:
+            ui["label_languages"] = {
+                "genre": "zh",
+                "mood": "zh",
+                "scene": "zh",
+                "instruments": "zh",
+                "vocal": "zh",
+                "language": "zh",
+                "extra": "zh",
+            }
+            changed = True
         lifecycle = self._data.get("inference", {}).get("lifecycle", {})
         if "auto_pause_action" not in lifecycle:
             lifecycle["auto_pause_action"] = "scale-to-zero"

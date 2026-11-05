@@ -1,4 +1,4 @@
-﻿"""First-run demo batch: original synthesized audio plus clearly labelled mock annotations."""
+"""First-run demo batch: original synthesized audio plus clearly labelled mock annotations."""
 
 from __future__ import annotations
 
@@ -269,7 +269,7 @@ def create_demo_batch(db: Database) -> dict[str, Any]:
             "extra": {"tags": [], "notes": ""},
             "unmapped": [],
             "_meta": {
-                "schema_version": "1.1.0",
+                "schema_version": "1.2.0",
                 "taxonomy_version": get_taxonomy().version,
                 "requested_modules": spec["modules"],
                 "warnings": ["这是演示数据，不是音频模型的真实输出。"],

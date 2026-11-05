@@ -25,6 +25,7 @@
 | GET | `/api/hardware-profiles` | T4–H200 的并发/音频上限/参考价预设 |
 | GET | `/api/workspace` | 工作区名称、负责人、每日目标 |
 | PATCH | `/api/workspace` | 快速修改 `daily_goal`（1–10000） |
+| PATCH | `/api/label-languages` | 按模块设置标签显示/导出语言：`genre/mood/scene/instruments/vocal/language/extra` → `zh`/`en` |
 | GET | `/api/taxonomy` | 完整 641 标签 payload；`seq` 为 1-based 展示序号，`id` 为稳定机器 ID |
 | GET | `/api/taxonomy?category=Genre&q=jazz` | 过滤 |
 | GET | `/api/taxonomy/meta` | 版本、类别、结构词表、规则数 |
@@ -69,7 +70,7 @@
 | POST | `/api/batches/{id}/resume` | 继续 |
 | POST | `/api/batches/{id}/cancel` | 取消排队项 |
 | POST | `/api/batches/{id}/retry-failed` | 重试失败项 |
-| GET | `/api/batches/{id}/export?format=xlsx` | 下载；`xlsx/json/md/csv/zip` |
+| GET | `/api/batches/{id}/export?format=xlsx` | 下载；`xlsx/json/md/csv/zip`；XLSX/CSV/MD 的标签列按 `ui.label_languages` |
 
 ### 创建批次示例
 

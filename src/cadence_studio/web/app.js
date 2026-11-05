@@ -212,52 +212,105 @@
     liveTimer: null,
     bootError: null,
     loaded: false,
-    labelLang: localStorage.getItem("cadence.labelLang") === "en" ? "en" : "zh",
+    labelLanguages: {
+      genre: "zh",
+      mood: "zh",
+      scene: "zh",
+      instruments: "zh",
+      vocal: "zh",
+      language: "zh",
+      extra: "zh",
+    },
   };
 
-  function labelName(item) {
+  const LABEL_KEYS = {
+    Genre: "genre",
+    Mood: "mood",
+    Scene: "scene",
+    Instrument: "instruments",
+    Vocal: "vocal",
+    Language: "language",
+    Extra: "extra",
+  };
+
+  function labelKey(item, moduleKey = "") {
+    if (moduleKey) return moduleKey;
+    return LABEL_KEYS[item?.category] || "genre";
+  }
+
+  function labelLanguage(moduleKey) {
+    return state.labelLanguages?.[moduleKey] === "en" ? "en" : "zh";
+  }
+
+  function labelName(item, moduleKey = "") {
     if (!item) return "";
     const zh = item.name_zh ?? item.zh ?? "";
     const en = item.name_en ?? item.en ?? "";
-    return state.labelLang === "en" ? en || zh || item.id || "" : zh || en || item.id || "";
+    return labelLanguage(labelKey(item, moduleKey)) === "en"
+      ? en || zh || item.id || ""
+      : zh || en || item.id || "";
   }
 
   function categoryName(category) {
     if (!category) return "";
-    return state.labelLang === "en"
+    const key = LABEL_KEYS[category.key] || "genre";
+    return labelLanguage(key) === "en"
       ? category.label_en || category.key || ""
       : category.label_zh || category.key || "";
   }
 
-  function otherLabel(item) {
+  function otherLabel(item, moduleKey = "") {
     if (!item) return "";
-    return state.labelLang === "en"
+    return labelLanguage(labelKey(item, moduleKey)) === "en"
       ? item.name_zh || item.zh || ""
       : item.name_en || item.en || "";
   }
 
   function genrePathText(tag) {
     const hierarchy = Array.isArray(tag.hierarchy) ? tag.hierarchy : [];
-    if (state.labelLang === "zh" && hierarchy.length) {
-      return hierarchy.map((item) => labelName(item)).filter(Boolean).join(" › ");
+    if (labelLanguage("genre") === "zh" && hierarchy.length) {
+      return hierarchy.map((item) => labelName(item, "genre")).filter(Boolean).join(" › ");
     }
     const path = Array.isArray(tag.path) ? tag.path : [];
-    return path.length ? path.join(" › ") : labelName(tag);
+    return path.length ? path.join(" › ") : labelName(tag, "genre");
   }
 
   function applyLabelLang() {
     const button = $("#label-lang-toggle");
     if (!button) return;
-    button.textContent = state.labelLang === "en" ? "EN" : "中";
-    button.title = state.labelLang === "en" ? "当前显示英文标签，点击切换中文" : "当前显示中文标签，点击切换英文";
+    const values = Object.values(state.labelLanguages || {});
+    const allEn = values.length > 0 && values.every((value) => value === "en");
+    const allZh = values.length > 0 && values.every((value) => value === "zh");
+    button.textContent = allEn ? "EN" : allZh ? "中" : "中/EN";
+    button.title = allEn
+      ? "当前全部英文标签，点击全部切换中文"
+      : allZh
+        ? "当前全部中文标签，点击全部切换英文"
+        : "当前为按模块设置，点击全部切换英文";
     button.setAttribute("aria-label", button.title);
   }
 
-  function toggleLabelLang() {
-    state.labelLang = state.labelLang === "en" ? "zh" : "en";
-    localStorage.setItem("cadence.labelLang", state.labelLang);
-    applyLabelLang();
-    route();
+  async function toggleLabelLang() {
+    const values = Object.values(state.labelLanguages || {});
+    const allEn = values.length > 0 && values.every((value) => value === "en");
+    const target = allEn ? "zh" : "en";
+    const next = Object.fromEntries(Object.keys(state.labelLanguages).map((key) => [key, target]));
+    try {
+      const data = await api("/label-languages", { method: "PATCH", body: next });
+      state.labelLanguages = { ...state.labelLanguages, ...data.label_languages };
+      if (state.settings) {
+        state.settings.ui = state.settings.ui || {};
+        state.settings.ui.label_languages = { ...state.labelLanguages };
+      }
+      if (state.settingsDraft) {
+        state.settingsDraft.ui = state.settingsDraft.ui || {};
+        state.settingsDraft.ui.label_languages = { ...state.labelLanguages };
+      }
+      applyLabelLang();
+      route();
+    } catch (error) {
+      toast(error.message, { type: "error", title: "标签语言" });
+    }
   }
 
   const views = {
@@ -368,6 +421,11 @@
       state.settings = settings;
       state.hardwareProfiles = hardware.profiles || [];
       state.settingsDraft = deepClone(settings);
+      state.labelLanguages = {
+        ...state.labelLanguages,
+        ...(settings.ui?.label_languages || {}),
+      };
+      applyLabelLang();
       state.loaded = true;
       await refreshOverview();
       await refreshSidebarBatches();
@@ -573,20 +631,20 @@
       .join("");
   }
 
-  function renderTags(tags, cls = "") {
+  function renderTags(tags, cls = "", moduleKey = "") {
     if (!tags || !tags.length) return `<span class="muted">—</span>`;
     return `<div class="tag-row">${tags
       .map((tag) => {
-        const name = labelName(tag);
+        const name = labelName(tag, moduleKey);
         const extra = tag.source_label && tag.source_label !== tag.name_zh && tag.source_label !== tag.name_en ? ` · ${tag.source_label}` : "";
         return `<span class="tag ${cls} ${tag.mapped ? "mapped" : ""}" title="${attr(extra ? `原始：${tag.source_label} → 规范：${name}` : name)}">${escapeHtml(name)}${tag.confidence != null ? `<span class="tag-conf">${Math.round(tag.confidence * 100)}</span>` : ""}</span>`;
       })
       .join("")}</div>`;
   }
 
-  function renderTagSingle(tag, cls = "") {
+  function renderTagSingle(tag, cls = "", moduleKey = "") {
     if (!tag) return `<span class="muted">—</span>`;
-    return renderTags([tag], cls);
+    return renderTags([tag], cls, moduleKey);
   }
 
   function renderGenreItem(tag) {
@@ -594,7 +652,7 @@
     const level = Number(tag.level || 1);
     return `<div class="genre-hierarchy-item">
       <span class="badge ${tag.category === "Extra" ? "demo" : "neutral"}">${tag.category === "Extra" ? (state.labelLang === "en" ? "Extra" : "补充") : `L${level}`}</span>
-      <div class="genre-hierarchy-main"><strong>${escapeHtml(labelName(tag))}</strong><small>${escapeHtml(path)}${tag.source_label && tag.source_label !== tag.name_en && tag.source_label !== tag.name_zh ? ` · 原始：${escapeHtml(tag.source_label)}` : ""}</small></div>
+      <div class="genre-hierarchy-main"><strong>${escapeHtml(labelName(tag, "genre"))}</strong><small>${escapeHtml(path)}${tag.source_label && tag.source_label !== tag.name_en && tag.source_label !== tag.name_zh ? ` · 原始：${escapeHtml(tag.source_label)}` : ""}</small></div>
       <span class="genre-conf">${Math.round((tag.confidence || 0) * 100)}</span>
     </div>`;
   }
@@ -1145,16 +1203,17 @@
         <h3>${icon("genre")}核心标签</h3>
         <div class="detail-grid">
           <div class="metric-box"><span>Genre · ${genreItems.length} 个</span>${renderTagSingle(genre.primary, "genre")}<small>${escapeHtml(genre.reason || "")}</small></div>
-          <div class="metric-box"><span>Mood / energy</span>${renderTagSingle(mood.dominant, "mood")}<small>valence ${mood.valence ?? "—"} · energy ${mood.energy ?? "—"}</small></div>
+          <div class="metric-box"><span>Mood / energy</span>${renderTagSingle(mood.dominant, "mood", "mood")}<small>valence ${mood.valence ?? "—"} · energy ${mood.energy ?? "—"}</small></div>
           <div class="metric-box"><span>Tempo</span><strong>${bpm.bpm ? `${bpm.bpm} BPM` : "—"}</strong><small>${escapeHtml(bpm.groove || "未检测")}</small></div>
           <div class="metric-box"><span>Key / meter</span><strong>${escapeHtml(`${empty(bpm.key, "—")} ${empty(bpm.mode, "")}`.trim())}</strong><small>${escapeHtml(bpm.time_signature || "拍号未知")}</small></div>
         </div>
       </div>
-      ${tags.length ? `<div class="detail-section"><h3>${icon("mood")}情绪标签</h3>${renderTags(tags, "mood")}</div>` : ""}
+      ${tags.length ? `<div class="detail-section"><h3>${icon("mood")}情绪标签</h3>${renderTags(tags, "mood", "mood")}</div>` : ""}
       ${genreItems.length ? `<div class="detail-section"><h3>${icon("layers")}曲风层级 · 全部保留，不设主次上限</h3><div class="genre-hierarchy">${genreItems.map(renderGenreItem).join("")}</div></div>` : ""}
       <div class="detail-section">
         <h3>${icon("instrument")}乐器与声音</h3>
-        ${renderTags([...(instruments.primary || []), ...(instruments.secondary || [])], "instrument")}
+        ${renderTags([...(instruments.primary || []), ...(instruments.secondary || [])], "instrument", "instruments")}
+        ${instruments.additional?.length ? `<div class="tag-row">${instruments.additional.map((term) => `<span class="tag instrument" title="目录外原始描述">${escapeHtml(term)}</span>`).join("")}</div>` : ""}
         ${instruments.notes ? `<div class="caption-short">${escapeHtml(instruments.notes)}</div>` : ""}
       </div>
       ${structure.sections?.length ? `<div class="detail-section"><h3>${icon("structure")}曲式结构 <span style="color:var(--faint);font-family:var(--font-mono);font-size:8px">${structure.sections.length} sections</span></h3><div class="structure-list">${structure.sections
@@ -1163,10 +1222,10 @@
           return `<div class="structure-row"><b>${escapeHtml(section.label)} <span style="color:var(--faint);font-weight:400">${escapeHtml(section.label_zh || "")}</span></b><div class="structure-bar" style="width:${clamp(width, 8, 100)}%"></div><span>${section.start_sec.toFixed(0)}s</span></div>`;
         })
         .join("")}</div></div>` : ""}
-      ${vocal.present || vocal.tags?.length ? `<div class="detail-section"><h3>${icon("vocal")}人声</h3><div class="caption-box" style="font-size:10.5px">${renderTags(vocal.tags, "")}<div class="caption-short">${escapeHtml([vocal.lead?.gender, vocal.lead?.timbre, vocal.lead?.delivery].filter(Boolean).join(" · ") || "未描述")}</div></div></div>` : ""}
-      ${language.primary || language.instrumental ? `<div class="detail-section"><h3>${icon("language")}语言</h3>${renderTagSingle(language.primary, "")}<span class="caption-short">${language.instrumental ? "纯器乐 / 无人声" : escapeHtml(language.notes || "")}</span></div>` : ""}
+      ${vocal.present || vocal.tags?.length ? `<div class="detail-section"><h3>${icon("vocal")}人声</h3><div class="caption-box" style="font-size:10.5px">${renderTags(vocal.tags, "", "vocal")}<div class="caption-short">${escapeHtml([vocal.lead?.gender, vocal.lead?.timbre, vocal.lead?.delivery].filter(Boolean).join(" · ") || "未描述")}</div></div></div>` : ""}
+      ${language.primary || language.instrumental ? `<div class="detail-section"><h3>${icon("language")}语言</h3>${renderTagSingle(language.primary, "", "language")}<span class="caption-short">${language.instrumental ? "纯器乐 / 无人声" : escapeHtml(language.notes || "")}</span></div>` : ""}
       ${lyrics.text ? `<div class="detail-section"><h3>${icon("lyrics")}歌词 ${lyrics.explicit ? `<span class="badge failed">EXPLICIT</span>` : ""}</h3><div class="caption-box" style="white-space:pre-line;font-size:10.5px;line-height:1.8">${escapeHtml(lyrics.text)}</div></div>` : ""}
-      ${scene.primary ? `<div class="detail-section"><h3>${icon("scene")}场景与用途</h3>${renderTagSingle(scene.primary, "scene")}${scene.secondary?.length ? renderTags(scene.secondary, "scene") : ""}</div>` : ""}
+      ${scene.primary ? `<div class="detail-section"><h3>${icon("scene")}场景与用途</h3>${renderTagSingle(scene.primary, "scene", "scene")}${scene.secondary?.length ? renderTags(scene.secondary, "scene", "scene") : ""}</div>` : ""}
       ${production.era || production.production_style ? `<div class="detail-section"><h3>${icon("production")}制作与年代</h3><div class="caption-box" style="font-size:10.5px">${escapeHtml(production.era || "—")} · ${escapeHtml(production.production_style || "")}<div class="caption-short">${escapeHtml(production.mix_character || production.texture || "")}</div></div></div>` : ""}
       ${quality.score != null ? `<div class="detail-section"><h3>${icon("quality")}音频质量</h3><div class="metric-box"><span>Quality score</span><strong>${quality.score} / 100</strong><small>${quality.usable ? "可用于标注交付" : "建议人工复核"} ${escapeHtml((quality.issues || []).join(" · "))}</small></div></div>` : ""}
       ${safety.explicit || safety.flags?.length ? `<div class="detail-section"><h3>${icon("shield")}内容安全</h3><div class="tag-row">${(safety.flags || []).map((flag) => `<span class="tag" style="color:var(--danger)">${escapeHtml(flag)}</span>`).join("")}</div></div>` : ""}
@@ -1637,6 +1696,21 @@
           <div class="field"><label>当前产能提示</label><input value="根据真实单首耗时调整" disabled></div>
         </div>
         <p class="route-note">${icon("clock")}总览的 Daily runway 会立即使用这个数字；实际完成量取决于端点、音频长度与重试。</p>
+      </div>
+      <div class="setting-card">
+        <div class="setting-card-head"><div class="setting-card-icon">${icon("language")}</div><div><h3>标签语言</h3><p>每个模块独立选择中文或英文；界面和导出使用同一套设置。Caption 正文仍由批次的“输出语言”控制，不受这里影响。</p></div></div>
+        <div class="form-grid three">
+          ${[
+            ["genre", "曲风"],
+            ["mood", "情绪"],
+            ["scene", "场景"],
+            ["instruments", "乐器"],
+            ["vocal", "人声"],
+            ["language", "语言"],
+            ["extra", "补充标签"],
+          ].map(([key, label]) => `<div class="field"><label>${label}</label><select data-path="ui.label_languages.${key}"><option value="zh" ${draft.ui?.label_languages?.[key] !== "en" ? "selected" : ""}>中文</option><option value="en" ${draft.ui?.label_languages?.[key] === "en" ? "selected" : ""}>English</option></select></div>`).join("")}
+        </div>
+        <p class="route-note">${icon("tag")}顶部“中/EN”按钮会一次性切换全部模块；这里可以再单独覆盖。导出会按同一套模块语言生成标签列。</p>
       </div>`;
   }
 
@@ -1882,7 +1956,12 @@
       });
       state.settings = data;
       state.settingsDraft = deepClone(data);
+      state.labelLanguages = {
+        ...state.labelLanguages,
+        ...(data.ui?.label_languages || {}),
+      };
       state.settingsDirty = false;
+      applyLabelLang();
       renderShell();
       renderSettingsPage();
       refreshEndpointStatus(true);

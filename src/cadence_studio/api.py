@@ -268,6 +268,21 @@ def taxonomy_meta() -> dict[str, Any]:
     return taxonomy.summary()
 
 
+@router.patch("/label-languages")
+def patch_label_languages(payload: dict[str, str]) -> dict[str, Any]:
+    allowed = {"genre", "mood", "scene", "instruments", "vocal", "language", "extra"}
+    config = SERVICES.config.get()
+    languages = config.setdefault("ui", {}).setdefault("label_languages", {})
+    for key, value in payload.items():
+        if key not in allowed:
+            continue
+        if value not in {"zh", "en"}:
+            _raise(f"标签语言必须是 zh 或 en：{key}")
+        languages[key] = value
+    SERVICES.config.replace(config)
+    return {"label_languages": languages}
+
+
 @router.get("/settings")
 def get_settings() -> dict[str, Any]:
     return SERVICES.config.public()
@@ -628,7 +643,8 @@ def export(batch_id: str, format: str = Query("xlsx")):
     if fmt not in {"xlsx", "json", "md", "csv", "zip"}:
         _raise("导出格式必须是 xlsx、json、md、csv 或 zip。")
     try:
-        path = export_batch(batch, items, fmt)
+        languages = SERVICES.config.get().get("ui", {}).get("label_languages", {})
+        path = export_batch(batch, items, fmt, languages)
     except Exception as exc:  # noqa: BLE001
         _raise(f"导出失败：{exc}", status=500, code="export_failed")
     return FileResponse(

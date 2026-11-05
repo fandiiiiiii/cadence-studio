@@ -347,9 +347,23 @@ class Normalizer:
                 secondary = self._tag_list(value.get("secondary") or value.get("tags"), "Instrument", warnings, 10)
                 seen = {tag["id"] for tag in primary}
                 secondary = [tag for tag in secondary if tag["id"] not in seen]
+                additional_raw = value.get("additional") or value.get("extra_terms") or value.get("extra") or []
+                if isinstance(additional_raw, str):
+                    additional_raw = [additional_raw]
+                additional = []
+                seen_additional = set()
+                if isinstance(additional_raw, list):
+                    for entry in additional_raw:
+                        text = _text(entry, 180)
+                        if text and text.lower() not in seen_additional:
+                            seen_additional.add(text.lower())
+                            additional.append(text)
+                        if len(additional) >= 12:
+                            break
                 output["instruments"] = {
                     "primary": primary,
                     "secondary": secondary,
+                    "additional": additional,
                     "notes": _text(value.get("notes"), 1500),
                 }
 
@@ -518,13 +532,29 @@ class Normalizer:
             elif module == "custom":
                 output["custom"] = value if isinstance(value, dict) else {"value": value}
 
+        # Instruments are intentionally broader than the 136-tag catalog.
+        # If the normalizer put a non-catalog instrument in top-level unmapped,
+        # keep its original wording in instruments.additional as well.
+        if "instruments" in spec.modules and isinstance(payload.get("unmapped"), list):
+            instrument_extra = output.get("instruments", {}).setdefault("additional", [])
+            seen_extra = {str(item).lower() for item in instrument_extra}
+            for entry in payload["unmapped"]:
+                if not isinstance(entry, dict) or entry.get("category") != "Instrument":
+                    continue
+                label = _text(entry.get("source_label") or entry.get("raw") or "", 180)
+                if label and label.lower() not in seen_extra:
+                    seen_extra.add(label.lower())
+                    instrument_extra.append(label)
+                    if len(instrument_extra) >= 12:
+                        break
+
         # Governance: keep only requested keys, attach a traceable envelope.
         cleaned = {key: output[key] for key in [MODULE_OUTPUT_KEYS[m] for m in spec.modules] if key in output}
         unmapped = payload.get("unmapped")
         if isinstance(unmapped, list):
             cleaned["unmapped"] = [item for item in unmapped[:30] if isinstance(item, dict)]
         cleaned["_meta"] = {
-            "schema_version": "1.1.0",
+            "schema_version": "1.2.0",
             "taxonomy_version": self.taxonomy.version,
             "requested_modules": spec.modules,
             "warnings": warnings,

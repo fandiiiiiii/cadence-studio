@@ -40,6 +40,16 @@ def test_settings_round_trip():
         assert "hf_test" not in response.text
 
 
+def test_label_languages_patch():
+    with TestClient(app) as client:
+        response = client.patch("/api/label-languages", json={"mood": "en", "scene": "en"})
+        assert response.status_code == 200
+        configured = client.get("/api/settings").json()
+        assert configured["ui"]["label_languages"]["mood"] == "en"
+        assert configured["ui"]["label_languages"]["scene"] == "en"
+        assert configured["ui"]["label_languages"]["genre"] == "zh"
+
+
 def test_inference_test_route_is_not_shadowed(monkeypatch):
     monkeypatch.setattr(
         SERVICES.inference,

@@ -44,7 +44,10 @@ def build_audio_prompt(
     if "bpm_key" in spec.modules:
         tasks.append("【速度与调性】BPM（如无法精确请给范围）、拍号、调性、调式与律动特征。")
     if "instruments" in spec.modules:
-        tasks.append("【乐器】主奏乐器、伴奏乐器、合成器/音效与人声织体；标注突出程度。")
+        tasks.append(
+            "【乐器】主奏乐器、伴奏乐器、合成器/音效与人声织体；标注突出程度。"
+            "如果某种乐器或音色没有常见名称，直接用文字描述它的音色与演奏方式，不要因为叫不出名字而省略。"
+        )
     if "structure" in spec.modules:
         detail = "精确到段落与短结构" if spec.structure_detail == "fine" else "主要段落"
         tasks.append(
@@ -151,6 +154,7 @@ def build_normalizer_messages(
 3. 只输出本批要求的键：{", ".join(spec.modules)}。不要输出未请求的模块。
 4. {strict}
 5. 规范标签必须来自目录。若原始标签不在目录中，先按语义（不是字面相似）寻找最接近的标签；例如 Modal Jazz 可能映射到 Cool Jazz，也可能映射到爵士下的其他子类，必须结合听感选择。映射后 source_label 保留原词，mapped=true，并在 reason 说明。找不到可靠映射时放入 unmapped，不要硬塞。
+5b. 乐器是例外：目录不要求覆盖所有乐器与音色。目录外的乐器、合成器音色、特殊演奏法必须保留到 instruments.additional（自由文本，可写中英文），不要只放进 unmapped 或直接丢掉；能映射的部分仍放 primary/secondary。
 6. 置信度必须诚实：证据弱、风格混合、录音质量差时降低 confidence，不要都写 0.9。
 7. 情绪标签遵循互斥规则；曲风允许一个 primary 加少量 secondary；所有标签去重。
 8. 数值合法：BPM 20–300；效价 -1–1；能量/置信度 0–1；结构时间 0≤start<end≤时长，按时间排序且尽量不重叠。

@@ -30,6 +30,13 @@ All notable changes to Cadence Studio are documented here.
   and English. The preference is stored locally.
 - `result_summary` now carries `genre_en` and `mood_en` so list views can show
   English labels without loading each item's full JSON.
+- Per-module label language settings for genre, mood, scene, instruments,
+  vocal, language, and supplemental tags; the same settings drive the UI and
+  XLSX/CSV/Markdown exports.
+- `instruments.additional` preserves non-catalog instrument types and timbres
+  from the audio model as free text, including terms the normalizer places in
+  `unmapped`; exports include a `补充乐器/音色` column. Result schema is now
+  `1.2.0`.
 
 ## [0.2.1] — 2026-11-05
 

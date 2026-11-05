@@ -17,7 +17,7 @@ from openpyxl.utils import get_column_letter
 from .config import EXPORT_DIR
 from .taxonomy import get_taxonomy
 
-EXPORT_VERSION = "1.1.0"
+EXPORT_VERSION = "1.2.0"
 
 
 def _safe_name(value: str) -> str:
@@ -37,30 +37,45 @@ def _genre_items(genre: dict[str, Any]) -> list[dict[str, Any]]:
     return fallback
 
 
-def _item_row(item: dict[str, Any], index: int) -> dict[str, Any]:
+def _label(tag: dict[str, Any] | None, key: str, languages: dict[str, str] | None) -> str:
+    if not tag:
+        return ""
+    if (languages or {}).get(key) == "en":
+        return tag.get("name_en") or tag.get("name_zh") or ""
+    return tag.get("name_zh") or tag.get("name_en") or ""
+
+
+def _genre_path(entry: dict[str, Any], languages: dict[str, str] | None) -> str:
+    lang = (languages or {}).get("genre", "zh")
+    hierarchy = entry.get("hierarchy") or []
+    if hierarchy and lang == "zh":
+        names = [_label(item, "genre", languages) for item in hierarchy]
+    else:
+        raw_path = entry.get("path")
+        names = raw_path if isinstance(raw_path, list) else [raw_path] if raw_path else []
+        if not names:
+            names = [_label(entry, "genre", languages)]
+    return " › ".join(str(item) for item in names if item)
+
+
+def _item_row(item: dict[str, Any], index: int, languages: dict[str, str] | None = None) -> dict[str, Any]:
     result = item.get("normalized") or {}
     summary = item.get("summary") or {}
     genre = result.get("genre") or {}
     genre_items = _genre_items(genre)
-    genre_paths = []
-    for entry in genre_items:
-        raw_path = entry.get("path")
-        path_parts = raw_path if isinstance(raw_path, list) else [raw_path] if raw_path else []
-        if not path_parts:
-            path_parts = [entry.get("name_en") or entry.get("name_zh") or ""]
-        genre_paths.append(" › ".join(str(item) for item in path_parts))
+    genre_paths = [_genre_path(entry, languages) for entry in genre_items]
     level_one = list(dict.fromkeys(
-        entry.get("name_zh") or entry.get("name_en")
+        _label(entry, "genre", languages)
         for entry in genre_items
         if entry.get("category") != "Extra" and int(entry.get("level") or 1) == 1
     ))
     level_two = list(dict.fromkeys(
-        entry.get("name_zh") or entry.get("name_en")
+        _label(entry, "genre", languages)
         for entry in genre_items
         if entry.get("category") != "Extra" and int(entry.get("level") or 1) == 2
     ))
     supplemental = list(dict.fromkeys(
-        entry.get("name_zh") or entry.get("name_en")
+        _label(entry, "genre", languages)
         for entry in genre_items
         if entry.get("category") == "Extra" or entry.get("supplemental")
     ))
@@ -68,6 +83,7 @@ def _item_row(item: dict[str, Any], index: int) -> dict[str, Any]:
     instruments = result.get("instruments") or {}
     vocal = result.get("vocal") or {}
     language = result.get("language") or {}
+    scene = result.get("scene") or {}
     structure = result.get("structure") or {}
     quality = result.get("quality") or {}
     lyrics = result.get("lyrics") or {}
@@ -78,21 +94,25 @@ def _item_row(item: dict[str, Any], index: int) -> dict[str, Any]:
         "状态": item.get("status", ""),
         "阶段": item.get("stage", ""),
         "时长(秒)": round(float(item.get("duration_sec") or 0), 2),
-        "主曲风（参考）": summary.get("genre", ""),
+        "主曲风（参考）": summary.get("genre_en" if (languages or {}).get("genre") == "en" else "genre")
+        or _label(genre.get("primary"), "genre", languages)
+        or summary.get("genre", ""),
         "一级曲风": " / ".join(str(value) for value in level_one if value),
         "二级曲风": " / ".join(str(value) for value in level_two if value),
         "补充曲风": " / ".join(str(value) for value in supplemental if value),
         "曲风路径（全部）": " | ".join(path for path in genre_paths if path),
-        "主情绪": summary.get("mood", ""),
-        "情绪标签": " / ".join(tag.get("name_zh") or tag.get("name_en") or "" for tag in tags),
+        "主情绪": summary.get("mood_en" if (languages or {}).get("mood") == "en" else "mood")
+        or (_label(tags[0], "mood", languages) if tags else "")
+        or summary.get("mood", ""),
+        "情绪标签": " / ".join(_label(tag, "mood", languages) for tag in tags),
+        "场景": " / ".join(_label(tag, "scene", languages) for tag in ([scene.get("primary")] + (scene.get("secondary") or [])) if tag),
         "BPM": bpm_key.get("bpm"),
         "调性": f"{bpm_key.get('key', '')} {bpm_key.get('mode', '')}".strip(),
         "拍号": bpm_key.get("time_signature", ""),
-        "主奏乐器": " / ".join(
-            tag.get("name_zh") or tag.get("name_en") or "" for tag in (instruments.get("primary") or [])
-        ),
+        "主奏乐器": " / ".join(_label(tag, "instruments", languages) for tag in (instruments.get("primary") or [])),
+        "补充乐器/音色": " / ".join(str(term) for term in (instruments.get("additional") or []) if term),
         "人声": "有" if vocal.get("present") else "无 / 未知",
-        "语言": (language.get("primary") or {}).get("name_zh", ""),
+        "语言": _label(language.get("primary"), "language", languages),
         "歌词显式": "是" if lyrics.get("explicit") else "否",
         "Caption": (result.get("caption") or {}).get("text", ""),
         "结构段数": len(structure.get("sections") or []),
@@ -182,8 +202,8 @@ def export_json(batch, items, path: Path) -> Path:
     return path
 
 
-def export_csv(batch, items, path: Path) -> Path:
-    rows = [_item_row(item, index) for index, item in enumerate(items, 1)]
+def export_csv(batch, items, path: Path, languages: dict[str, str] | None = None) -> Path:
+    rows = [_item_row(item, index, languages) for index, item in enumerate(items, 1)]
     with path.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()) if rows else ["文件名"])
         writer.writeheader()
@@ -191,11 +211,11 @@ def export_csv(batch, items, path: Path) -> Path:
     return path
 
 
-def export_xlsx(batch, items, path: Path) -> Path:
+def export_xlsx(batch, items, path: Path, languages: dict[str, str] | None = None) -> Path:
     wb = Workbook()
     ws = wb.active
     ws.title = "标注总表"
-    rows = [_item_row(item, index) for index, item in enumerate(items, 1)]
+    rows = [_item_row(item, index, languages) for index, item in enumerate(items, 1)]
     headers = list(rows[0].keys()) if rows else ["文件名"]
     ws.append(headers)
     for row in rows:
@@ -305,7 +325,7 @@ def export_xlsx(batch, items, path: Path) -> Path:
     return path
 
 
-def export_markdown(batch, items, path: Path) -> Path:
+def export_markdown(batch, items, path: Path, languages: dict[str, str] | None = None) -> Path:
     taxonomy = get_taxonomy()
     lines = [
         f"# {batch.get('name', '未命名批次')}",
@@ -329,19 +349,13 @@ def export_markdown(batch, items, path: Path) -> Path:
         summary = item.get("summary") or {}
         genre = result.get("genre") or {}
         genre_items = _genre_items(genre)
-        genre_paths = []
-        for entry in genre_items:
-            raw_path = entry.get("path")
-            path_parts = raw_path if isinstance(raw_path, list) else [raw_path] if raw_path else []
-            if not path_parts:
-                path_parts = [entry.get("name_en") or entry.get("name_zh") or ""]
-            genre_paths.append(" › ".join(str(item) for item in path_parts))
+        genre_paths = [_genre_path(entry, languages) for entry in genre_items]
         lines.extend(
             [
                 f"### {index:03d} · {item.get('file_name')}",
                 "",
                 f"- 状态：`{item.get('status')}` · 时长：{item.get('duration_sec') or 0:.1f}s",
-                f"- 曲风：{' | '.join(genre_paths) or summary.get('genre') or '—'} · 主情绪：{summary.get('mood') or '—'}",
+                f"- 曲风：{' | '.join(genre_paths) or summary.get('genre_en' if (languages or {}).get('genre') == 'en' else 'genre') or '—'} · 主情绪：{summary.get('mood_en' if (languages or {}).get('mood') == 'en' else 'mood') or '—'}",
                 f"- BPM / 调性：{summary.get('bpm') or '—'} / {summary.get('key') or '—'}",
                 "",
             ]
@@ -381,7 +395,12 @@ def export_markdown(batch, items, path: Path) -> Path:
     return path
 
 
-def export_batch(batch: dict[str, Any], items: list[dict[str, Any]], fmt: str) -> Path:
+def export_batch(
+    batch: dict[str, Any],
+    items: list[dict[str, Any]],
+    fmt: str,
+    languages: dict[str, str] | None = None,
+) -> Path:
     target_dir = EXPORT_DIR / str(batch["id"])
     target_dir.mkdir(parents=True, exist_ok=True)
     safe = _safe_name(batch.get("name") or batch["id"])
@@ -390,11 +409,11 @@ def export_batch(batch: dict[str, Any], items: list[dict[str, Any]], fmt: str) -
     if fmt == "json":
         return export_json(batch, items, target_dir / f"{safe}-{stamp}.json")
     if fmt == "csv":
-        return export_csv(batch, items, target_dir / f"{safe}-{stamp}.csv")
+        return export_csv(batch, items, target_dir / f"{safe}-{stamp}.csv", languages)
     if fmt == "md":
-        return export_markdown(batch, items, target_dir / f"{safe}-{stamp}.md")
+        return export_markdown(batch, items, target_dir / f"{safe}-{stamp}.md", languages)
     if fmt == "xlsx":
-        return export_xlsx(batch, items, target_dir / f"{safe}-{stamp}.xlsx")
+        return export_xlsx(batch, items, target_dir / f"{safe}-{stamp}.xlsx", languages)
     if fmt != "zip":
         raise ValueError(f"不支持的导出格式：{fmt}")
 
@@ -416,8 +435,8 @@ def export_batch(batch: dict[str, Any], items: list[dict[str, Any]], fmt: str) -
             ),
         )
         archive.write(export_json(batch, items, target_dir / "annotations.json"), "annotations.json")
-        archive.write(export_csv(batch, items, target_dir / "annotations.csv"), "annotations.csv")
-        archive.write(export_markdown(batch, items, target_dir / "annotations.md"), "annotations.md")
-        archive.write(export_xlsx(batch, items, target_dir / "annotations.xlsx"), "annotations.xlsx")
+        archive.write(export_csv(batch, items, target_dir / "annotations.csv", languages), "annotations.csv")
+        archive.write(export_markdown(batch, items, target_dir / "annotations.md", languages), "annotations.md")
+        archive.write(export_xlsx(batch, items, target_dir / "annotations.xlsx", languages), "annotations.xlsx")
         archive.write(get_taxonomy().path, "taxonomy.json")
     return bundle

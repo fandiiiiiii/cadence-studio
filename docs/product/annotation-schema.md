@@ -1,8 +1,8 @@
-# 标注字段契约（Annotation Schema v1.1）
+# 标注字段契约（Annotation Schema v1.2）
 
 本文件是 Cadence Studio 的**产品契约**，不是模型说明书。任何 UI、API、导出或自动化改动都必须遵守这里定义的字段、状态和治理规则。
 
-- 结果 schema：`1.1.0`
+- 结果 schema：`1.2.0`（`instruments.additional` 为 1.2 新增）
 - 标签体系：`workbench-2026-11-03`（641 tags / 15 rules / 7 formulas）
 - 结构词表：20 个结构标签
 - 存储：`items.normalized_json` + `items.raw_text` + `items.llm_raw_text`
@@ -18,7 +18,7 @@
 | `genre` | 曲风 | `genre` | Genre（273）+ Extra（28） | `items` 完整保留所有曲风；每项带一级/二级 path；不强制单个主曲风 |
 | `mood` | 情绪 | `mood` | Mood（33） | 多个 tags；互为互斥的 5 个心情节奏标签最多保留 1 个 |
 | `scene` | 场景与用途 | `scene` | Scene（103） | 1 个 primary + 最多 4 个 secondary |
-| `instruments` | 乐器 | `instruments` | Instrument（136） | 主奏/伴奏分层；去重 |
+| `instruments` | 乐器 | `instruments` | Instrument（136）+ 自由文本补充 | 主奏/伴奏分层；目录外音色进 `additional`；去重 |
 | `vocal` | 人声特征 | `vocal` | Vocal（45） | 有无、性别、音色、唱法、和声；纯音乐可明确为无 |
 | `language` | 语言 | `language` | Language（23） | 主语言 + 次语言；纯器乐标记 |
 | `bpm_key` | 速度与调性 | `bpm_key` | — | BPM 20–300；调式枚举；拍号 `n/n`；可空 |
@@ -211,7 +211,11 @@
         "mapped": false
       }
     ],
-    "notes": "以合成器音色为主，未听出原声乐器。"
+    "additional": [
+      "颗粒感很强的 granular synth",
+      "带金属共鸣的 prepared piano"
+    ],
+    "notes": "以合成器音色为主，未听出原声乐器；两处音色不在规范目录内，保留原始描述。"
   },
   "structure": {
     "sections": [
@@ -256,7 +260,7 @@
   },
   "unmapped": [],
   "_meta": {
-    "schema_version": "1.1.0",
+    "schema_version": "1.2.0",
     "taxonomy_version": "workbench-2026-11-03",
     "requested_modules": ["caption", "genre", "mood", "bpm_key", "instruments", "structure"],
     "warnings": [],
@@ -328,6 +332,7 @@
 - `primary`：最多 6 个，主奏/最突出。
 - `secondary`：最多 10 个，伴奏/织体。
 - 同一 ID 不得同时出现在两组。
+- `additional`：最多 12 条自由文本，记录规范目录之外的乐器、合成器音色、特殊演奏法。这里不做 ID 映射，按音频模型听到的原始描述保留；不要因为目录没有就丢掉。
 
 ### vocal
 
@@ -390,7 +395,7 @@
 | 字段 | 何时出现 | 说明 |
 | --- | --- | --- |
 | `unmapped` | 有无法映射标签时 | 原词、类别、最近提示、原因 |
-| `_meta.schema_version` | 总是 | 当前 `1.1.0` |
+| `_meta.schema_version` | 总是 | 当前 `1.2.0` |
 | `_meta.taxonomy_version` | 总是 | 批次冻结的标签版本 |
 | `_meta.requested_modules` | 总是 | 校验“只请求所需字段” |
 | `_meta.warnings` | 可选 | 互斥移除、缺失模块、数值修正等 |

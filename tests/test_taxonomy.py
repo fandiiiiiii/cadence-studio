@@ -115,6 +115,37 @@ def test_genre_hierarchy_and_multiple_independent_genres():
     assert len(result["genre"]["secondary"]) == 2
 
 
+def test_non_catalog_instruments_are_preserved_as_additional():
+    normalizer = Normalizer(get_taxonomy())
+    spec = BatchSpec(modules=["instruments"])
+    payload = {
+        "instruments": {
+            "primary": [{"id": "instrument-108", "name_zh": "合成器", "name_en": "Synthesizer", "confidence": 0.8}],
+            "secondary": [],
+            "additional": ["颗粒感 granular synth", "prepared piano with metallic resonance", "颗粒感 granular synth"],
+            "notes": "高频有颗粒感。",
+        }
+    }
+    result = normalizer.validate(payload, spec)
+    assert result["instruments"]["primary"][0]["id"] == "instrument-108"
+    assert result["instruments"]["additional"] == [
+        "颗粒感 granular synth",
+        "prepared piano with metallic resonance",
+    ]
+
+
+def test_unmapped_instrument_terms_are_promoted_to_additional():
+    normalizer = Normalizer(get_taxonomy())
+    result = normalizer.validate(
+        {
+            "instruments": {"primary": [], "secondary": [], "additional": []},
+            "unmapped": [{"category": "Instrument", "source_label": "waterphone", "reason": "not in catalog"}],
+        },
+        BatchSpec(modules=["instruments"]),
+    )
+    assert "waterphone" in result["instruments"]["additional"]
+
+
 def test_audio_prompt_does_not_leak_taxonomy_or_standard_structure_labels():
     spec = BatchSpec(modules=["caption", "genre", "structure", "extra"])
     prompt = build_audio_prompt(spec, {"file_name": "x.mp3", "duration_sec": 240})

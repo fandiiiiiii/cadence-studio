@@ -171,7 +171,7 @@ JSON_CONTRACTS: dict[str, str] = {
     "genre": '"genre": {"items": [GENRE_TAG], "reason": "判断依据"}',
     "mood": '"mood": {"tags": [TAG], "dominant": TAG, "valence": -1.0到1.0, "energy": 0.0到1.0, "reason": "依据"}',
     "scene": '"scene": {"primary": TAG, "secondary": [TAG], "reason": "依据"}',
-    "instruments": '"instruments": {"primary": [TAG], "secondary": [TAG], "notes": "音色与演奏特征"}',
+    "instruments": '"instruments": {"primary": [TAG], "secondary": [TAG], "additional": ["目录外的乐器/音色原始描述"], "notes": "音色与演奏特征"}',
     "vocal": '"vocal": {"present": true|false, "tags": [TAG], "lead": {"gender": "female|male|neutral|unknown", "timbre": "描述", "delivery": "描述"}, "notes": "依据"}',
     "language": '"language": {"primary": TAG, "secondary": [TAG], "instrumental": false, "notes": "依据"}',
     "bpm_key": '"bpm_key": {"bpm": 数字, "bpm_confidence": 0.0到1.0, "key": "C|C#|D|...|B", "mode": "major|minor|modal|unknown", "time_signature": "4/4", "groove": "描述", "notes": "依据"}',
