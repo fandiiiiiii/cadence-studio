@@ -71,6 +71,7 @@ class WorkManager:
         self._active_routes: dict[str, int] = {}
         self._last_activity: dict[str, float] = {}
         self._auto_paused: set[str] = set()
+        self._pause_timers: dict[str, threading.Timer] = {}
         self._warm_locks: dict[str, float] = {}
         self._lock = threading.RLock()
         self._stop = threading.Event()
@@ -89,14 +90,106 @@ class WorkManager:
 
     def shutdown(self) -> None:
         self._stop.set()
+        with self._lock:
+            for timer in self._pause_timers.values():
+                timer.cancel()
+            self._pause_timers.clear()
         self._executor.shutdown(wait=False, cancel_futures=True)
 
     def wake(self) -> None:
         """Nudge the scheduler after a batch is created or retried."""
         route_id = self._active_route_id()
         if route_id:
+            self._cancel_auto_pause(route_id)
             self._last_activity[route_id] = time.time()
             self._auto_paused.discard(route_id)
+
+    def _cancel_auto_pause(self, route_id: str) -> None:
+        with self._lock:
+            timer = self._pause_timers.pop(route_id, None)
+        if timer:
+            timer.cancel()
+
+    def _arm_auto_pause(self, route_id: str) -> None:
+        """Schedule an idle pause from the actual completion time.
+
+        The scheduler tick remains a fallback, but a timer makes the two-minute
+        grace independent of queue polling and of how long the worker thread
+        took to release the item.
+        """
+        lifecycle = self.config.get()["inference"]["lifecycle"]
+        if not lifecycle.get("auto_pause", True):
+            return
+        grace = max(0, int(lifecycle.get("pause_grace_seconds", 120)))
+        with self._lock:
+            old = self._pause_timers.pop(route_id, None)
+            if old:
+                old.cancel()
+            timer = threading.Timer(grace, self._auto_pause_after_idle, args=(route_id,))
+            timer.daemon = True
+            self._pause_timers[route_id] = timer
+            timer.start()
+
+    def _idle_shutdown(self, route_id: str) -> bool:
+        """Pause or scale the endpoint to zero after the route becomes idle."""
+        with self._lock:
+            if route_id in self._auto_paused:
+                return True
+            self._auto_paused.add(route_id)
+        lifecycle = self.config.get()["inference"]["lifecycle"]
+        action = lifecycle.get("auto_pause_action", "scale-to-zero")
+        try:
+            if action == "pause":
+                self.endpoints.pause(route_id)
+            else:
+                self.endpoints.action(route_id, "scale-to-zero")
+            self.db.add_event(
+                "endpoint_auto_scaled_to_zero" if action != "pause" else "endpoint_auto_paused",
+                "队列空闲，端点已缩容到零以停止计费" if action != "pause" else "队列空闲，已自动暂停端点以节省费用",
+                data={"route_id": route_id, "action": action},
+            )
+            return True
+        except Exception as exc:  # noqa: BLE001
+            self._auto_paused.discard(route_id)
+            self.db.add_event(
+                "endpoint_pause_failed",
+                f"空闲缩容失败：{exc}",
+                level="warn",
+                data={"route_id": route_id, "action": action},
+            )
+            return False
+        finally:
+            self.endpoints.invalidate(route_id)
+
+    def _auto_pause_after_idle(self, route_id: str) -> None:
+        with self._lock:
+            if self._active_routes.get(route_id, 0) > 0:
+                return
+            timer = self._pause_timers.pop(route_id, None)
+            if timer is None:
+                return
+            last = self._last_activity.get(route_id, 0)
+        if self.db.queued_items(limit=1):
+            # Another item is waiting; let the scheduler start it. The final
+            # item will arm the timer again.
+            return
+        grace = max(0, int(self.config.get()["inference"]["lifecycle"].get("pause_grace_seconds", 0)))
+        if last and time.time() - last < grace:
+            return
+        try:
+            status = self.endpoints.status(route_id)
+        except Exception as exc:  # noqa: BLE001
+            self.db.add_event(
+                "endpoint_pause_failed",
+                f"自动缩容前无法读取端点状态：{exc}",
+                level="warn",
+                data={"route_id": route_id},
+            )
+            return
+        if status.get("state") != "running" or not status.get("managed"):
+            self._auto_paused.add(route_id)
+            return
+        self._idle_shutdown(route_id)
 
     def _active_route_id(self) -> str | None:
         try:
@@ -269,6 +362,7 @@ class WorkManager:
             if not claimed:
                 continue
             self.db.update_batch(item["batch_id"], status="running", started_at=batch.get("started_at") or utc_now())
+            self._cancel_auto_pause(route_id)
             with self._lock:
                 self._futures[item["id"]] = self._executor.submit(self._process_wrapper, item["id"], route_id)
                 self._active_routes[route_id] = self._active_routes.get(route_id, 0) + 1
@@ -303,9 +397,12 @@ class WorkManager:
             with self._lock:
                 self._active_routes[route_id] = max(0, self._active_routes.get(route_id, 0) - 1)
                 self._last_activity[route_id] = time.time()
+                idle = self._active_routes.get(route_id, 0) == 0
             item = self.db.get_item(item_id)
             if item:
                 self.db.refresh_batch_status(item["batch_id"])
+            if idle:
+                self._arm_auto_pause(route_id)
 
     def _update_stage(self, item, stage: str, message: str, progress: int, status: str = "inferencing") -> None:
         self.db.update_item(item["id"], status=status, stage=stage, progress=progress)
@@ -638,10 +735,14 @@ class WorkManager:
         lifecycle = self.config.get()["inference"]["lifecycle"]
         if not lifecycle.get("auto_pause", True):
             return
-        grace = int(lifecycle.get("pause_grace_seconds", 120))
+        grace = int(lifecycle.get("pause_grace_seconds", 0))
+        if self.db.queued_items(limit=1):
+            return
         for route in self.config.get()["inference"]["routes"]:
             route_id = route["id"]
             if self._active_routes.get(route_id, 0) > 0:
+                continue
+            if route_id in self._pause_timers:
                 continue
             if route_id in self._auto_paused:
                 continue
@@ -655,24 +756,8 @@ class WorkManager:
             if status.get("state") != "running" or not status.get("managed"):
                 self._auto_paused.add(route_id)
                 continue
-            self._auto_paused.add(route_id)
 
-            def pause(rid=route_id):
-                try:
-                    self.endpoints.pause(rid)
-                    self.db.add_event(
-                        "endpoint_auto_paused",
-                        "队列空闲，已自动暂停端点以节省费用",
-                        data={"route_id": rid},
-                    )
-                except Exception as exc:  # noqa: BLE001
-                    self.db.add_event(
-                        "endpoint_pause_failed",
-                        f"自动暂停端点失败：{exc}",
-                        level="warn",
-                        data={"route_id": rid},
-                    )
-                finally:
-                    self.endpoints.invalidate(rid)
+            def shutdown(rid=route_id):
+                self._idle_shutdown(rid)
 
-            threading.Thread(target=pause, daemon=True).start()
+            threading.Thread(target=shutdown, daemon=True).start()

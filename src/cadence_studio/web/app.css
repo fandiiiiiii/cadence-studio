@@ -709,6 +709,26 @@ svg {
   height: 16px;
 }
 
+.label-lang-button {
+  min-width: 34px;
+  height: 28px;
+  padding: 0 7px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: background 0.16s, color 0.16s, border-color 0.16s;
+}
+
+.label-lang-button:hover {
+  color: var(--text);
+  border-color: var(--text-soft);
+}
+
 .avatar-button {
   width: 28px;
   height: 28px;

@@ -106,7 +106,8 @@ def default_config() -> dict[str, Any]:
             "lifecycle": {
                 "auto_resume": True,
                 "auto_pause": True,
-                "pause_grace_seconds": 120,
+                "auto_pause_action": "scale-to-zero",
+                "pause_grace_seconds": 0,
                 "resume_timeout_seconds": 900,
                 "poll_seconds": 5,
             },
@@ -210,6 +211,14 @@ class ConfigStore:
             if not route.get("max_new_tokens"):
                 route["max_new_tokens"] = 1024 if route.get("id") == "flamingo" else 900
                 changed = True
+        lifecycle = self._data.get("inference", {}).get("lifecycle", {})
+        if "auto_pause_action" not in lifecycle:
+            lifecycle["auto_pause_action"] = "scale-to-zero"
+            # The previous default waited two minutes. New behavior scales to
+            # zero as soon as the queue is empty; users can still set a grace
+            # period in Settings if they need a buffer.
+            lifecycle["pause_grace_seconds"] = 0
+            changed = True
         for route in self._data.get("llm", {}).get("routes", []):
             base = str(route.get("base_url") or "")
             if "deepseek.com" in base and route.get("model") in {"deepseek-chat", "deepseek-reasoner"}:

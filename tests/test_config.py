@@ -25,3 +25,4 @@ def test_legacy_deepseek_and_route_defaults_migrate(tmp_path: Path):
     assert route["thinking_mode"] == "disabled"
     assert loaded["inference"]["routes"][0]["hardware_profile"] == "a10g-24gb"
     assert loaded["inference"]["routes"][0]["max_new_tokens"] == 900
+    assert loaded["inference"]["lifecycle"]["auto_pause_action"] == "scale-to-zero"

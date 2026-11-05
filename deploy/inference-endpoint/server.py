@@ -28,6 +28,7 @@ import threading
 import time
 from contextlib import asynccontextmanager
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 try:
@@ -109,15 +110,57 @@ def _moss_imports(model_path: str):
     for item in root.glob("*.py"):
         (package / item.name).symlink_to(item)
     sys.path.insert(0, str(package_parent))
+    from mossmusic.configuration_moss_music import MossMusicConfig  # type: ignore
     from mossmusic.modeling_moss_music import MossMusicModel  # type: ignore
     from mossmusic.processing_moss_music import MossMusicProcessor  # type: ignore
 
-    return MossMusicModel, MossMusicProcessor
+    return MossMusicConfig, MossMusicModel, MossMusicProcessor
+
+
+_MOSS_AUDIO_DEFAULTS = {
+    "d_model": 1280,
+    "output_dim": 1280,
+    "num_mel_bins": 128,
+    "encoder_layers": 32,
+    "encoder_attention_heads": 20,
+    "encoder_ffn_dim": 5120,
+    "downsample_rate": 8,
+    "downsample_hidden_size": 480,
+    "encoder_attention_window_size": 100,
+    "max_source_positions": 1500,
+    "dropout": 0.1,
+    "attention_dropout": 0.1,
+    "activation_dropout": 0.0,
+    "activation_function": "gelu",
+    "layer_norm_eps": 1e-5,
+    "_attn_implementation": "eager",
+    "pretrained_path": "",
+    "n_window": 200,
+    "conv_chunksize": 64,
+    "deepstack_encoder_layer_indexes": [8, 16, 24],
+}
 
 
 def _load_moss() -> dict[str, Any]:
-    MossMusicModel, MossMusicProcessor = _moss_imports(MODEL_PATH)
+    MossMusicConfig, MossMusicModel, MossMusicProcessor = _moss_imports(MODEL_PATH)
+    # The Hub checkpoint ships a minimal configuration class that leaves
+    # audio_config as a plain dict. The modeling class expects attribute
+    # access (config.audio_config.downsample_hidden_size). Convert it before
+    # constructing the model; the values are exactly the checkpoint's values.
+    config = MossMusicConfig.from_pretrained(MODEL_PATH, trust_remote_code=True)
+    audio_config = getattr(config, "audio_config", None)
+    if isinstance(audio_config, dict):
+        config.audio_config = SimpleNamespace(**{**_MOSS_AUDIO_DEFAULTS, **audio_config})
+        logger.info("Converted MOSS audio_config dict to attribute config")
+    elif audio_config is not None:
+        for key, value in _MOSS_AUDIO_DEFAULTS.items():
+            if not hasattr(audio_config, key):
+                setattr(audio_config, key, value)
+    else:
+        config.audio_config = SimpleNamespace(**_MOSS_AUDIO_DEFAULTS)
+
     kwargs: dict[str, Any] = {
+        "config": config,
         "trust_remote_code": True,
         "torch_dtype": DTYPE,
         "device_map": DEVICE,
@@ -251,6 +294,8 @@ def _generate_moss(audio_path: Path, prompt: str, max_new_tokens: int) -> tuple[
             max_new_tokens=max_new_tokens,
             do_sample=False,
             use_cache=True,
+            repetition_penalty=1.08,
+            no_repeat_ngram_size=6,
         )
     input_len = inputs["input_ids"].shape[1]
     output_ids = generated[0, input_len:]
@@ -294,6 +339,8 @@ def _generate_flamingo(audio_path: Path, prompt: str, max_new_tokens: int) -> tu
             max_new_tokens=max_new_tokens,
             do_sample=False,
             use_cache=True,
+            repetition_penalty=1.05,
+            no_repeat_ngram_size=6,
         )
     input_len = inputs["input_ids"].shape[1]
     output_ids = generated[0, input_len:]

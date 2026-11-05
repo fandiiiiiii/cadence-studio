@@ -3,7 +3,7 @@
 **企业级、本地优先的 AI 音乐 / 音频标注工作台。**
 把专用音频理解模型、可治理的标签体系、批量队列与可交付导出放进一个双击即用的界面。
 
-> 当前版本：`0.2.0` · 标签体系：`workbench-2026-11-03`（641 tags / 15 rules / 7 formulas）
+> 当前版本：`0.2.2` · 标签体系：`workbench-2026-11-03`（641 tags / 15 rules / 7 formulas）
 >
 > **重要状态**：工作台、队列、标签治理、导出与自定义推理服务已完成并通过本地端到端测试；**尚未在真实 A10G / Hugging Face Endpoint 上验证显存、吞吐和模型质量**。首次部署请只跑 1 首，按 [基准测试计划](docs/quality/benchmark.md)记录结果。
 
@@ -29,7 +29,7 @@
 - **只约束大模型**：音频模型收到的是原生任务提示（如“列出所有曲风”），**不接收 641 标签目录、标签 ID 或标准结构词表**；只有 DeepSeek 读取规范文档并做映射与校验。
 - **标签治理**：641 个正式标签只允许目录内 ID；近似标签（如 `Modal Jazz`）会留下原词、规范 ID 与置信度，不会静默改写。
 - **批量生产**：持久化队列、自动重试、暂停/继续、断点恢复、SSE 实时进度；每日目标可随时修改。
-- **端点费用守卫**：批次开始时自动 Resume，队列空闲后自动 Pause；界面始终显示当前 State。
+- **端点费用守卫**：批次开始时自动 Resume，队列一空即自动 **Scale to zero**；界面始终显示当前 State。
 - **硬件推荐**：T4 / L4 / A10G / L40S / A100 / H100 / H200 / RTX PRO 6000 预设并发、音频上限、超时与参考价格。
 - **本地数据**：音频、结果、SQLite、导出文件和密钥都在本机；API Key 使用 Windows DPAPI 加密。
 - **可交付导出**：XLSX 工作簿、JSON 数据包、Markdown 报告、CSV 平表和完整 ZIP。
@@ -141,7 +141,7 @@ docker push your-docker-user/cadence-moss:0.1
 1. 音频模型只收到约 800 字的任务提示，不接收 641 个标签目录；
 2. 规范化阶段才注入标签目录，且只注入选中的类别；
 3. 上传前转码为紧凑 MP3，减少传输；
-4. 持久队列支持过夜运行，失败自动重试，端点空闲自动暂停。
+4. 持久队列支持过夜运行，失败自动重试，端点空闲自动缩容到零。
 
 要稳定完成较高的日目标，建议两条端点（MOSS + Flamingo）各 1 并发，总计 2 路；或使用更大显存/更高吞吐的卡。**不要**在单张 A10G 上把并发设为 2，显存会直接竞争。硬件预设与依据见 [基准测试计划](docs/quality/benchmark.md)。
 
@@ -153,7 +153,7 @@ src/cadence_studio/
   app.py             FastAPI 应用与本地访问保护
   config.py          路径、默认配置、原子保存
   db.py              SQLite schema / repository
-  pipeline.py        持久队列、并发、重试、端点自动暂停
+  pipeline.py        持久队列、并发、重试、端点自动缩容到零
   inference.py       音频端点适配器（cadence multipart / OpenAI audio）
   llm.py             OpenAI-compatible 规范化客户端
   normalizer.py      JSON 提取、标签校验、互斥规则、映射追踪

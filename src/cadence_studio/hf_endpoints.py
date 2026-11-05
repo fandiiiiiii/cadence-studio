@@ -60,9 +60,11 @@ class HFEndpointManager:
         self._locks: dict[str, threading.Lock] = {}
         self._global_lock = threading.RLock()
 
-    def _lock(self, route_id: str) -> threading.Lock:
+    def _lock(self, route_id: str) -> threading.RLock:
         with self._global_lock:
-            return self._locks.setdefault(route_id, threading.Lock())
+            # Reentrant: ensure_ready() holds the route lock and calls
+            # action("resume"), which takes the same lock again.
+            return self._locks.setdefault(route_id, threading.RLock())
 
     def _token(self, route: dict[str, Any]) -> str:
         return self.config.secrets.get(route.get("api_key_secret", "hf_token"))

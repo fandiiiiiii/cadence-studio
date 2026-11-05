@@ -2,6 +2,44 @@
 
 All notable changes to Cadence Studio are documented here.
 
+## [0.2.2] — 2026-11-05
+
+### Fixed
+
+- Inference endpoint "Test" returned a 422 `path.action` validation error because
+  `/inference/{route_id}/test` was shadowed by the dynamic lifecycle route.
+  The health test route now resolves before `{action}`.
+- MOSS raw output could fall into a repeated genre-list loop and consume the
+  whole output budget. The audio prompt now caps the genre list at 5 unique
+  terms and generation uses a repetition penalty plus a 6-gram no-repeat guard.
+- Idle endpoint shutdown now uses a dedicated post-completion timer instead of
+  relying only on the scheduler tick. A new batch cancels the timer before it
+  can run; the timer records `endpoint_auto_scaled_to_zero` or a warning on
+  failure.
+- HF endpoint route locks are now reentrant. `ensure_ready()` holds the route
+  lock while calling `resume()`, which takes the same lock; the old non-reentrant
+  lock deadlocked when an endpoint was `scaledToZero`, leaving items stuck at
+  `checking_endpoint`.
+
+### Added
+
+- **Scale to zero** is now the default idle action, with a 0-second grace by
+  default. When the queue is empty, Cadence calls HF
+  `/scale-to-zero` immediately instead of pausing the endpoint.
+- A `中/EN` switch in the top bar toggles all taxonomy labels between Chinese
+  and English. The preference is stored locally.
+- `result_summary` now carries `genre_en` and `mood_en` so list views can show
+  English labels without loading each item's full JSON.
+
+## [0.2.1] — 2026-11-05
+
+### Fixed
+
+- MOSS endpoint startup: the Hub checkpoint ships `audio_config` as a dict,
+  while its modeling code expects attribute access. Convert it to an
+  attribute config before `from_pretrained`; this fixes the
+  `'dict' object has no attribute 'downsample_hidden_size'` failure.
+
 ## [0.2.0] — 2026-11-05
 
 ### Added

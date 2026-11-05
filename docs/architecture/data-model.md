@@ -70,7 +70,7 @@ items   1 ─── n usage
 | --- | --- |
 | `id` | 自增，SSE 游标 |
 | `batch_id` / `item_id` | 可空 |
-| `kind` | `batch_created`, `item_completed`, `endpoint_auto_paused` 等 |
+| `kind` | `batch_created`, `item_completed`, `endpoint_auto_scaled_to_zero` 等 |
 | `level` | info/warn/error |
 | `message` | 人类可读 |
 | `data_json` | 结构化补充 |

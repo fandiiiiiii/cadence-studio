@@ -1,6 +1,7 @@
 
 from fastapi.testclient import TestClient
 
+from cadence_studio.api import SERVICES
 from cadence_studio.app import app
 
 
@@ -37,6 +38,18 @@ def test_settings_round_trip():
         assert updated["workspace"]["name"] == "Test Studio"
         assert updated["inference"]["routes"][0]["secret_configured"] is True
         assert "hf_test" not in response.text
+
+
+def test_inference_test_route_is_not_shadowed(monkeypatch):
+    monkeypatch.setattr(
+        SERVICES.inference,
+        "health",
+        lambda route_id: {"state": "running", "state_label": "运行中", "route_id": route_id},
+    )
+    with TestClient(app) as client:
+        response = client.post("/api/inference/moss/test")
+        assert response.status_code == 200
+        assert response.json()["ok"] is True
 
 
 def test_hardware_profiles_and_workspace_goal():

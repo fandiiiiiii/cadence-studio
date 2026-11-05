@@ -134,4 +134,12 @@ def test_summary_is_denormalized():
             "bpm_key": {"bpm": 92, "key": "C", "mode": "major"},
         }
     )
-    assert summary == {"genre": "爵士", "mood": "轻松", "bpm": 92, "key": "C major", "caption": "demo"}
+    assert summary == {
+        "genre": "爵士",
+        "genre_en": "爵士",
+        "mood": "轻松",
+        "mood_en": "轻松",
+        "bpm": 92,
+        "key": "C major",
+        "caption": "demo",
+    }

@@ -212,7 +212,53 @@
     liveTimer: null,
     bootError: null,
     loaded: false,
+    labelLang: localStorage.getItem("cadence.labelLang") === "en" ? "en" : "zh",
   };
+
+  function labelName(item) {
+    if (!item) return "";
+    const zh = item.name_zh ?? item.zh ?? "";
+    const en = item.name_en ?? item.en ?? "";
+    return state.labelLang === "en" ? en || zh || item.id || "" : zh || en || item.id || "";
+  }
+
+  function categoryName(category) {
+    if (!category) return "";
+    return state.labelLang === "en"
+      ? category.label_en || category.key || ""
+      : category.label_zh || category.key || "";
+  }
+
+  function otherLabel(item) {
+    if (!item) return "";
+    return state.labelLang === "en"
+      ? item.name_zh || item.zh || ""
+      : item.name_en || item.en || "";
+  }
+
+  function genrePathText(tag) {
+    const hierarchy = Array.isArray(tag.hierarchy) ? tag.hierarchy : [];
+    if (state.labelLang === "zh" && hierarchy.length) {
+      return hierarchy.map((item) => labelName(item)).filter(Boolean).join(" › ");
+    }
+    const path = Array.isArray(tag.path) ? tag.path : [];
+    return path.length ? path.join(" › ") : labelName(tag);
+  }
+
+  function applyLabelLang() {
+    const button = $("#label-lang-toggle");
+    if (!button) return;
+    button.textContent = state.labelLang === "en" ? "EN" : "中";
+    button.title = state.labelLang === "en" ? "当前显示英文标签，点击切换中文" : "当前显示中文标签，点击切换英文";
+    button.setAttribute("aria-label", button.title);
+  }
+
+  function toggleLabelLang() {
+    state.labelLang = state.labelLang === "en" ? "zh" : "en";
+    localStorage.setItem("cadence.labelLang", state.labelLang);
+    applyLabelLang();
+    route();
+  }
 
   const views = {
     overview: $("#view"),
@@ -308,6 +354,7 @@
   // -------------------------------------------------------------------- boot
   async function boot() {
     applyTheme(localStorage.getItem("cadence.theme") || "dark");
+    applyLabelLang();
     bindGlobalEvents();
     try {
       const [modules, taxonomy, settings, hardware] = await Promise.all([
@@ -530,8 +577,8 @@
     if (!tags || !tags.length) return `<span class="muted">—</span>`;
     return `<div class="tag-row">${tags
       .map((tag) => {
-        const name = tag.name_zh || tag.name_en || tag.id || "";
-        const extra = tag.source_label && tag.source_label !== name ? ` · ${tag.source_label}` : "";
+        const name = labelName(tag);
+        const extra = tag.source_label && tag.source_label !== tag.name_zh && tag.source_label !== tag.name_en ? ` · ${tag.source_label}` : "";
         return `<span class="tag ${cls} ${tag.mapped ? "mapped" : ""}" title="${attr(extra ? `原始：${tag.source_label} → 规范：${name}` : name)}">${escapeHtml(name)}${tag.confidence != null ? `<span class="tag-conf">${Math.round(tag.confidence * 100)}</span>` : ""}</span>`;
       })
       .join("")}</div>`;
@@ -543,11 +590,11 @@
   }
 
   function renderGenreItem(tag) {
-    const path = Array.isArray(tag.path) && tag.path.length ? tag.path.join(" › ") : (tag.name_en || tag.name_zh || "");
+    const path = genrePathText(tag);
     const level = Number(tag.level || 1);
     return `<div class="genre-hierarchy-item">
-      <span class="badge ${tag.category === "Extra" ? "demo" : "neutral"}">${tag.category === "Extra" ? "补充" : `L${level}`}</span>
-      <div class="genre-hierarchy-main"><strong>${escapeHtml(tag.name_zh || tag.name_en || tag.id)}</strong><small>${escapeHtml(path)}${tag.source_label && tag.source_label !== tag.name_en && tag.source_label !== tag.name_zh ? ` · 原始：${escapeHtml(tag.source_label)}` : ""}</small></div>
+      <span class="badge ${tag.category === "Extra" ? "demo" : "neutral"}">${tag.category === "Extra" ? (state.labelLang === "en" ? "Extra" : "补充") : `L${level}`}</span>
+      <div class="genre-hierarchy-main"><strong>${escapeHtml(labelName(tag))}</strong><small>${escapeHtml(path)}${tag.source_label && tag.source_label !== tag.name_en && tag.source_label !== tag.name_zh ? ` · 原始：${escapeHtml(tag.source_label)}` : ""}</small></div>
       <span class="genre-conf">${Math.round((tag.confidence || 0) * 100)}</span>
     </div>`;
   }
@@ -721,8 +768,8 @@
         <div class="endpoint-meta">
           <div><span>Adapter</span><strong>${escapeHtml(route.adapter || "cadence")}</strong></div>
           <div><span>Concurrency</span><strong>${route.max_concurrency || 1} worker</strong></div>
-          <div><span>Auto pause</span><strong>${state.settings?.inference?.lifecycle?.auto_pause ? "开启" : "关闭"}</strong></div>
-          <div><span>Idle grace</span><strong>${state.settings?.inference?.lifecycle?.pause_grace_seconds || 120}s</strong></div>
+          <div><span>Auto scale</span><strong>${state.settings?.inference?.lifecycle?.auto_pause ? "开启" : "关闭"}</strong></div>
+          <div><span>Idle grace</span><strong>${state.settings?.inference?.lifecycle?.pause_grace_seconds ?? 0}s</strong></div>
         </div>
       </div>
     </section>`;
@@ -739,7 +786,7 @@
           ${entries
             .slice(0, 5)
             .map(
-              (cat) => `<div class="taxonomy-bar-row"><span>${escapeHtml(cat.label_zh)}</span><i><b style="width:${Math.round((cat.count / max) * 100)}%;background:var(--${cat.color === "slate" ? "muted" : cat.color})"></b></i><em>${cat.count}</em></div>`
+              (cat) => `<div class="taxonomy-bar-row"><span>${escapeHtml(categoryName(cat))}</span><i><b style="width:${Math.round((cat.count / max) * 100)}%;background:var(--${cat.color === "slate" ? "muted" : cat.color})"></b></i><em>${cat.count}</em></div>`
             )
             .join("")}
         </div>
@@ -983,8 +1030,8 @@
             <td class="file-cell"><div class="file-main"><div class="file-glyph">${icon("music")}</div><div style="min-width:0"><div class="file-name">${escapeHtml(item.file_name)}</div><div class="file-sub">${escapeHtml(summary.caption || (item.error_message ? item.error_message : "等待分析结果"))}</div></div></div></td>
             <td class="mono muted">${duration(item.duration_sec)}</td>
             <td><div class="stage-cell"><div class="stage-label"><span class="status-dot ${item.status === "completed" ? "ok" : item.status === "failed" ? "error" : item.status === "queued" ? "" : "ok pulse"}"></span>${escapeHtml(stage.label)}</div><div class="stage-bar ${stage.failed ? "failed" : ""}"><i style="width:${stage.progress}%"></i></div></div></td>
-            <td>${summary.genre ? `<span class="tag genre">${escapeHtml(summary.genre)}</span>` : `<span class="muted">—</span>`}</td>
-            <td>${summary.mood ? `<span class="tag mood">${escapeHtml(summary.mood)}</span>` : `<span class="muted">—</span>`}</td>
+            <td>${summary.genre ? `<span class="tag genre">${escapeHtml(state.labelLang === "en" ? summary.genre_en || summary.genre : summary.genre)}</span>` : `<span class="muted">—</span>`}</td>
+            <td>${summary.mood ? `<span class="tag mood">${escapeHtml(state.labelLang === "en" ? summary.mood_en || summary.mood : summary.mood)}</span>` : `<span class="muted">—</span>`}</td>
             <td class="mono muted">${summary.bpm ? `${summary.bpm}` : "—"} <span style="opacity:.55">${escapeHtml(summary.key || "")}</span></td>
             <td><div class="row-actions">${item.status === "failed" ? `<button class="icon-mini" data-action="item-retry" data-id="${attr(item.id)}" data-mode="normalize" title="重试">${icon("refresh")}</button>` : ""}<button class="icon-mini" data-action="open-item" data-id="${attr(item.id)}" title="查看">${icon("arrow-right")}</button></div></td>
           </tr>`;
@@ -1161,7 +1208,7 @@
         if (!tag.id || seenTags.has(tag.id)) return;
         seenTags.add(tag.id);
         if (tag.mapped || (tag.source_label && tag.source_label !== tag.name_zh && tag.source_label !== tag.name_en)) {
-          rows.push(`<div class="mapping-row"><span class="from">${escapeHtml(tag.source_label || "—")}</span><span class="arrow">${icon("arrow-right")}</span><span class="to">${escapeHtml(tag.name_zh)} <em class="muted" style="font-style:normal">${escapeHtml(tag.id)}</em></span><span class="conf">${Math.round((tag.confidence || 0) * 100)}%</span></div>`);
+          rows.push(`<div class="mapping-row"><span class="from">${escapeHtml(tag.source_label || "—")}</span><span class="arrow">${icon("arrow-right")}</span><span class="to">${escapeHtml(labelName(tag))} <em class="muted" style="font-style:normal">${escapeHtml(tag.id)}</em></span><span class="conf">${Math.round((tag.confidence || 0) * 100)}%</span></div>`);
         }
       });
     });
@@ -1362,7 +1409,7 @@
   function renderCategoryTabs() {
     const cats = state.taxonomy?.categories || {};
     return `<button class="category-tab ${state.tax.category === "all" ? "active" : ""}" data-tax-category="all">全部 <em>${state.taxonomy?.source?.label_count || 641}</em></button>${Object.values(cats)
-      .map((cat) => `<button class="category-tab ${state.tax.category === cat.key ? "active" : ""}" data-tax-category="${attr(cat.key)}">${escapeHtml(cat.label_zh)} <em>${cat.count}</em></button>`)
+      .map((cat) => `<button class="category-tab ${state.tax.category === cat.key ? "active" : ""}" data-tax-category="${attr(cat.key)}">${escapeHtml(categoryName(cat))} <em>${cat.count}</em></button>`)
       .join("")}`;
   }
 
@@ -1400,7 +1447,7 @@
     return `<div class="taxonomy-row ${hasChildren ? "tree-parent" : ""} ${isActive ? "active" : ""}" data-tax-id="${attr(tag.id)}" style="padding-left:${13 + depth * 18}px">
       <button class="tax-arrow ${hasChildren ? "" : "empty"} ${expanded ? "open" : ""}" ${hasChildren ? `data-tax-toggle="${attr(tag.id)}"` : ""} aria-label="${hasChildren ? "展开子风格" : ""}" aria-expanded="${expanded}">${hasChildren ? icon("chevron") : ""}</button>
       <span class="taxonomy-seq">${seq}</span>
-      <div class="taxonomy-name"><strong>${escapeHtml(tag.zh)}</strong><span>${escapeHtml(tag.en)}${tag.category === "Genre" ? ` · L${tag.genre_level || 1}` : ""}</span></div>
+      <div class="taxonomy-name"><strong>${escapeHtml(labelName(tag))}</strong><span>${escapeHtml(otherLabel(tag))}${tag.category === "Genre" ? ` · L${tag.genre_level || 1}` : ""}</span></div>
       <span class="taxonomy-group">${hasChildren ? `${children.length} 子级` : escapeHtml(tag.group || tag.category)}</span>
     </div>${hasChildren && expanded ? children.map((child, index) => taxonomyRowHtml(child, { depth: depth + 1, code: `${seq}.${String(index + 1).padStart(2, "0")}`, children: (genreChildrenMap().get(child.id) || []) })).join("") : ""}`;
   }
@@ -1418,7 +1465,7 @@
     return `<div class="taxonomy-row ${state.tax.tagId === tag.id ? "active" : ""}" data-tax-id="${attr(tag.id)}">
       <button class="tax-arrow empty" aria-hidden="true"></button>
       <span class="taxonomy-seq">${String(tag.seq || index + 1).padStart(2, "0")}</span>
-      <div class="taxonomy-name"><strong>${escapeHtml(tag.zh)}</strong><span>${escapeHtml(tag.en)}${tag.category === "Genre" ? ` · L${tag.genre_level || 1}` : ""}</span></div>
+      <div class="taxonomy-name"><strong>${escapeHtml(labelName(tag))}</strong><span>${escapeHtml(otherLabel(tag))}${tag.category === "Genre" ? ` · L${tag.genre_level || 1}` : ""}</span></div>
       <span class="taxonomy-group">${escapeHtml(tag.group || tag.category)}</span>
     </div>`;
   }
@@ -1442,9 +1489,9 @@
       const categoryTags = tags.filter((tag) => tag.category === category.key);
       if (!categoryTags.length) return;
       if (category.key === "Genre") {
-        sections.push(`<div class="taxonomy-section"><div class="taxonomy-section-head"><strong>${escapeHtml(category.label_zh)}</strong><span>${categoryTags.length} tags · ${roots.length} 一级</span></div>${genreTreeHtml(categoryTags)}</div>`);
+        sections.push(`<div class="taxonomy-section"><div class="taxonomy-section-head"><strong>${escapeHtml(categoryName(category))}</strong><span>${categoryTags.length} tags · ${roots.length} 一级</span></div>${genreTreeHtml(categoryTags)}</div>`);
       } else {
-        sections.push(`<div class="taxonomy-section"><div class="taxonomy-section-head"><strong>${escapeHtml(category.label_zh)}</strong><span>${categoryTags.length} tags</span></div>${categoryTags.map((tag, index) => flatTaxonomyRow(tag, index)).join("")}</div>`);
+        sections.push(`<div class="taxonomy-section"><div class="taxonomy-section-head"><strong>${escapeHtml(categoryName(category))}</strong><span>${categoryTags.length} tags</span></div>${categoryTags.map((tag, index) => flatTaxonomyRow(tag, index)).join("")}</div>`);
       }
     });
     list.innerHTML = sections.join("");
@@ -1485,12 +1532,12 @@
     const category = state.taxonomy.categories[tag.category] || {};
     const lineage = (tag.genre_lineage || []).map((id) => (state.taxonomy.tags || []).find((item) => item.id === id)).filter(Boolean);
     const pathHtml = tag.category === "Genre" && lineage.length
-      ? `<div class="taxonomy-lineage">${lineage.map((item, index) => `<span class="taxonomy-path-step ${item.id === tag.id ? "current" : ""}"><b>L${item.genre_level || index + 1}</b> ${escapeHtml(item.zh)}</span>${index < lineage.length - 1 ? icon("chevron") : ""}`).join("")}</div>`
+      ? `<div class="taxonomy-lineage">${lineage.map((item, index) => `<span class="taxonomy-path-step ${item.id === tag.id ? "current" : ""}"><b>L${item.genre_level || index + 1}</b> ${escapeHtml(labelName(item))}</span>${index < lineage.length - 1 ? icon("chevron") : ""}`).join("")}</div>`
       : "";
     root.innerHTML = `
-      <div class="eyebrow"><span class="status-dot"></span> ${escapeHtml(category.label_zh || tag.category)} / ${escapeHtml(tag.group || "未分组")}</div>
-      <h2>${escapeHtml(tag.zh)}</h2>
-      <div class="en">${escapeHtml(tag.en)} · ${tag.category === "Genre" ? `L${tag.genre_level || 1}` : escapeHtml(category.label_en || tag.category)}</div>
+      <div class="eyebrow"><span class="status-dot"></span> ${escapeHtml(categoryName(category) || tag.category)} / ${escapeHtml(tag.group || "未分组")}</div>
+      <h2>${escapeHtml(labelName(tag))}</h2>
+      <div class="en">${escapeHtml(otherLabel(tag))} · ${tag.category === "Genre" ? `L${tag.genre_level || 1}` : escapeHtml(category.label_en || tag.category)}</div>
       ${pathHtml}
       <div class="definition">${escapeHtml(tag.definition || "该标签没有额外定义，按名称与所属分组使用。")}</div>
       ${tag.features ? `<div class="features">${escapeHtml(tag.features)}</div>` : ""}
@@ -1604,11 +1651,12 @@
       </div>
       ${inference.routes.map((route) => renderInferenceRoute(route, draft)).join("")}
       <div class="setting-card">
-        <div class="setting-card-head"><div class="setting-card-icon">${icon("clock")}</div><div><h3>费用守卫</h3><p>队列开始时自动恢复端点；空闲后排空并暂停，避免按小时待机计费。</p></div></div>
+        <div class="setting-card-head"><div class="setting-card-icon">${icon("clock")}</div><div><h3>费用守卫</h3><p>队列开始时自动恢复端点；队列一空就缩容到零，停止 GPU 计费。</p></div></div>
         ${settingSwitch("inference.lifecycle.auto_resume", "自动恢复端点", "提交批次时，如果端点为 paused 或 scaledToZero，自动调用 resume 并等待健康检查通过。", inference.lifecycle.auto_resume)}
-        ${settingSwitch("inference.lifecycle.auto_pause", "空闲自动暂停", "最后一个任务完成且超过宽限期后，自动暂停端点。新批次会自动恢复。", inference.lifecycle.auto_pause)}
+        ${settingSwitch("inference.lifecycle.auto_pause", "空闲自动缩容", "最后一个任务完成且队列为空后，自动缩容到零。新批次会自动恢复。", inference.lifecycle.auto_pause)}
         <div class="form-grid" style="margin-top:12px">
-          <div class="field"><label>暂停宽限期（秒）</label><input type="number" min="0" max="3600" data-path="inference.lifecycle.pause_grace_seconds" value="${attr(inference.lifecycle.pause_grace_seconds)}"></div>
+          <div class="field"><label>空闲动作</label><select data-path="inference.lifecycle.auto_pause_action"><option value="scale-to-zero" ${inference.lifecycle.auto_pause_action === "scale-to-zero" ? "selected" : ""}>缩容到零（推荐）</option><option value="pause" ${inference.lifecycle.auto_pause_action === "pause" ? "selected" : ""}>暂停（Pause）</option></select></div>
+          <div class="field"><label>缩容延迟（秒，0 = 完成即缩容）</label><input type="number" min="0" max="3600" data-path="inference.lifecycle.pause_grace_seconds" value="${attr(inference.lifecycle.pause_grace_seconds ?? 0)}"></div>
           <div class="field"><label>恢复超时（秒）</label><input type="number" min="60" max="3600" data-path="inference.lifecycle.resume_timeout_seconds" value="${attr(inference.lifecycle.resume_timeout_seconds)}"></div>
         </div>
       </div>`;
@@ -1745,7 +1793,7 @@
 
   function renderAboutSettings(draft) {
     return `
-      <div class="settings-head"><div><h2>关于声刻</h2><p>为可审计的音乐数据生产而设计。</p></div><span class="badge neutral">v0.2.0</span></div>
+      <div class="settings-head"><div><h2>关于声刻</h2><p>为可审计的音乐数据生产而设计。</p></div><span class="badge neutral">v0.2.2</span></div>
       <div class="taxonomy-hero" style="grid-template-columns:1fr;padding:28px">
         <div>
           <div class="brand" style="margin-bottom:16px"><span class="brand-mark"><svg><use href="#i-logo"></use></svg></span><div class="brand-word"><strong>Cadence</strong><span>声刻 · STUDIO</span></div></div>
@@ -1755,7 +1803,7 @@
       </div>
       <div class="setting-card" style="margin-top:12px">
         <div class="info-grid">
-          <div class="info-box"><span>VERSION</span><strong>0.2.0</strong></div>
+          <div class="info-box"><span>VERSION</span><strong>0.2.2</strong></div>
           <div class="info-box"><span>TAXONOMY</span><strong>${escapeHtml(state.taxonomy?.version || "")}</strong></div>
           <div class="info-box"><span>DEFAULT AUDIO MODEL</span><strong>MOSS-Music 8B / Music Flamingo</strong></div>
           <div class="info-box"><span>NORMALIZER</span><strong>DeepSeek / OpenAI-compatible</strong></div>
@@ -2193,7 +2241,7 @@
         <div class="meta-row"><span>适配器</span><strong>${escapeHtml(route.adapter)}</strong></div>
         <div class="meta-row"><span>HF 管理</span><strong>${route.hf_namespace && route.hf_endpoint_name ? `${escapeHtml(route.hf_namespace)} / ${escapeHtml(route.hf_endpoint_name)}` : "仅 URL 模式"}</strong></div>
         <div class="meta-row"><span>自动恢复</span><strong>${state.settings.inference.lifecycle.auto_resume ? "开启" : "关闭"}</strong></div>
-        <div class="meta-row"><span>空闲暂停</span><strong>${state.settings.inference.lifecycle.auto_pause ? `${state.settings.inference.lifecycle.pause_grace_seconds}s 后` : "关闭"}</strong></div>
+        <div class="meta-row"><span>空闲缩容</span><strong>${state.settings.inference.lifecycle.auto_pause ? `${state.settings.inference.lifecycle.pause_grace_seconds ?? 0}s 后 · ${state.settings.inference.lifecycle.auto_pause_action === "pause" ? "Pause" : "Scale to zero"}` : "关闭"}</strong></div>
         <div class="meta-row"><span>并发</span><strong>${route.max_concurrency || 1}</strong></div>
         <div class="meta-row"><span>检查时间</span><strong>${dateLabel(endpoint.checked_at)}</strong></div>
       </div>
@@ -2456,6 +2504,9 @@
       switch (action) {
         case "toggle-theme":
           toggleTheme();
+          return;
+        case "toggle-label-lang":
+          toggleLabelLang();
           return;
         case "reload":
           location.reload();
@@ -2948,11 +2999,11 @@
     if (state.route.name === "batch" && event.batch_id === state.batch?.id) {
       scheduleLiveRefresh();
     }
-    if (["item_failed", "batch_state", "endpoint_auto_paused", "endpoint_pause_failed"].includes(event.kind)) {
+    if (["item_failed", "batch_state", "endpoint_auto_paused", "endpoint_auto_scaled_to_zero", "endpoint_pause_failed"].includes(event.kind)) {
       // Keep failures visible without flooding the user for every track.
       if (event.level === "error") toast(event.message, { type: "error", title: "任务失败", duration: 6000 });
     }
-    if (event.kind === "endpoint_auto_paused" || event.kind === "endpoint_ready") {
+    if (["endpoint_auto_paused", "endpoint_auto_scaled_to_zero", "endpoint_ready"].includes(event.kind)) {
       refreshEndpointStatus(true);
     }
     if (state.route.name === "overview" && ["item_completed", "batch_created", "batch_started"].includes(event.kind)) {

@@ -335,20 +335,20 @@ def inference_status(route_id: str | None = None) -> dict[str, Any]:
         )
 
 
-@router.post("/inference/{route_id}/{action}")
-def inference_action(route_id: str, action: Literal["resume", "pause", "scale-to-zero"]) -> dict[str, Any]:
-    try:
-        return SERVICES.endpoints.action(route_id, action)
-    except Exception as exc:  # noqa: BLE001
-        _raise(str(exc), status=400, code=getattr(exc, "code", "endpoint_error"))
-
-
 @router.post("/inference/{route_id}/test")
 def inference_test(route_id: str) -> dict[str, Any]:
     try:
         return {"ok": True, **SERVICES.inference.health(route_id)}
     except Exception as exc:  # noqa: BLE001
         return JSONResponse(status_code=400, content={"ok": False, "message": str(exc)})
+
+
+@router.post("/inference/{route_id}/{action}")
+def inference_action(route_id: str, action: Literal["resume", "pause", "scale-to-zero"]) -> dict[str, Any]:
+    try:
+        return SERVICES.endpoints.action(route_id, action)
+    except Exception as exc:  # noqa: BLE001
+        _raise(str(exc), status=400, code=getattr(exc, "code", "endpoint_error"))
 
 
 @router.get("/inference/hf/endpoints")

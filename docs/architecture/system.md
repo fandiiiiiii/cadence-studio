@@ -36,7 +36,7 @@ flowchart LR
 | Config | `config.py` | 路径、默认设置、原子写入、公开脱敏 |
 | Secrets | `secrets.py` | Windows DPAPI；非 Windows 开发降级 |
 | DB | `db.py` | SQLite schema、查询、事件、用量 |
-| Queue | `pipeline.py` | 取任务、并发、重试、恢复、自动 pause |
+| Queue | `pipeline.py` | 取任务、并发、重试、恢复、自动 scale-to-zero |
 | Inference | `inference.py` | `cadence` multipart 适配器与 OpenAI audio 适配器 |
 | LLM | `llm.py` | OpenAI-compatible JSON 调用、重试、错误分类 |
 | Prompts | `prompts.py` | 任务提示、目录提示、规范化 JSON 契约 |
@@ -129,15 +129,15 @@ stateDiagram-v2
   Paused --> Initializing: start batch / ensure_ready
   ScaledToZero --> Initializing: resume
   Initializing --> Running: /health 200
-  Running --> Paused: idle > grace / manual
+  Running --> ScaledToZero: queue empty / idle > grace
   Running --> Failed: runtime error
   Failed --> Initializing: resume
 ```
 
 - `ensure_ready` 对暂停状态调用 `POST /v2/endpoint/{ns}/{name}/resume`，然后轮询 `GET` 与 `/health`，直到 `running` 或超时。
-- `auto_pause` 只在没有活动任务、管理器为 HF 托管模式、且状态为 running 时调用 `POST /pause`；由后台线程执行，不阻塞调度。
+- `auto_pause` 只在没有活动任务、管理器为 HF 托管模式、且状态为 running 时调用 `POST /scale-to-zero`；由任务完成后的独立计时器执行，不阻塞调度。
 - 直连 URL 模式没有生命周期管理；UI 明确显示“仅 URL”。
-- Scale-to-zero 与 Pause 不同：scale-to-zero 可被请求唤醒；Pause 必须显式 resume。当前实现优先使用 Pause，并在 UI 提供 scale-to-zero 操作。
+- Scale-to-zero 与 Pause 不同：scale-to-zero 可被请求唤醒；Pause 必须显式 resume。当前默认使用 **scale-to-zero**，也可在设置中切换为 Pause。
 
 ## 6. 数据与恢复
 

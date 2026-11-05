@@ -144,9 +144,9 @@ curl -X POST http://127.0.0.1:8000/v1/annotate `
 ### 自动生命周期
 
 - 新建批次或点击开始：如果端点 `paused` / `scaledToZero` / `stopped`，系统调用 `POST /resume`，轮询到 `running` 且 `/health` 通过后才发音频。
-- 队列空闲超过 `pause_grace_seconds`：调用 `POST /pause`。
+- 队列一空（超过 `pause_grace_seconds`，默认 0 秒）：调用 `POST /scale-to-zero`，状态变为 `scaledToZero`。
 - 队列重新有任务：再次自动 resume。
-- `scale-to-zero` 可选；它需要端点在 spec 中开启 `scaleToZeroTimeout`。系统不会把“请求已发送”当成“云端已完成”，UI 会继续显示真实 State。
+- `scale-to-zero` 是默认空闲动作，需要端点在 spec 中开启 `scaleToZeroTimeout`。系统不会把“请求已发送”当成“云端已完成”，UI 会继续显示真实 State。
 
 ## 6. 第一首真实验证
 

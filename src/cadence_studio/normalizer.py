@@ -1,4 +1,4 @@
-﻿"""JSON extraction and deterministic governance of LLM-normalized annotations."""
+"""JSON extraction and deterministic governance of LLM-normalized annotations."""
 
 from __future__ import annotations
 
@@ -554,7 +554,9 @@ def result_summary(result: dict[str, Any] | None) -> dict[str, Any]:
     caption = (result.get("caption") or {}).get("short") or (result.get("caption") or {}).get("text", "")[:160]
     return {
         "genre": genre.get("name_zh") or genre.get("name_en") or "",
+        "genre_en": genre.get("name_en") or genre.get("name_zh") or "",
         "mood": mood.get("name_zh") or mood.get("name_en") or "",
+        "mood_en": mood.get("name_en") or mood.get("name_zh") or "",
         "bpm": bpm,
         "key": f"{key} {mode}".strip() if key else "",
         "caption": caption,
