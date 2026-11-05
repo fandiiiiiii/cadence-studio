@@ -2,6 +2,15 @@
 
 All notable changes to Cadence Studio are documented here.
 
+## [0.2.3] — 2026-11-05
+
+### Fixed
+
+- Flamingo container: add `torchcodec==0.9.*`. The MusicFlamingo processor
+  imports it lazily while decoding request audio; without it the endpoint
+  accepts `/health` but every `/v1/annotate` request raises an empty
+  `ImportError` and returns HTTP 500.
+
 ## [0.2.2] — 2026-11-05
 
 ### Fixed
