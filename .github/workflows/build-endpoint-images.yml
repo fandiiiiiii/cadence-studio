@@ -1,7 +1,7 @@
-name: Build endpoint images
+name: Build Flamingo endpoint image
 
-# Build the two 13GB inference images on GitHub's runners instead of uploading
-# them from a home connection. Run manually from Actions → Build endpoint images.
+# Build the large Flamingo inference image on GitHub's runners instead of
+# uploading it from a home connection.
 on:
   workflow_dispatch:
     inputs:
@@ -9,33 +9,16 @@ on:
         description: "Image tag"
         required: true
         default: "0.2.2"
-      target:
-        description: "Which image(s) to build"
-        type: choice
-        required: true
-        default: "flamingo"
-        options:
-          - flamingo
-          - both
 
 permissions:
   contents: read
   packages: write
 
 jobs:
-  build:
-    name: ${{ matrix.image }}
-    if: ${{ inputs.target == 'both' || matrix.family == 'flamingo' }}
+  build-flamingo:
+    name: cadence-flamingo
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - family: moss
-            image: cadence-moss
-          - family: flamingo
-            image: cadence-flamingo
     steps:
       - name: Free disk space for the 13GB image build
         uses: jlumbroso/free-disk-space@main
@@ -60,7 +43,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push ${{ matrix.image }}
+      - name: Build and push Flamingo
         uses: docker/build-push-action@v6
         with:
           context: deploy/inference-endpoint
@@ -68,6 +51,6 @@ jobs:
           platforms: linux/amd64
           push: true
           provenance: false
-          tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:${{ inputs.tag }}
+          tags: ghcr.io/${{ github.repository_owner }}/cadence-flamingo:${{ inputs.tag }}
           build-args: |
-            MODEL_FAMILY=${{ matrix.family }}
+            MODEL_FAMILY=flamingo
