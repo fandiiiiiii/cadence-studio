@@ -9,6 +9,14 @@ on:
         description: "Image tag"
         required: true
         default: "0.2.2"
+      target:
+        description: "Which image(s) to build"
+        type: choice
+        required: true
+        default: "flamingo"
+        options:
+          - flamingo
+          - both
 
 permissions:
   contents: read
@@ -17,6 +25,7 @@ permissions:
 jobs:
   build:
     name: ${{ matrix.image }}
+    if: ${{ inputs.target == 'both' || matrix.family == 'flamingo' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     strategy:
