@@ -2,14 +2,22 @@
 
 All notable changes to Cadence Studio are documented here.
 
+## [0.2.4] — 2026-11-05
+
+### Fixed
+
+- Flamingo container: add `librosa>=0.10,<1`. The MusicFlamingo processor calls
+  `load_audio`, which requires librosa while decoding request audio. Without it
+  `/health` succeeds but every `/v1/annotate` request raises
+  `ImportError: load_audio requires the librosa library` and returns HTTP 500.
+
 ## [0.2.3] — 2026-11-05
 
 ### Fixed
 
-- Flamingo container: add `torchcodec==0.9.*`. The MusicFlamingo processor
-  imports it lazily while decoding request audio; without it the endpoint
-  accepts `/health` but every `/v1/annotate` request raises an empty
-  `ImportError` and returns HTTP 500.
+- Flamingo container: add an audio-decoding dependency. Initial diagnosis was
+  torchcodec; the endpoint logs later showed the actual requirement is librosa
+  (0.2.4).
 
 ## [0.2.2] — 2026-11-05
 
