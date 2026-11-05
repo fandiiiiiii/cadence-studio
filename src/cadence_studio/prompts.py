@@ -51,8 +51,10 @@ def build_audio_prompt(
     if "structure" in spec.modules:
         detail = "精确到段落与短结构" if spec.structure_detail == "fine" else "主要段落"
         tasks.append(
-            f"【结构】{detail}；给出每段起止秒数、你听到的段落名称（自然语言即可）、能量变化与功能。"
-            "不需要套用任何标准结构词表。"
+            f"【结构】{detail}；先确认整首时长，再从 0 秒覆盖到音频结尾；"
+            "给出每段起止秒数（允许小数）、你实际听到的段落名称（自然语言即可）、能量变化与功能。"
+            "只标你确实听到边界变化的段落，不要按固定的 15 秒/30 秒网格切分，也不要为了凑成某种固定段落模板而虚构段落；"
+            "无法确定边界时给范围并降低 confidence。不需要套用任何标准结构词表。"
         )
     if "scene" in spec.modules:
         tasks.append("【场景】内容主题、适合的视频/活动/空间/季节场景；区分“音乐本身”与“适合被用在哪里”。")

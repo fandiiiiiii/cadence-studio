@@ -33,6 +33,10 @@ All notable changes to Cadence Studio are documented here.
 - Per-module label language settings for genre, mood, scene, instruments,
   vocal, language, and supplemental tags; the same settings drive the UI and
   XLSX/CSV/Markdown exports.
+- The structure prompt now asks for real boundaries, full-duration coverage, and
+  allows decimal seconds. It explicitly forbids fixed 15/30-second grids and
+  template sections. The normalizer warns when structure stops far before the
+  track end or every boundary sits on a 5-second grid.
 - `instruments.additional` preserves non-catalog instrument types and timbres
   from the audio model as free text, including terms the normalizer places in
   `unmapped`; exports include a `补充乐器/音色` column. Result schema is now

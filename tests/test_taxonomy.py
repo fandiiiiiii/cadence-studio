@@ -134,6 +134,27 @@ def test_non_catalog_instruments_are_preserved_as_additional():
     ]
 
 
+def test_structure_warns_when_grid_is_coarse_or_coverage_is_incomplete():
+    normalizer = Normalizer(get_taxonomy())
+    result = normalizer.validate(
+        {
+            "structure": {
+                "sections": [
+                    {"label": "Intro", "start_sec": 0, "end_sec": 15},
+                    {"label": "Verse", "start_sec": 15, "end_sec": 45},
+                    {"label": "Chorus", "start_sec": 45, "end_sec": 75},
+                    {"label": "Outro", "start_sec": 75, "end_sec": 105},
+                ]
+            }
+        },
+        BatchSpec(modules=["structure"]),
+        {"duration_sec": 180},
+    )
+    warnings = result["_meta"]["warnings"]
+    assert any("5 秒网格" in warning for warning in warnings)
+    assert any("只覆盖到" in warning for warning in warnings)
+
+
 def test_unmapped_instrument_terms_are_promoted_to_additional():
     normalizer = Normalizer(get_taxonomy())
     result = normalizer.validate(

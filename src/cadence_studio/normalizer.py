@@ -466,6 +466,17 @@ class Normalizer:
                         }
                     )
                 sections.sort(key=lambda x: x["start_sec"])
+                if duration and sections:
+                    last_end = max(section["end_sec"] for section in sections)
+                    gap = duration - last_end
+                    if gap > max(10.0, duration * 0.1):
+                        warnings.append(
+                            f"结构只覆盖到 {last_end:.0f} 秒，音频长度为 {duration:.0f} 秒；"
+                            "末尾可能未标注，请复核或重新推理。"
+                        )
+                    rounded = [section for section in sections if section["start_sec"] % 5 == 0 and section["end_sec"] % 5 == 0]
+                    if len(sections) >= 4 and len(rounded) == len(sections):
+                        warnings.append("结构边界全部落在 5 秒网格上，可能是模型的粗略估计；请结合试听复核。")
                 output["structure"] = {"sections": sections, "notes": _text(value.get("notes"), 1200)}
 
             elif module == "lyrics":
