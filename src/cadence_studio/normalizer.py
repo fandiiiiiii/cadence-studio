@@ -543,7 +543,7 @@ class Normalizer:
             elif module == "custom":
                 output["custom"] = value if isinstance(value, dict) else {"value": value}
 
-        # Instruments are intentionally broader than the 136-tag catalog.
+        # Instruments are intentionally broader than the 171-tag catalog.
         # If the normalizer put a non-catalog instrument in top-level unmapped,
         # keep its original wording in instruments.additional as well.
         if "instruments" in spec.modules and isinstance(payload.get("unmapped"), list):

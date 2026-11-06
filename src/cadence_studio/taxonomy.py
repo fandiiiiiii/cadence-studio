@@ -14,6 +14,57 @@ from typing import Any
 from . import TAXONOMY_VERSION
 
 TAXONOMY_PATH = Path(__file__).resolve().parent / "resources" / "taxonomy.json"
+TAXONOMY_ADDITIONS_PATH = TAXONOMY_PATH.with_name("taxonomy.additions.json")
+
+
+def _merge_additions(raw: dict[str, Any]) -> dict[str, Any]:
+    """Merge the QT supplement without editing the vendored 641-tag snapshot."""
+    if not TAXONOMY_ADDITIONS_PATH.exists():
+        return raw
+    supplement = json.loads(TAXONOMY_ADDITIONS_PATH.read_text(encoding="utf-8"))
+    tags = raw.setdefault("tags", [])
+    by_id = {tag["id"]: tag for tag in tags}
+    for change in supplement.get("alias_additions", []):
+        tag = by_id.get(change.get("id"))
+        if not tag:
+            continue
+        aliases = list(tag.get("aliases", []))
+        for alias in change.get("aliases", []):
+            if alias and alias not in aliases:
+                aliases.append(alias)
+        tag["aliases"] = aliases
+    next_seq: dict[str, int] = {}
+    for tag in tags:
+        category = tag.get("category", "")
+        current = tag.get("seq", 0)
+        next_seq[category] = max(next_seq.get(category, 0), current)
+    for tag in supplement.get("tags", []):
+        if tag.get("id") in by_id:
+            continue
+        category = tag.get("category", "")
+        next_seq[category] = next_seq.get(category, 0) + 1
+        tag["seq"] = next_seq[category]
+        tags.append(tag)
+        by_id[tag["id"]] = tag
+    counts: dict[str, int] = {}
+    groups: dict[str, list[str]] = {}
+    for tag in tags:
+        category = tag.get("category", "")
+        counts[category] = counts.get(category, 0) + 1
+        group = tag.get("group")
+        if group and group not in groups.setdefault(category, []):
+            groups[category].append(group)
+    raw.setdefault("source", {})["label_count"] = len(tags)
+    raw["source"]["category_counts"] = counts
+    raw["source"]["supplement"] = {
+        "version": supplement.get("version", ""),
+        "generated_from": supplement.get("generated_from", []),
+        "tag_count": len(supplement.get("tags", [])),
+    }
+    for category, meta in raw.setdefault("categories", {}).items():
+        meta["count"] = counts.get(category, 0)
+        meta["groups"] = groups.get(category, [])
+    return raw
 
 MODULE_CATEGORY = {
     "genre": "Genre",
@@ -68,7 +119,7 @@ class Taxonomy:
 
     def reload(self) -> dict[str, Any]:
         with self._lock:
-            raw = json.loads(self.path.read_text(encoding="utf-8"))
+            raw = _merge_additions(json.loads(self.path.read_text(encoding="utf-8")))
             if raw.get("version") != TAXONOMY_VERSION:
                 # Keep the runtime tolerant of local taxonomy upgrades, but expose the version.
                 pass

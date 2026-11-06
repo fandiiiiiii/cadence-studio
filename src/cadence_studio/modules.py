@@ -24,7 +24,7 @@ MODULES: list[dict[str, Any]] = [
         "group": "分类标签",
         "icon": "genre",
         "default": True,
-        "description": "主曲风与次曲风，严格映射到 273 个曲风标签。",
+        "description": "主曲风与次曲风，严格映射到 338 个曲风标签。",
         "cost": "medium",
     },
     {
@@ -163,7 +163,7 @@ MODULE_BY_ID = {module["id"]: module for module in MODULES}
 DEFAULT_MODULE_IDS = [module["id"] for module in MODULES if module["default"]]
 ALL_MODULE_IDS = [module["id"] for module in MODULES]
 
-# Categories that can be rendered from the 641-tag taxonomy.
+# Categories that can be rendered from the 741-tag taxonomy.
 TAXONOMY_MODULES = {"genre", "mood", "scene", "instruments", "vocal", "language", "extra"}
 
 JSON_CONTRACTS: dict[str, str] = {

@@ -1,0 +1,2210 @@
+{
+  "version": "qt-2026-11-06",
+  "generated_from": [
+    "QT_音乐caption精标规则文档.md",
+    "对外曲风标签_迭代版0903.xlsx"
+  ],
+  "tags": [
+    {
+      "id": "genre-qt-001",
+      "category": "Genre",
+      "row": 0,
+      "group": "流行",
+      "path": "Pop / Mandopop/Cantopop",
+      "zh": "华语流行",
+      "en": "Mandopop/Cantopop",
+      "definition": "以普通话（国语）演唱，起源于上海，发展于香港和台北。曲风多以旋律优美的抒情歌（Ballad）为主，强调歌词的文学性与叙事感；以粤语演唱，是香港文化的象征。受西方摇滚和迪斯科影响较大，既有深情的武侠风或城市情歌，也有前卫的电子摇滚。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "华语流行（Mandopop/Cantopop）",
+        "华语流行",
+        "Mandopop/Cantopop"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-2",
+      "genre_lineage": [
+        "genre-2",
+        "genre-qt-001"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-002",
+      "category": "Genre",
+      "row": 0,
+      "group": "流行",
+      "path": "Pop / Western Pop",
+      "zh": "欧美流行",
+      "en": "Western Pop",
+      "definition": "通常指源自美国、英国等英语国家的流行音乐。欧美流行乐是现代流行工业的标准制定者，风格极具融合性，涵盖了 R&B、舞曲、摇滚及民谣元素，强调节奏感、高标准的录音室制作水平和全球化的审美。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "欧美流行（Western Pop）",
+        "欧美流行",
+        "Western Pop"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-2",
+      "genre_lineage": [
+        "genre-2",
+        "genre-qt-002"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-003",
+      "category": "Genre",
+      "row": 0,
+      "group": "流行",
+      "path": "Pop / Euro-Pop",
+      "zh": "欧洲流行",
+      "en": "Euro-Pop",
+      "definition": "泛指欧洲大陆（非英国）产生的流行乐，瑞典、德国、法国是主要产地。通常具有轻快、洗脑的旋律和强烈的合成器节奏，歌词直白。瑞典组合 ABBA 被公认为该流派的巅峰代表。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "欧洲流行（Euro-Pop）",
+        "欧洲流行",
+        "Euro-Pop"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-2",
+      "genre_lineage": [
+        "genre-2",
+        "genre-qt-003"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-004",
+      "category": "Genre",
+      "row": 0,
+      "group": "流行",
+      "path": "Pop / Electronic Pop",
+      "zh": "电子流行",
+      "en": "Electronic Pop",
+      "definition": "以电子合成器、鼓机和电脑音色为核心制作的流行乐。这种流派将电子乐的冷峻科技感与流行乐的悦耳旋律相结合，律动感强，常用于夜店或派对场景，一般带有明显的电子结构。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "电子流行（Electronic Pop）",
+        "电子流行",
+        "Electronic Pop"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-2",
+      "genre_lineage": [
+        "genre-2",
+        "genre-qt-004"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-005",
+      "category": "Genre",
+      "row": 0,
+      "group": "流行",
+      "path": "Pop / Instrumental Pop",
+      "zh": "器乐流行",
+      "en": "Instrumental Pop",
+      "definition": "指没有唱词、以乐器（如钢琴、萨克斯、小提琴或现代合成器）表现流行旋律的曲风。虽然没有歌词，但其结构和节奏依然遵循流行乐的模式，常用于电影背景音乐或环境氛围营造。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "器乐流行（Instrumental Pop）",
+        "器乐流行",
+        "Instrumental Pop"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-2",
+      "genre_lineage": [
+        "genre-2",
+        "genre-qt-005"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-006",
+      "category": "Genre",
+      "row": 0,
+      "group": "嘻哈",
+      "path": "Hip Hop/Rap / Detroit",
+      "zh": "底特律说唱",
+      "en": "Detroit",
+      "definition": "这是一种非常有辨识度的地区风格。它的奇特之处在于 Rapper 经常不跟拍（Off-beat），听起来像是快语速的嘟囔或是在伴奏上疯狂抢拍，配合冷冰冰的钢琴循环，有一种独特的黑色幽默感。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "底特律说唱（Detroit）",
+        "底特律说唱",
+        "Detroit"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-154",
+      "genre_lineage": [
+        "genre-154",
+        "genre-qt-006"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-007",
+      "category": "Genre",
+      "row": 0,
+      "group": "嘻哈",
+      "path": "Hip Hop/Rap / Chillhop",
+      "zh": "驰放嘻哈",
+      "en": "Chillhop",
+      "definition": "顾名思义，这是一种让你放松的风格。它将嘻哈节奏与轻爵士、新世纪音乐结合，加入柔和的钢琴或萨克斯，节奏轻缓，非常适合作为午后休息或阅读时的背景音乐。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "驰放嘻哈（Chillhop）",
+        "驰放嘻哈",
+        "Chillhop"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-154",
+      "genre_lineage": [
+        "genre-154",
+        "genre-qt-007"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-008",
+      "category": "Genre",
+      "row": 0,
+      "group": "嘻哈",
+      "path": "Hip Hop/Rap / East Coast",
+      "zh": "东海岸",
+      "en": "East Coast",
+      "definition": "以纽约为中心，这是嘻哈的“老家”。它强调采样艺术（从老唱片里截取爵士或灵魂乐段落）和歌词深度。听起来很有大都市的阴郁感，讲究双关语、隐喻和高超的说唱技巧。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "东海岸（East Coast）",
+        "东海岸",
+        "East Coast"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-154",
+      "genre_lineage": [
+        "genre-154",
+        "genre-qt-008"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-009",
+      "category": "Genre",
+      "row": 0,
+      "group": "嘻哈",
+      "path": "Hip Hop/Rap / West Coast",
+      "zh": "西海岸",
+      "en": "West Coast",
+      "definition": "以加州为中心，曲风深受 G-Funk 影响。你会听到标志性的高频合成器长音和慵懒的贝斯线。它听起来非常“丝滑”且富有节奏律动，仿佛开着敞篷车行驶在阳光明媚的洛杉矶海岸线上。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "西海岸（West Coast）",
+        "西海岸",
+        "West Coast"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-154",
+      "genre_lineage": [
+        "genre-154",
+        "genre-qt-009"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-010",
+      "category": "Genre",
+      "row": 0,
+      "group": "嘻哈",
+      "path": "Hip Hop/Rap / Melodic Rap",
+      "zh": "旋律说唱",
+      "en": "Melodic Rap",
+      "definition": "这种流派模糊了说唱与唱歌的界限。Rapper 通常会使用 Auto-Tune（电音插件） 来修饰人声，使其带有很强的旋律感。它的情绪表达更加丰富，副歌部分通常非常抓耳，极具流行潜质。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "旋律说唱（Melodic Rap）",
+        "旋律说唱",
+        "Melodic Rap"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-154",
+      "genre_lineage": [
+        "genre-154",
+        "genre-qt-010"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-011",
+      "category": "Genre",
+      "row": 0,
+      "group": "嘻哈",
+      "path": "Hip Hop/Rap / Lo-Fi Hip-hop",
+      "zh": "低保真嘻哈",
+      "en": "Lo-Fi Hip-hop",
+      "definition": "它是互联网时代最受欢迎的“赛博陪伴”。这种风格追求故意的瑕疵感，比如黑胶唱片的炒豆声、录音磁带的底噪。旋律忧郁而怀旧，是深夜学习、发呆或助眠的神器。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "低保真嘻哈（Lo-Fi Hip-hop）",
+        "低保真嘻哈",
+        "Lo-Fi Hip-hop"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-154",
+      "genre_lineage": [
+        "genre-154",
+        "genre-qt-011"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-012",
+      "category": "Genre",
+      "row": 0,
+      "group": "电子",
+      "path": "Electronic / Trap",
+      "zh": "陷阱电子舞曲",
+      "en": "Trap",
+      "definition": "将嘻哈 Trap 的 808 鼓组设计与 EDM 的合成器音色结合。相比说唱版本，它更强调掉拍瞬间的声场冲击，利用密集的镲片（Hi-hats）和巨大的底鼓营造出一种极具威胁感和控制力的舞池氛围。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "陷阱电子舞曲（Trap）",
+        "陷阱电子舞曲",
+        "Trap"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-48",
+      "genre_lineage": [
+        "genre-48",
+        "genre-qt-012"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-013",
+      "category": "Genre",
+      "row": 0,
+      "group": "电子",
+      "path": "Electronic / Brazilian Funk",
+      "zh": "巴西放克",
+      "en": "Brazilian Funk",
+      "definition": "巴西放克以130bpm左右机械循环的“tamborzão”鼓点为绝对核心，编曲极简、和声缺失，依靠失真低频与刺耳高频音效形成极端频段对比；人声仅作节奏化念白嵌入鼓点缝隙，整体混音扁平、动态压缩强烈。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "巴西放克（Brazilian Funk）",
+        "巴西放克",
+        "Brazilian Funk"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-48",
+      "genre_lineage": [
+        "genre-48",
+        "genre-qt-013"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-014",
+      "category": "Genre",
+      "row": 0,
+      "group": "摇滚",
+      "path": "Rock / Garage Rock",
+      "zh": "车库摇滚",
+      "en": "Garage Rock",
+      "definition": "追求最原始、最粗糙的生命力。它听起来就像是一群年轻人由于愤怒或无聊，在自家的简陋车库里疯狂扫弦。不讲究录音质量或演奏精度，这种失真、杂乱且充满爆发力的声音，正是后来朋克运动的养料。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "车库摇滚（Garage Rock）",
+        "车库摇滚",
+        "Garage Rock"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-107",
+      "genre_lineage": [
+        "genre-107",
+        "genre-qt-014"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-015",
+      "category": "Genre",
+      "row": 0,
+      "group": "摇滚",
+      "path": "Rock / Shoegaze",
+      "zh": "盯鞋摇滚/自赏",
+      "en": "Shoegaze",
+      "definition": "名字源于乐手演奏时总是盯着脚下的效果器板。它的核心是巨大的“音墙”——通过层层叠加的失真和反馈，将人声淹没在如潮汐般的噪音中。听感极其内敛、忧郁，像是在巨大的色彩迷雾中独自穿行。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "盯鞋摇滚/自赏（Shoegaze）",
+        "盯鞋摇滚/自赏",
+        "Shoegaze",
+        "盯鞋摇滚",
+        "自赏"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-107",
+      "genre_lineage": [
+        "genre-107",
+        "genre-qt-015"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-016",
+      "category": "Genre",
+      "row": 0,
+      "group": "朋克",
+      "path": "Punk / Synth-Punk",
+      "zh": "电子朋克",
+      "en": "Synth-Punk",
+      "definition": "使用合成器代替电吉他作为核心驱动力。它保留了朋克的原始速度感和粗糙、挑衅的口吻，但音色充满了廉价且尖锐的电子质感，呈现出一种粗砺而怪异的赛博反叛氛围。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "电子朋克（Synth-Punk）",
+        "电子朋克",
+        "Synth-Punk"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-124",
+      "genre_lineage": [
+        "genre-124",
+        "genre-qt-016"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-017",
+      "category": "Genre",
+      "row": 0,
+      "group": "朋克",
+      "path": "Punk / Garage Punk",
+      "zh": "车库朋克",
+      "en": "Garage Punk",
+      "definition": "融合了 60 年代车库摇滚的原始粗糙感与朋克的爆发力。它听起来极其不修边幅，甚至带有大量的噪音干扰，旨在还原乐团在简陋排练室里那种最本真、最狂野的碰撞。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "车库朋克（Garage Punk）",
+        "车库朋克",
+        "Garage Punk"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-124",
+      "genre_lineage": [
+        "genre-124",
+        "genre-qt-017"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-018",
+      "category": "Genre",
+      "row": 0,
+      "group": "朋克",
+      "path": "Punk / Punk Rock",
+      "zh": "朋克摇滚",
+      "en": "Punk Rock",
+      "definition": "它将摇滚乐简化为三个和弦、极速的节拍和咆哮的口吻。蔑视一切技术门槛和商业秩序，强调绝对的真实与愤怒，是青年反叛文化中最具冲击力的声音。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "朋克摇滚（Punk Rock）",
+        "朋克摇滚",
+        "Punk Rock"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-124",
+      "genre_lineage": [
+        "genre-124",
+        "genre-qt-018"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-019",
+      "category": "Genre",
+      "row": 0,
+      "group": "金属",
+      "path": "Metal / Traditional Metal",
+      "zh": "传统金属",
+      "en": "Traditional Metal",
+      "definition": "起源于 60 年代末，以黑安息日、蓝调摇滚为基石。它确立了金属乐的雏形：厚重的失真吉他、长段的独奏（Solo）以及关于黑暗或神话的主题。节奏稳健，强调力量感与宏大的英雄主义色彩。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "传统金属（Traditional Metal）",
+        "传统金属",
+        "Traditional Metal"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-207",
+      "genre_lineage": [
+        "genre-207",
+        "genre-qt-019"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-020",
+      "category": "Genre",
+      "row": 0,
+      "group": "金属",
+      "path": "Metal / Alternative Metal",
+      "zh": "另类金属",
+      "en": "Alternative Metal",
+      "definition": "将金属的重型结构与非传统元素（如放克、嘻哈、工业、另类摇滚）结合。它不拘泥于固定的套路，旋律性与实验性并存，风格跨度极大，为 90 年代纽金属等流派的兴起铺平了道路。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "另类金属（Alternative Metal）",
+        "另类金属",
+        "Alternative Metal"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-207",
+      "genre_lineage": [
+        "genre-207",
+        "genre-qt-020"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-021",
+      "category": "Genre",
+      "row": 0,
+      "group": "爵士",
+      "path": "Jazz / Latin Jazz",
+      "zh": "拉丁爵士",
+      "en": "Latin Jazz",
+      "definition": "将爵士乐的即兴灵魂与非洲-古巴或巴西的热烈节奏结合。大量使用打击乐器，节奏复杂且充满热情。它既有爵士的智力美感，又带有南美海岸的狂放与律动。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "拉丁爵士 (Latin Jazz)",
+        "拉丁爵士",
+        "Latin Jazz"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-134",
+      "genre_lineage": [
+        "genre-134",
+        "genre-qt-021"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-022",
+      "category": "Genre",
+      "row": 0,
+      "group": "爵士",
+      "path": "Jazz / Jazz-Funk",
+      "zh": "爵士融合/爵士放克",
+      "en": "Jazz Fusion / Jazz-Funk",
+      "definition": "60 年代末的实验浪潮。引入了电吉他、合成器等电子乐器，并将 Funk 的强劲律动融入爵士即兴。音乐充满了多变的音色和复杂的结构，技术性与力量感兼备。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "爵士融合 (Jazz Fusion)/爵士放克",
+        "Jazz Fusion",
+        "Jazz-Funk",
+        "爵士放克"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-134",
+      "genre_lineage": [
+        "genre-134",
+        "genre-qt-022"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-023",
+      "category": "Genre",
+      "row": 0,
+      "group": "古典",
+      "path": "Classical / 14世纪之前",
+      "zh": "早期音乐（14世纪之前）",
+      "en": "Early Music",
+      "definition": "这一时期的核心是中世纪音乐。它以格里高利圣咏为代表，最初是纯粹的单旋律教会音乐，没有任何器乐伴奏。即便后来出现了早期复调（如奥尔加农），其音程关系也相对生硬、空灵。音乐风格极其肃穆、内敛，完全服从于宗教仪式，流传下来的乐谱也多为纽姆谱，带有浓厚的原始宗教神秘色彩。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "早期音乐（Early Music）（14世纪之前）",
+        "Early Music",
+        "14世纪之前"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-176",
+      "genre_lineage": [
+        "genre-176",
+        "genre-qt-023"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-024",
+      "category": "Genre",
+      "row": 0,
+      "group": "古典",
+      "path": "Classical / Romantic",
+      "zh": "浪漫主义时期",
+      "en": "Romantic",
+      "definition": "情感爆发的时代。音乐不再拘泥于形式，转而追求个人情感的极致表达。旋律起伏巨大，编曲宏大且富于色彩感，充满了对自然、爱与死亡的狂热想象。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "浪漫主义时期 (Romantic)",
+        "浪漫主义时期",
+        "Romantic"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-176",
+      "genre_lineage": [
+        "genre-176",
+        "genre-qt-024"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-025",
+      "category": "Genre",
+      "row": 0,
+      "group": "古典",
+      "path": "Classical / 20th Century & Contemporary",
+      "zh": "20世纪与现代音乐",
+      "en": "20th Century & Contemporary",
+      "definition": "实验与多元的世纪。打破了传统音阶和调性，出现了无调性、极简主义和电子元素。它极具挑战性，旨在探索声音的无限可能，反映了现代社会复杂的精神状态。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "20世纪与现代音乐 (20th Century & Contemporary)",
+        "20世纪与现代音乐",
+        "20th Century & Contemporary"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-176",
+      "genre_lineage": [
+        "genre-176",
+        "genre-qt-025"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-026",
+      "category": "Genre",
+      "row": 0,
+      "group": "古典",
+      "path": "Classical / Classical Crossover",
+      "zh": "古典跨界",
+      "en": "Classical Crossover",
+      "definition": "将古典音乐的底蕴与流行、摇滚或电影配乐的审美结合。它剥离了严肃音乐的门槛，利用现代编曲让古典旋律更易传播，追求宏大而动人的听觉盛宴。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "古典跨界 (Classical Crossover)",
+        "古典跨界",
+        "Classical Crossover"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-176",
+      "genre_lineage": [
+        "genre-176",
+        "genre-qt-026"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-027",
+      "category": "Genre",
+      "row": 0,
+      "group": "民谣",
+      "path": "Folk / Pop Folk",
+      "zh": "流行民谣",
+      "en": "Pop Folk",
+      "definition": "民谣与流行乐的融合产物。它保留了民谣的木吉他基调和叙事性，但在编曲上更加精致、抓耳，符合现代流行审美。听起来清新、明快，往往带有很强的传唱度，是大众最易接受的民谣形式。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "流行民谣 (Pop Folk)",
+        "流行民谣",
+        "Pop Folk"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-34",
+      "genre_lineage": [
+        "genre-34",
+        "genre-qt-027"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-028",
+      "category": "Genre",
+      "row": 0,
+      "group": "乡村",
+      "path": "Country / American Country",
+      "zh": "美式乡村",
+      "en": "American Country",
+      "definition": "起源于美国南部与阿巴拉契亚山区。它融合了凯尔特民谣、蓝调与福音音乐，以小提琴、钢棒吉他为标志。歌词多描写爱情、辛勤工作和家庭价值，充满了浓郁的泥土气息。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "美式乡村 (American Country)",
+        "美式乡村",
+        "American Country"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-27",
+      "genre_lineage": [
+        "genre-27",
+        "genre-qt-028"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-029",
+      "category": "Genre",
+      "row": 0,
+      "group": "乡村",
+      "path": "Country / Traditional Country",
+      "zh": "传统乡村乐",
+      "en": "Traditional Country",
+      "definition": "特指 20 世纪中叶的经典乡村风格（如 Honky-tonk）。它坚持最纯粹的配器和略带鼻音的唱腔，歌词直白且充满市井气息，是乡村音乐最核心、最稳固的审美基石。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "传统乡村乐 (Traditional Country)",
+        "传统乡村乐",
+        "Traditional Country"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-27",
+      "genre_lineage": [
+        "genre-27",
+        "genre-qt-029"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-030",
+      "category": "Genre",
+      "row": 0,
+      "group": "节奏蓝调/灵魂",
+      "path": "R&B/Soul / traditional R&B",
+      "zh": "传统R&B",
+      "en": "Traditional R&B",
+      "definition": "40-50 年代的节奏蓝调。它在蓝调基础上增加了强劲的爵士乐跳跃节奏和管乐团。这种音乐充满了爆发力和律动感，是后来摇滚乐和现代流行乐的最重要源头。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "传统R&B (traditional R&B)",
+        "Traditional R&B",
+        "traditional R&B"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-186",
+      "genre_lineage": [
+        "genre-186",
+        "genre-qt-030"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-031",
+      "category": "Genre",
+      "row": 0,
+      "group": "节奏蓝调/灵魂",
+      "path": "R&B/Soul / Alternative R&B",
+      "zh": "另类R&B",
+      "en": "Alternative R&B",
+      "definition": "实验性极强的子流派。它大量吸收了环境音乐、独立摇滚和黑暗电子的元素，节奏变得破碎且难以预料。氛围往往阴暗、迷幻且富有电影感，打破了传统 R&B 的悦耳框架。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "另类R&B（Alternative R&B）",
+        "另类R&B",
+        "Alternative R&B"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-186",
+      "genre_lineage": [
+        "genre-186",
+        "genre-qt-031"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-032",
+      "category": "Genre",
+      "row": 0,
+      "group": "拉丁",
+      "path": "Latin / Salsa",
+      "zh": "萨尔萨",
+      "en": "Salsa",
+      "definition": "融合了古巴颂乐与波多黎各色彩的混合风格。它讲究复杂的打击乐层次和铜管乐器的爆发力。萨尔萨的节奏极具交互性，既有爵士乐的精致，又有浓厚的加勒比海风情，是社交拉丁舞的核心伴奏。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "萨尔萨 (Salsa)",
+        "萨尔萨",
+        "Salsa"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-244",
+      "genre_lineage": [
+        "genre-244",
+        "genre-qt-032"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-033",
+      "category": "Genre",
+      "row": 0,
+      "group": "雷鬼",
+      "path": "Reggae / Reggae Pop",
+      "zh": "雷鬼流行",
+      "en": "Reggae Pop",
+      "definition": "将雷鬼的反拍律动与流行乐的旋律结构相结合。节奏轻松愉快，常带有热带风情。Bob Marley是最具代表性的推广者。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "雷鬼流行（Reggae Pop）",
+        "雷鬼流行",
+        "Reggae Pop"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-204",
+      "genre_lineage": [
+        "genre-204",
+        "genre-qt-033"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-034",
+      "category": "Genre",
+      "row": 0,
+      "group": "雷鬼",
+      "path": "Reggae / Ska",
+      "zh": "斯卡",
+      "en": "Ska",
+      "definition": "雷鬼的前身，起源于1950年代牙买加。以反拍吉他（Off-beat）和铜管乐器阵列为标志，节奏轻快、跳跃感强。后传入英国发展出Two-Tone和Ska Punk等变体。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "斯卡（Ska）",
+        "斯卡",
+        "Ska"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-204",
+      "genre_lineage": [
+        "genre-204",
+        "genre-qt-034"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-035",
+      "category": "Genre",
+      "row": 0,
+      "group": "雷鬼",
+      "path": "Reggae / Roots Reggae",
+      "zh": "根源雷鬼",
+      "en": "Roots Reggae",
+      "definition": "1970年代牙买加雷鬼的核心形态，以Bob Marley为代表。强调社会意识和拉斯塔法里信仰，音乐上以稳定的反拍节奏、深沉的贝斯线和灵性的歌词为特征。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "根源雷鬼（Roots Reggae）",
+        "根源雷鬼",
+        "Roots Reggae"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-204",
+      "genre_lineage": [
+        "genre-204",
+        "genre-qt-035"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-036",
+      "category": "Genre",
+      "row": 0,
+      "group": "配乐",
+      "path": "Score / Film & TV Soundtrack",
+      "zh": "影视原声",
+      "en": "Film & TV Soundtrack",
+      "definition": "为电影、电视剧、网剧、动画及纪录片等视听作品创作或选用的音乐。既包含用于渲染氛围、推动叙事的原创配乐（Score），也包含主题曲、插曲及其他原声音乐。核心功能是强化叙事张力、引导观众情绪，并塑造角色、时代与场景的声音形象。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "影视原声 (Film & TV Soundtrack)",
+        "影视原声",
+        "Film & TV Soundtrack"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-273",
+      "genre_lineage": [
+        "genre-273",
+        "genre-qt-036"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-037",
+      "category": "Genre",
+      "row": 0,
+      "group": "配乐",
+      "path": "Score / Video Game Soundtrack",
+      "zh": "游戏原声",
+      "en": "Video Game Soundtrack",
+      "definition": "为电子游戏创作的音乐。强调交互性与沉浸感，从早期的8-bit电子音到宏大的交响乐均有涵盖。游戏音乐需契合关卡氛围，并根据玩家操作实时变换情绪，是玩家在虚拟世界中冒险时的情感锚点。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "游戏原声 (Video Game Soundtrack)",
+        "游戏原声",
+        "Video Game Soundtrack"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-273",
+      "genre_lineage": [
+        "genre-273",
+        "genre-qt-037"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-038",
+      "category": "Genre",
+      "row": 0,
+      "group": "配乐",
+      "path": "Score / Short-form Video BGM",
+      "zh": "短视频/Vlog配乐",
+      "en": "Short-form Video BGM",
+      "definition": "用于短视频、Vlog、生活记录、探店、旅行等日常视频内容的背景配乐。通常为轻快、氛围感强的器乐曲，时长较短（15秒-3分钟），旋律简洁易记，循环性强，不抢夺画面主体信息。涵盖抖音、快手、B站、YouTube等平台常见的BGM风格。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "短视频/Vlog配乐 (Short-form Video BGM)",
+        "短视频/Vlog配乐",
+        "Short-form Video BGM",
+        "短视频",
+        "Vlog配乐"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-273",
+      "genre_lineage": [
+        "genre-273",
+        "genre-qt-038"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-039",
+      "category": "Genre",
+      "row": 0,
+      "group": "配乐",
+      "path": "Score / Corporate / Commercial BGM",
+      "zh": "商业/企业配乐",
+      "en": "Corporate / Commercial BGM",
+      "definition": "用于广告、企业宣传片、产品发布会、品牌TVC等商业场景的配乐。风格偏积极、专业、现代感，常以钢琴、原声吉他、轻电子为主。节奏明快但不激进，旨在传递信任感、创新感或品牌调性。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "商业/企业配乐 (Corporate / Commercial BGM)",
+        "商业/企业配乐",
+        "Corporate / Commercial BGM",
+        "商业",
+        "企业配乐"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-273",
+      "genre_lineage": [
+        "genre-273",
+        "genre-qt-039"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-040",
+      "category": "Genre",
+      "row": 0,
+      "group": "配乐",
+      "path": "Score / Audio Drama, Podcast & Spoken-Word Music",
+      "zh": "广播剧/播客/有声内容配乐",
+      "en": "Audio Drama, Podcast & Spoken-Word Music",
+      "definition": "用于广播剧、播客、有声书、知识音频等以人声叙事为主的纯音频内容。通过背景音乐、主题音乐和转场音乐构建场景与氛围、划分内容层次、调节叙事节奏并强化情绪表达。广播剧侧重空间想象与剧情推进，播客及其他有声内容则更强调陪伴感、信息衔接和声音品牌识别；编配通常需为对白与旁白保留清晰的听觉空间。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "广播剧/播客/有声内容配乐（Audio Drama, Podcast & Spoken-Word Music）",
+        "广播剧/播客/有声内容配乐",
+        "Audio Drama, Podcast & Spoken-Word Music",
+        "广播剧",
+        "播客",
+        "有声内容配乐"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-273",
+      "genre_lineage": [
+        "genre-273",
+        "genre-qt-040"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-041",
+      "category": "Genre",
+      "row": 0,
+      "group": "配乐",
+      "path": "Score / Variety Show BGM",
+      "zh": "综艺/真人秀配乐",
+      "en": "Variety Show BGM",
+      "definition": "用于综艺节目、真人秀、访谈节目、直播节目等的背景配乐与功能性音效。包含搞笑桥段的滑稽配乐、紧张悬念的答题配乐、感动煽情的回顾配乐等。特点是情绪切换快、功能性强、辨识度高，常配合花字和剪辑节奏使用。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "综艺/真人秀配乐 (Variety Show BGM)",
+        "综艺/真人秀配乐",
+        "Variety Show BGM",
+        "综艺",
+        "真人秀配乐"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-273",
+      "genre_lineage": [
+        "genre-273",
+        "genre-qt-041"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-042",
+      "category": "Genre",
+      "row": 0,
+      "group": "配乐",
+      "path": "Score / Stage, Theatre & Musical Theatre Music",
+      "zh": "舞台/戏剧/音乐剧原声",
+      "en": "Stage, Theatre & Musical Theatre Music",
+      "definition": "用于话剧、舞台剧、音乐剧、舞蹈剧等现场戏剧演出的音乐。既包括主题音乐、场景配乐和转场音乐，也包括由角色演唱、直接参与剧情推进的歌曲。音乐需配合现场表演、舞台调度与戏剧情境，承担塑造角色、组织段落、强化情绪和推动叙事等功能；风格可涵盖古典、歌剧、流行、摇滚、爵士及实验音乐等。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "舞台/戏剧/音乐剧原声（Stage, Theatre & Musical Theatre Music）",
+        "舞台/戏剧/音乐剧原声",
+        "Stage, Theatre & Musical Theatre Music",
+        "舞台",
+        "戏剧",
+        "音乐剧原声"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-273",
+      "genre_lineage": [
+        "genre-273",
+        "genre-qt-042"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-043",
+      "category": "Genre",
+      "row": 0,
+      "group": "配乐",
+      "path": "Score / Trailer / Title Music",
+      "zh": "预告片/片头音乐",
+      "en": "Trailer / Title Music",
+      "definition": "用于电影预告片、频道片头、节目Opening、活动暖场等场景的功能性配乐。节奏紧凑，冲击力强，通常30秒至2分钟。与史诗音乐的区别在于：预告片音乐更注重\"钩子\"设计和悬念铺设，不一定追求宏大感，也可以是极简、诡异或反差的风格。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "预告片/片头音乐 (Trailer / Title Music)",
+        "预告片/片头音乐",
+        "Trailer / Title Music",
+        "预告片",
+        "片头音乐"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-273",
+      "genre_lineage": [
+        "genre-273",
+        "genre-qt-043"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-044",
+      "category": "Genre",
+      "row": 0,
+      "group": "儿童音乐",
+      "path": "Childhood / Children's Songs",
+      "zh": "儿歌",
+      "en": "Children's Songs",
+      "definition": "专为学龄前儿童设计的启蒙音乐。旋律极其简单且高度重复，歌词多涉及认知自然、生活习惯或童话故事。它强调韵律感和互动性（如拍手、跳动），是儿童早期语言学习和社交能力培养的重要媒介，听感纯真、活泼。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "儿歌 (Children's Songs)",
+        "儿歌",
+        "Children's Songs"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-228",
+      "genre_lineage": [
+        "genre-228",
+        "genre-qt-044"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-045",
+      "category": "Genre",
+      "row": 0,
+      "group": "儿童音乐",
+      "path": "Childhood / Lullaby",
+      "zh": "摇篮曲",
+      "en": "Lullaby",
+      "definition": "具有明确助眠功能的舒缓音乐。旋律起伏微弱，节奏通常模拟母体心跳或轻摇摇篮的频率。配器多使用柔和的钢琴、竖琴或轻柔的吟唱，旨在营造极其安全、宁静的氛围，帮助婴幼儿放松神经，平静地进入梦乡。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "摇篮曲 (Lullaby)",
+        "摇篮曲",
+        "Lullaby"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-228",
+      "genre_lineage": [
+        "genre-228",
+        "genre-qt-045"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-046",
+      "category": "Genre",
+      "row": 0,
+      "group": "儿童音乐",
+      "path": "Childhood / Kids Pop",
+      "zh": "儿童流行",
+      "en": "Kids Pop",
+      "definition": "针对年龄稍大的青少年或儿童设计的流行音乐。它保留了主流流行乐（Pop）时髦的编曲和律动感，但在歌词内容上过滤了成人世界的复杂情感，转而探讨校园生活、梦想或友情。音色明亮且充满朝气，是兼具娱乐性与青少年审美的折衷产物。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "儿童流行 (Kids Pop)",
+        "儿童流行",
+        "Kids Pop"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-228",
+      "genre_lineage": [
+        "genre-228",
+        "genre-qt-046"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-047",
+      "category": "Genre",
+      "row": 0,
+      "group": "国风音乐",
+      "path": "Chinese Style / Chinoiserie Rnb",
+      "zh": "国风R&B",
+      "en": "Chinoiserie R&B",
+      "definition": "以R&B的节奏律动和唱腔为基础，融入中国传统乐器音色和五声音阶旋律的风格。人声处理上保留R&B的转音和即兴特点，编曲中加入古筝、琵琶等民乐元素。听感上兼具都市感和东方韵味。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "国风rnb（Chinoiserie Rnb）",
+        "国风R&B",
+        "Chinoiserie R&B",
+        "Chinoiserie Rnb"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-101",
+      "genre_lineage": [
+        "genre-101",
+        "genre-qt-047"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-048",
+      "category": "Genre",
+      "row": 0,
+      "group": "国风音乐",
+      "path": "Chinese Style / Chinoiserie Metal",
+      "zh": "国风金属",
+      "en": "Chinoiserie Metal",
+      "definition": "在金属乐的重型失真和双踩鼓点基础上融入中国传统音乐元素的极端风格。常使用古筝、二胡等民乐音色与金属riff交织，歌词涉及中国神话或历史题材。听感上在金属的冲击力中带有鲜明的东方色彩。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "国风金属（Chinoiserie Metal）",
+        "国风金属",
+        "Chinoiserie Metal"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-101",
+      "genre_lineage": [
+        "genre-101",
+        "genre-qt-048"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-049",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Afrobeat",
+      "zh": "非洲节拍",
+      "en": "Afrobeat",
+      "definition": "起源于1970年代尼日利亚，由Fela Kuti创立。将西非传统多节奏鼓点与爵士、放克的铜管编排和即兴演奏融合，曲目通常较长（10-30分钟），以复杂的交叉节奏和社会批判歌词为核心。听感上律动强烈、层次丰富，充满原始生命力。当代变体Afrobeats已成为全球主流流行乐的重要力量。",
+      "features": "优先级 P0",
+      "sentiment": "",
+      "aliases": [
+        "非洲节拍（Afrobeat）",
+        "非洲节拍",
+        "Afrobeat"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-049"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "genre-qt-050",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / World Fusion",
+      "zh": "世界融合",
+      "en": "World Fusion",
+      "definition": "将两种以上不同文化背景的音乐传统进行创造性融合的泛类标签。常见组合包括爵士+印度拉格、电子+非洲鼓乐、古典+中东音阶等。没有固定的编制或曲式，核心在于跨文化的音乐对话。听感上风格跨度极大，是当代世界音乐创作中最活跃的方向之一。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "世界融合（World Fusion）",
+        "世界融合",
+        "World Fusion"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-050"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-051",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Son",
+      "zh": "颂乐",
+      "en": "Son",
+      "definition": "古巴音乐的根基流派，起源于19世纪东部乡村。将西班牙吉他传统与非洲打击乐节奏融合，以Tres吉他、Bongos鼓和Maracas沙锤为核心编制。节奏以Clave（2-3或3-2拍型）为骨架，旋律优美且富有叙事性。是萨尔萨(Salsa)的直接前身，因Buena Vista Social Club专辑闻名全球。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "颂乐（Son）",
+        "颂乐",
+        "Son"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-051"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-052",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / MPB",
+      "zh": "巴西流行乐",
+      "en": "MPB",
+      "definition": "Música Popular Brasileira的缩写，是巴西都市中产阶层的代表性音乐流派。起源于1960年代Bossa Nova运动之后，融合了桑巴、爵士、摇滚和巴西各地民间音乐元素。以精致的和声进行、诗意的歌词和高水准的编曲著称。听感上优雅且富有知性，Caetano Veloso和Gilberto Gil是核心代表人物。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "巴西流行乐（MPB）",
+        "巴西流行乐",
+        "MPB"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-052"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-053",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Regional Mexican",
+      "zh": "墨西哥地方音乐",
+      "en": "Regional Mexican",
+      "definition": "涵盖墨西哥各地区传统音乐风格的统称，包括Mariachi（流浪乐队）、Banda（铜管乐队）、Norteño（北方风格）等。Mariachi以小提琴、小号和Guitarrón大吉他为标志，Norteño则以手风琴和Bajo Sexto为核心。听感上热烈奔放，是北美拉丁音乐市场的主力流派。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "墨西哥地方音乐（Regional Mexican）",
+        "墨西哥地方音乐",
+        "Regional Mexican"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-053"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-054",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Mongolian Folk",
+      "zh": "蒙古民谣",
+      "en": "Mongolian Folk",
+      "definition": "蒙古高原游牧民族的音乐传统，涵盖长调(Urtyn Duu)和短调(Bogino Duu)两大形式。长调以极慢的速度、宽广的音域和装饰性颤音为特征，一个音节可延续数拍；短调节奏明快，多为叙事歌曲。马头琴(Morin Khuur)是标志性伴奏乐器。呼麦(Khöömii)喉音唱法是蒙古民谣中最具辨识度的演唱技法。",
+      "features": "优先级 P1",
+      "sentiment": "",
+      "aliases": [
+        "蒙古民谣（Mongolian Folk）",
+        "蒙古民谣",
+        "Mongolian Folk"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-054"
+      ],
+      "priority": "P1"
+    },
+    {
+      "id": "genre-qt-055",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Qawwali",
+      "zh": "卡瓦利",
+      "en": "Qawwali",
+      "definition": "南亚苏菲派宗教音乐形式，起源于13世纪印度。以Harmonium手风琴和Tabla鼓伴奏，歌手以渐强的方式从低吟推向 ecstatic（入神）状态。歌词多为苏菲诗歌，表达对神的渴望。Nusrat Fateh Ali Khan将其推向国际舞台。听感上层层递进，具有强烈的精神感染力。",
+      "features": "优先级 P2",
+      "sentiment": "",
+      "aliases": [
+        "卡瓦利（Qawwali）",
+        "卡瓦利",
+        "Qawwali"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-055"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "genre-qt-056",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Gregorian Chant",
+      "zh": "格里高利圣咏",
+      "en": "Gregorian Chant",
+      "definition": "西方最古老的声乐传统之一，公元6世纪由教皇格里高利一世整理规范。纯人声无伴奏、单声部齐唱，使用拉丁语礼拜文本，旋律以自然音阶的级进进行为主，节奏自由跟随语言韵律。听感上空灵、肃穆，具有超越时空的冥想感。是中世纪音乐研究的核心文献。",
+      "features": "优先级 P2",
+      "sentiment": "",
+      "aliases": [
+        "格里高利圣咏（Gregorian Chant）",
+        "格里高利圣咏",
+        "Gregorian Chant"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-056"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "genre-qt-057",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Klezmer",
+      "zh": "克莱兹默",
+      "en": "Klezmer",
+      "definition": "东欧阿什肯纳兹犹太人的传统器乐音乐。以单簧管和小提琴为主奏乐器，旋律大量使用弗里吉亚调式和装饰音，节奏以Freylakh（欢快舞曲）和Doina（自由即兴）为主。听感上兼具欢乐与哀伤，既用于婚礼庆典也表达民族苦难。20世纪末经历复兴运动。",
+      "features": "优先级 P2",
+      "sentiment": "",
+      "aliases": [
+        "克莱兹默（Klezmer）",
+        "克莱兹默",
+        "Klezmer"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-057"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "genre-qt-058",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Gagaku",
+      "zh": "雅乐",
+      "en": "Gagaku",
+      "definition": "日本宫廷仪式音乐，公元7世纪从中国唐朝和朝鲜半岛传入后本土化。使用笙(Shō)、篳篥(Hichiriki)、龙笛(Ryūteki)等管乐器和太鼓、钲鼓等打击乐器。节奏极其缓慢，一首曲目可达20分钟以上。听感上庄严肃穆、音色独特，是现存世界上最古老的管弦乐形式之一。",
+      "features": "优先级 P2",
+      "sentiment": "",
+      "aliases": [
+        "雅乐（Gagaku）",
+        "雅乐",
+        "Gagaku"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-058"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "genre-qt-059",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Jewish Music",
+      "zh": "犹太音乐",
+      "en": "Jewish Music",
+      "definition": "涵盖犹太民族各时期的宗教与世俗音乐传统。宗教层面包括会堂吟唱(Cantorial)、安息日祈祷曲；世俗层面包括克莱兹默器乐、也门犹太歌曲和以色列民间歌曲。使用Ahava Rabbah调式（含增二度音程）是最显著的音乐特征。听感上在虔诚与欢快之间交替。",
+      "features": "优先级 P2",
+      "sentiment": "",
+      "aliases": [
+        "犹太音乐（Jewish Music）",
+        "犹太音乐",
+        "Jewish Music"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-059"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "genre-qt-060",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Cajun",
+      "zh": "卡津",
+      "en": "Cajun",
+      "definition": "美国路易斯安那州法裔阿卡迪亚人的传统音乐。以手风琴和提琴(Fiddle)为核心乐器，歌词使用卡津法语，节奏轻快适合跳舞。与柴迪科(Zydeco)关系密切但更偏乡村风格。听感上质朴、欢快，带有浓厚的美国南方沼泽地带风情。",
+      "features": "优先级 P2",
+      "sentiment": "",
+      "aliases": [
+        "卡津（Cajun）",
+        "卡津",
+        "Cajun"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-060"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "genre-qt-061",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Zydeco",
+      "zh": "柴迪科",
+      "en": "Zydeco",
+      "definition": "美国路易斯安那州非裔克里奥尔人的传统音乐，与卡津(Cajun)同源但融合了更多布鲁斯和R&B元素。以手风琴和搓板(Frottoir)为标志乐器，节奏比卡津更强劲、更富律动感。听感上粗犷热烈，是美国根源音乐中独特的文化交汇产物。",
+      "features": "优先级 P2",
+      "sentiment": "",
+      "aliases": [
+        "柴迪科（Zydeco）",
+        "柴迪科",
+        "Zydeco"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-061"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "genre-qt-062",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Korean Traditional Music",
+      "zh": "韩国传统音乐",
+      "en": "Korean Traditional Music",
+      "definition": "涵盖韩国宫廷音乐(正乐/Jeongak)和民间音乐(民俗乐/Minsogak)两大体系。宫廷音乐节奏缓慢、音色清雅；民俗乐包括板索里(Pansori，说唱叙事)、散调(Sanjo，器乐即兴)和农乐(Nongak，农民音乐)。使用伽倻琴、玄琴、大笒等传统乐器。与韩国演歌(Trot)是不同的音乐传统。",
+      "features": "优先级 P2",
+      "sentiment": "",
+      "aliases": [
+        "韩国传统音乐（Korean Traditional Music）",
+        "韩国传统音乐",
+        "Korean Traditional Music"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-062"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "genre-qt-063",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Merengue",
+      "zh": "梅伦格",
+      "en": "Merengue",
+      "definition": "多米尼加共和国的国民音乐舞蹈形式。以Tambora鼓、Güira刮器和手风琴为三大核心乐器，节奏稳定在2/4拍，速度通常在120-160BPM之间。听感上简洁有力、极易跟跳，是加勒比地区最具传播力的舞蹈音乐之一。现代梅伦格融合了萨尔萨和流行元素。",
+      "features": "优先级 P2",
+      "sentiment": "",
+      "aliases": [
+        "梅伦格（Merengue）",
+        "梅伦格",
+        "Merengue"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-063"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "genre-qt-064",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Calypso",
+      "zh": "卡利普索",
+      "en": "Calypso",
+      "definition": "特立尼达和多巴哥的标志性音乐流派，起源于非洲奴隶社群。以钢鼓(Steel Pan)和吉他伴奏，歌词具有强烈的社会讽刺和时事评论传统，歌手以即兴编词著称。节奏轻快、带有加勒比热带的松弛感。是索卡(Soca)音乐的前身，每年狂欢节是其最重要的展示舞台。",
+      "features": "优先级 P2",
+      "sentiment": "",
+      "aliases": [
+        "卡利普索（Calypso）",
+        "卡利普索",
+        "Calypso"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-064"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "genre-qt-065",
+      "category": "Genre",
+      "row": 0,
+      "group": "世界音乐",
+      "path": "World Music / Raga",
+      "zh": "拉格",
+      "en": "Raga",
+      "definition": "印度古典音乐的核心体系，不是固定旋律而是一套音阶框架和即兴规则。每个拉格有特定的上行(Arohana)和下行(Avarohana)音阶、特征音句(Pakad)及对应的情感/时间。以Sitar、Sarod、Tabla等乐器演绎，演奏者在框架内即兴发展。听感上冥想性强，一次完整演奏可持续数十分钟。",
+      "features": "优先级 P2",
+      "sentiment": "",
+      "aliases": [
+        "拉格（Raga）",
+        "拉格",
+        "Raga"
+      ],
+      "genre_level": 2,
+      "genre_parent_id": "genre-255",
+      "genre_lineage": [
+        "genre-255",
+        "genre-qt-065"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "instrument-qt-001",
+      "category": "Instrument",
+      "row": 0,
+      "group": "合成器",
+      "path": "",
+      "zh": "超低音贝斯",
+      "en": "Sub Bass",
+      "definition": "极低频的纯净低音层（常见为正弦/三角或低谐波合成）。主要提供“身体感/压迫感”，通常与 Kick 做侧链（Sidechain）或频段分工，避免低频打架。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "超低音贝斯",
+        "Sub Bass"
+      ]
+    },
+    {
+      "id": "instrument-qt-002",
+      "category": "Instrument",
+      "row": 0,
+      "group": "合成器",
+      "path": "",
+      "zh": "808贝斯",
+      "en": "808 Bass",
+      "definition": "源自 TR-808 底鼓音色体系的低频“可调音高的鼓式贝斯”。常通过调音/滑音（Glide）承担主低音线，需要控制超低频（约 20–60 Hz）与谐波（饱和/失真）以保证在小音箱上也能听见。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "808贝斯",
+        "808 Bass"
+      ]
+    },
+    {
+      "id": "instrument-qt-003",
+      "category": "Instrument",
+      "row": 0,
+      "group": "合成器",
+      "path": "",
+      "zh": "低频贝斯",
+      "en": "Dub Bass",
+      "definition": "强调深沉子低频、圆润起音与空间回声的合成贝斯细分音色；相较通用 Synth Bass，更突出低频持续与 Dub 式空间处理。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "低频贝斯",
+        "Dub Bass"
+      ]
+    },
+    {
+      "id": "instrument-qt-004",
+      "category": "Instrument",
+      "row": 0,
+      "group": "合成器",
+      "path": "",
+      "zh": "失真贝斯",
+      "en": "Distorted Bass",
+      "definition": "加入失真、饱和或波形折叠的合成贝斯细分音色，具有更强中频谐波、粗粝感和攻击性。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "失真贝斯",
+        "Distorted Bass"
+      ]
+    },
+    {
+      "id": "instrument-qt-005",
+      "category": "Instrument",
+      "row": 0,
+      "group": "合成器",
+      "path": "",
+      "zh": "氛围铺底",
+      "en": "Ambient Pads",
+      "definition": "长起音、柔和持续并强调空间感的铺底音色，用于构建低存在感的背景氛围。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "氛围铺底",
+        "Ambient Pads"
+      ]
+    },
+    {
+      "id": "instrument-qt-006",
+      "category": "Instrument",
+      "row": 0,
+      "group": "合成器",
+      "path": "",
+      "zh": "空间铺底",
+      "en": "Atmospheric Pads",
+      "definition": "具有宽广立体声、长混响与缓慢变化的合成铺底，突出环境纵深和空气感。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "空间铺底",
+        "Atmospheric Pads"
+      ]
+    },
+    {
+      "id": "instrument-qt-007",
+      "category": "Instrument",
+      "row": 0,
+      "group": "合成器",
+      "path": "",
+      "zh": "诡异铺底",
+      "en": "Eerie Pads",
+      "definition": "带不协和泛音、暗色滤波或缓慢调制的铺底音色，突出悬疑、危险和未知感。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "诡异铺底",
+        "Eerie Pads"
+      ]
+    },
+    {
+      "id": "instrument-qt-008",
+      "category": "Instrument",
+      "row": 0,
+      "group": "合成器",
+      "path": "",
+      "zh": "空灵铺底",
+      "en": "Ethereal Pads",
+      "definition": "高频柔亮、质感轻盈并带长混响尾音的铺底音色，突出漂浮和超现实感。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "空灵铺底",
+        "Ethereal Pads"
+      ]
+    },
+    {
+      "id": "instrument-qt-009",
+      "category": "Instrument",
+      "row": 0,
+      "group": "合成器",
+      "path": "",
+      "zh": "合成器琶音",
+      "en": "Synth Arpeggiator",
+      "definition": "将和弦自动分解为节奏性音序的合成器功能/设备，可快速生成有律动的琶音纹理。常用于电子与流行编曲的驱动感织体。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "合成器琶音",
+        "Synth Arpeggiator"
+      ]
+    },
+    {
+      "id": "instrument-qt-010",
+      "category": "Instrument",
+      "row": 0,
+      "group": "合成器",
+      "path": "",
+      "zh": "合成器牛铃",
+      "en": "Synth Cowbell",
+      "definition": "带明确音高与金属谐波的电子牛铃，常见于 808 鼓机、Electro 和复古电子音乐。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "合成器牛铃",
+        "Synth Cowbell"
+      ]
+    },
+    {
+      "id": "instrument-qt-011",
+      "category": "Instrument",
+      "row": 0,
+      "group": "打击乐组",
+      "path": "",
+      "zh": "底鼓",
+      "en": "Kick Drum",
+      "definition": "鼓组中负责低频重击与节拍重心的大型鼓，通过脚踏槌击鼓面发声，具有低沉基频和清晰瞬态；常用于强调强拍、建立律动根基，并与贝斯共同支撑低频。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "底鼓",
+        "Kick Drum",
+        "Kick"
+      ]
+    },
+    {
+      "id": "instrument-qt-012",
+      "category": "Instrument",
+      "row": 0,
+      "group": "打击乐组",
+      "path": "",
+      "zh": "钹",
+      "en": "Cymbals",
+      "definition": "鼓组中的金属钹类总称，用于强调重拍、制造过门与能量层次。制作中注意高频刺耳与混响尾音堆积。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "钹",
+        "Cymbals",
+        "Cymbal",
+        "Crash",
+        "Ride"
+      ]
+    },
+    {
+      "id": "instrument-qt-013",
+      "category": "Instrument",
+      "row": 0,
+      "group": "打击乐组",
+      "path": "",
+      "zh": "跺脚",
+      "en": "Foot Stomps",
+      "definition": "用脚踏地产生的节奏性冲击声，带强烈现场感与人类律动。常用于民谣/原声编制强化节拍与“聚会感”。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "跺脚",
+        "Foot Stomps"
+      ]
+    },
+    {
+      "id": "instrument-qt-014",
+      "category": "Instrument",
+      "row": 0,
+      "group": "打击乐组",
+      "path": "",
+      "zh": "排鼓",
+      "en": "Paigu",
+      "definition": "中国传统打击乐器，由多个大小不同、音高各异的鼓组合而成，常用于民族管弦乐队及鼓乐合奏中的独奏与节奏编配。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "排鼓",
+        "Paigu"
+      ]
+    },
+    {
+      "id": "instrument-qt-015",
+      "category": "Instrument",
+      "row": 0,
+      "group": "键盘",
+      "path": "",
+      "zh": "电子管风琴",
+      "en": "Hammond Organ",
+      "definition": "音轮电风琴音色，常配合 Leslie 旋转音箱产生标志性的旋转、颤动与饱满持续音。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "电子管风琴",
+        "Hammond Organ",
+        "Hammond"
+      ]
+    },
+    {
+      "id": "instrument-qt-016",
+      "category": "Instrument",
+      "row": 0,
+      "group": "键盘",
+      "path": "",
+      "zh": "口风琴",
+      "en": "Melodica",
+      "definition": "通过吹气驱动簧片并用键盘演奏的便携乐器，音色带鼻音与童趣。常用于雷鬼、独立流行与轻松氛围编配。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "口风琴",
+        "Melodica"
+      ]
+    },
+    {
+      "id": "instrument-qt-017",
+      "category": "Instrument",
+      "row": 0,
+      "group": "吉他",
+      "path": "",
+      "zh": "西班牙/古典吉他",
+      "en": "Spanish/Classical Guitar",
+      "definition": "使用尼龙弦的原声吉他，音色温暖圆润、起音较柔，适合古典、弗拉门戈与拉丁演奏。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "西班牙/古典吉他",
+        "Spanish/Classical Guitar",
+        "Classical Guitar",
+        "Spanish Guitar"
+      ]
+    },
+    {
+      "id": "instrument-qt-018",
+      "category": "Instrument",
+      "row": 0,
+      "group": "弦乐",
+      "path": "",
+      "zh": "乡村小提琴",
+      "en": "Fiddle",
+      "definition": "以民间演奏法使用的小提琴音色，强调滑音、装饰音、开放弦与节奏性运弓。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "乡村小提琴",
+        "Fiddle",
+        "Fiddle Violin"
+      ]
+    },
+    {
+      "id": "instrument-qt-019",
+      "category": "Instrument",
+      "row": 0,
+      "group": "木管乐器",
+      "path": "",
+      "zh": "木管组",
+      "en": "Woodwinds",
+      "definition": "木管合奏声部总称（如长笛、双簧管、单簧管、巴松等），音色色彩丰富，常用于和声填充、对位织体与旋律装饰。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "木管组",
+        "Woodwinds",
+        "Woodwind Section"
+      ]
+    },
+    {
+      "id": "instrument-qt-020",
+      "category": "Instrument",
+      "row": 0,
+      "group": "木管乐器",
+      "path": "",
+      "zh": "竖笛",
+      "en": "Recorder",
+      "definition": "常见的哨嘴木管乐器，音色纯净。既用于古乐与教育，也可在流行/影视中带来童趣与复古质感。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "竖笛",
+        "Recorder"
+      ]
+    },
+    {
+      "id": "instrument-qt-021",
+      "category": "Instrument",
+      "row": 0,
+      "group": "中国传统乐器",
+      "path": "",
+      "zh": "巴乌",
+      "en": "Bawu",
+      "definition": "流行于中国云南傣族、彝族、哈尼族等少数民族地区的单簧吹管乐器，管身多由竹制，音色柔美浑厚。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "巴乌",
+        "Bawu"
+      ]
+    },
+    {
+      "id": "instrument-qt-022",
+      "category": "Instrument",
+      "row": 0,
+      "group": "中国传统乐器",
+      "path": "",
+      "zh": "京胡",
+      "en": "Jinghu",
+      "definition": "中国戏曲音乐中的核心拉弦乐器，专为京剧伴奏而设计，音调高亢明亮。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "京胡",
+        "Jinghu"
+      ]
+    },
+    {
+      "id": "instrument-qt-023",
+      "category": "Instrument",
+      "row": 0,
+      "group": "中国传统乐器",
+      "path": "",
+      "zh": "板胡",
+      "en": "Banhu",
+      "definition": "中国北方梆子腔戏曲的主奏乐器，琴筒采用木板覆盖，广泛用于评剧、河北梆子、秦腔等剧种。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "板胡",
+        "Banhu"
+      ]
+    },
+    {
+      "id": "instrument-qt-024",
+      "category": "Instrument",
+      "row": 0,
+      "group": "中国传统乐器",
+      "path": "",
+      "zh": "高胡",
+      "en": "Gaohu",
+      "definition": "中国民族管弦乐队中的高音拉弦乐器，由二胡改革定型，是广东音乐和粤剧伴奏的核心乐器。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "高胡",
+        "Gaohu"
+      ]
+    },
+    {
+      "id": "instrument-qt-025",
+      "category": "Instrument",
+      "row": 0,
+      "group": "中国传统乐器",
+      "path": "",
+      "zh": "中阮",
+      "en": "Zhongruan",
+      "definition": "中国民族弹拨乐器阮族中的中音声部，四弦二十四品，使用拨片演奏，在民族管弦乐队中常承担独奏、伴奏及室内乐合奏功能。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "中阮",
+        "Zhongruan"
+      ]
+    },
+    {
+      "id": "instrument-qt-026",
+      "category": "Instrument",
+      "row": 0,
+      "group": "中国传统乐器",
+      "path": "",
+      "zh": "箜篌",
+      "en": "Konghou",
+      "definition": "中国古代的拨弦乐器，形似西方竖琴但具有双排弦结构，现代箜篌经改良后常用于民族管弦乐队和独奏表演",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "箜篌",
+        "Konghou"
+      ]
+    },
+    {
+      "id": "instrument-qt-027",
+      "category": "Instrument",
+      "row": 0,
+      "group": "中国传统乐器",
+      "path": "",
+      "zh": "冬不拉",
+      "en": "Dombra",
+      "definition": "哈萨克族传统的弹拨乐器，琴杆细长，音箱呈瓢形或三角形，常用于独奏、自弹自唱以及史诗故事的伴奏。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "冬不拉",
+        "Dombra"
+      ]
+    },
+    {
+      "id": "instrument-qt-028",
+      "category": "Instrument",
+      "row": 0,
+      "group": "世界乐器",
+      "path": "",
+      "zh": "乌德琴",
+      "en": "Oud",
+      "definition": "中东无品拨弦乐器，音色深沉圆润，擅长滑音与装饰音。常用于中东/世界音乐与电影配乐的地域意象。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "乌德琴",
+        "Oud"
+      ]
+    },
+    {
+      "id": "instrument-qt-029",
+      "category": "Instrument",
+      "row": 0,
+      "group": "世界乐器",
+      "path": "",
+      "zh": "塔尔琴",
+      "en": "Tar",
+      "definition": "中亚、伊朗与高加索地区常见的长颈拨弦乐器，音色清亮、颗粒感强并富于装饰性。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "塔尔琴",
+        "Tar"
+      ]
+    },
+    {
+      "id": "instrument-qt-030",
+      "category": "Instrument",
+      "row": 0,
+      "group": "世界乐器",
+      "path": "",
+      "zh": "鲁特琴",
+      "en": "Lute",
+      "definition": "欧洲文艺复兴/巴洛克时期的拨弦乐器，音色柔和、颗粒细腻。常用于古乐与影视配乐的历史质感。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "鲁特琴",
+        "Lute"
+      ]
+    },
+    {
+      "id": "instrument-qt-031",
+      "category": "Instrument",
+      "row": 0,
+      "group": "世界乐器",
+      "path": "",
+      "zh": "三味线",
+      "en": "Shamisen",
+      "definition": "日本传统三弦拨弦乐器，以拨片击弦，音色干脆并带明显敲击瞬态。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "三味线",
+        "Shamisen"
+      ]
+    },
+    {
+      "id": "instrument-qt-032",
+      "category": "Instrument",
+      "row": 0,
+      "group": "世界乐器",
+      "path": "",
+      "zh": "尺八",
+      "en": "Shakuhachi",
+      "definition": "日本传统端吹竹笛，气声丰富、音色空灵，可通过气息变化产生强烈动态和音色变化。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "尺八",
+        "Shakuhachi"
+      ]
+    },
+    {
+      "id": "instrument-qt-033",
+      "category": "Instrument",
+      "row": 0,
+      "group": "世界乐器",
+      "path": "",
+      "zh": "日本筝",
+      "en": "Koto",
+      "definition": "日本传统筝类拨弦乐器，音色清雅，擅长滑音与装饰音。常用于和风/世界音乐与影视配乐。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "日本筝",
+        "Koto"
+      ]
+    },
+    {
+      "id": "instrument-qt-034",
+      "category": "Instrument",
+      "row": 0,
+      "group": "世界乐器",
+      "path": "",
+      "zh": "拇指琴",
+      "en": "Kalimba",
+      "definition": "非洲拇指琴，通过拨动金属弹片发声，音色空灵清澈。常用于氛围、治愈与简洁旋律点缀。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "拇指琴",
+        "Kalimba"
+      ]
+    },
+    {
+      "id": "instrument-qt-035",
+      "category": "Instrument",
+      "row": 0,
+      "group": "其它",
+      "path": "",
+      "zh": "特雷门琴",
+      "en": "Theremin",
+      "definition": "通过天线感应手部位置控制音高与音量的电子乐器，音色飘忽、连续滑音明显，近似人声或弦乐。",
+      "features": "",
+      "sentiment": "",
+      "aliases": [
+        "特雷门琴",
+        "Theremin"
+      ]
+    }
+  ],
+  "alias_additions": [
+    {
+      "id": "instrument-30",
+      "aliases": [
+        "Handpan",
+        "手碟"
+      ]
+    },
+    {
+      "id": "instrument-63",
+      "aliases": [
+        "Gong",
+        "大锣"
+      ]
+    },
+    {
+      "id": "instrument-58",
+      "aliases": [
+        "Hand Claps",
+        "HandClaps",
+        "拍手"
+      ]
+    },
+    {
+      "id": "instrument-82",
+      "aliases": [
+        "String Section",
+        "弦乐组"
+      ]
+    },
+    {
+      "id": "instrument-91",
+      "aliases": [
+        "Dizi",
+        "Zhudi",
+        "竹笛"
+      ]
+    },
+    {
+      "id": "instrument-68",
+      "aliases": [
+        "Bo",
+        "Chinese Cymbal",
+        "中国钹"
+      ]
+    },
+    {
+      "id": "instrument-83",
+      "aliases": [
+        "Synth String",
+        "合成器弦乐"
+      ]
+    }
+  ]
+}
