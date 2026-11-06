@@ -29,7 +29,16 @@ ALLOWED_EXTENSIONS = {
     ".aif",
     ".aiff",
     ".mp4",
+    ".m4v",
+    ".mov",
+    ".mkv",
     ".webm",
+    ".avi",
+    ".mpeg",
+    ".mpg",
+    ".wmv",
+    ".flv",
+    ".3gp",
 }
 MIME_BY_EXT = {
     ".mp3": "audio/mpeg",
@@ -43,7 +52,16 @@ MIME_BY_EXT = {
     ".aif": "audio/aiff",
     ".aiff": "audio/aiff",
     ".mp4": "video/mp4",
+    ".m4v": "video/x-m4v",
+    ".mov": "video/quicktime",
+    ".mkv": "video/x-matroska",
     ".webm": "video/webm",
+    ".avi": "video/x-msvideo",
+    ".mpeg": "video/mpeg",
+    ".mpg": "video/mpeg",
+    ".wmv": "video/x-ms-wmv",
+    ".flv": "video/x-flv",
+    ".3gp": "video/3gpp",
 }
 FFMPEG = shutil.which("ffmpeg")
 FFPROBE = shutil.which("ffprobe")
@@ -118,6 +136,7 @@ def probe_audio(path: Path) -> dict[str, Any]:
                     "bitrate": int(fmt["bit_rate"]) if fmt.get("bit_rate") else None,
                     "codec": audio_stream.get("codec_name", ""),
                     "container": fmt.get("format_name", ""),
+                    "has_audio": bool(audio_stream),
                 }
             except (ValueError, KeyError, json.JSONDecodeError):
                 pass
@@ -138,6 +157,7 @@ def _probe_with_mutagen(path: Path) -> dict[str, Any]:
                 "bitrate": int(getattr(info, "bitrate", 0)) or None,
                 "codec": "",
                 "container": "",
+                "has_audio": True,
             }
     except Exception:  # noqa: BLE001
         pass
@@ -153,6 +173,7 @@ def _probe_with_mutagen(path: Path) -> dict[str, Any]:
                     "bitrate": rate * wav.getnchannels() * wav.getsampwidth() * 8,
                     "codec": "pcm_s16le",
                     "container": "wav",
+                    "has_audio": True,
                 }
         except (wave.Error, OSError):
             pass

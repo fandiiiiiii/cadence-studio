@@ -61,6 +61,9 @@ All notable changes to Cadence Studio are documented here.
   hint rather than silently ignored.
 - The SSE cursor now starts at the latest event on page load, so historical
   `item_failed` events no longer replay as fresh error toasts.
+- Common video containers are accepted: MP4, M4V, MOV, MKV, WEBM, AVI, MPEG,
+  MPG, WMV, FLV, 3GP. ffmpeg extracts the audio track; videos without an audio
+  stream are skipped with a clear import warning.
 - The structure prompt now asks for real boundaries, full-duration coverage, and
   allows decimal seconds. It explicitly forbids fixed 15/30-second grids and
   template sections. The normalizer warns when structure stops far before the

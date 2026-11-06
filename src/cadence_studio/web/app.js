@@ -2006,8 +2006,8 @@
             <div class="form-section">
               <div class="form-section-head"><span class="step-num">01</span><strong>音频</strong><small>批量拖入，系统自动去重并读取时长</small></div>
               <div class="dropzone" id="batch-dropzone" tabindex="0" role="button">
-                ${icon("upload")}<strong>拖入音频，或点击选择文件</strong><span>MP3 · WAV · FLAC · M4A · OGG · 单批最多 ${state.settings.processing.max_items_per_batch || 1000} 个</span>
-                <input type="file" id="batch-files" accept="audio/*,.mp3,.wav,.flac,.m4a,.aac,.ogg,.opus" multiple hidden>
+                ${icon("upload")}<strong>拖入音频或视频，或点击选择文件</strong><span>MP3 · WAV · FLAC · M4A · MP4 · MOV · MKV · WEBM · 单批最多 ${state.settings.processing.max_items_per_batch || 1000} 个</span>
+                <input type="file" id="batch-files" accept="audio/*,video/*,.mp3,.wav,.flac,.m4a,.aac,.ogg,.opus,.wma,.aiff,.aif,.mp4,.m4v,.mov,.mkv,.webm,.avi,.mpeg,.mpg,.wmv,.flv,.3gp" multiple hidden>
               </div>
               <div class="file-picked-list hidden" id="file-picked-list"></div>
             </div>
@@ -2141,7 +2141,7 @@
   function setUploadFiles(fileList, announce = true) {
     const incoming = Array.from(fileList || []).filter((file) => {
       const name = file.name.toLowerCase();
-      return /\.(mp3|wav|flac|m4a|aac|ogg|opus|wma|aiff|aif|mp4|webm)$/.test(name);
+      return /\.(mp3|wav|flac|m4a|aac|ogg|opus|wma|aiff|aif|mp4|m4v|mov|mkv|webm|avi|mpeg|mpg|wmv|flv|3gp)$/.test(name);
     });
     if (!incoming.length) {
       if (announce) toast("没有可导入的音频文件。", { type: "warn" });

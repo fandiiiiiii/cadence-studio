@@ -463,6 +463,10 @@ def create_batch(
             try:
                 size = save_stream_to_file(upload.file, target, max_bytes)
                 probe = probe_audio(target)
+                if probe.get("has_audio") is False:
+                    warnings.append(f"{upload.filename}：视频/文件中没有音轨，已跳过")
+                    target.unlink(missing_ok=True)
+                    continue
                 if not probe.get("duration_sec"):
                     warnings.append(f"{upload.filename}：未检测到可读音频，已跳过")
                     target.unlink(missing_ok=True)
