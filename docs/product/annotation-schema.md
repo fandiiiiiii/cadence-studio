@@ -3,7 +3,7 @@
 本文件是 Cadence Studio 的**产品契约**，不是模型说明书。任何 UI、API、导出或自动化改动都必须遵守这里定义的字段、状态和治理规则。
 
 - 结果 schema：`1.2.0`（`instruments.additional` 为 1.2 新增）
-- 标签体系：`workbench-2026-11-03`（741 tags / 15 rules / 7 formulas）
+- 标签体系：`workbench-2026-11-03`（737 tags / 15 rules / 7 formulas）
 - 结构词表：20 个结构标签
 - 存储：`items.normalized_json` + `items.raw_text` + `items.llm_raw_text`
 - 代码入口：`src/cadence_studio/modules.py`、`normalizer.py`、`prompts.py`
@@ -15,7 +15,7 @@
 | 模块 ID | 中文 | 输出键 | 标签类别 | 主要约束 |
 | --- | --- | --- | --- | --- |
 | `caption` | 描述 | `caption` | — | 自然语言；可短/中/长；中英双语可选 |
-| `genre` | 曲风 | `genre` | Genre（338）+ Extra（28） | `items` 完整保留所有曲风；每项带一级/二级 path；不强制单个主曲风 |
+| `genre` | 曲风 | `genre` | Genre（334）+ Extra（28） | `items` 完整保留所有曲风；每项带一级/二级 path；不强制单个主曲风 |
 | `mood` | 情绪 | `mood` | Mood（33） | 多个 tags；互为互斥的 5 个心情节奏标签最多保留 1 个 |
 | `scene` | 场景与用途 | `scene` | Scene（103） | 1 个 primary + 最多 4 个 secondary |
 | `instruments` | 乐器 | `instruments` | Instrument（171）+ 自由文本补充 | 主奏/伴奏分层；目录外音色进 `additional`；去重 |
@@ -36,7 +36,7 @@
 
 ### 1.1 两个模型的分工
 
-- **音频模型**只接收原生任务提示：例如“列出所有曲风与更具体的风格”，不接收 741 目录、标签 ID、规则文档或标准结构词表。原因是它的输入上下文有限，且规范映射是文字模型的职责。
+- **音频模型**只接收原生任务提示：例如“列出所有曲风与更具体的风格”，不接收 737 目录、标签 ID、规则文档或标准结构词表。原因是它的输入上下文有限，且规范映射是文字模型的职责。
 - **文字模型**接收音频模型原文 + 本次请求的紧凑目录/规则，输出规范 JSON；服务端再做确定性校验。
 - 用户选择 `genre` 时，规范化目录自动包含 `Genre + Extra`；但音频提示中不会额外提醒补充曲风。
 

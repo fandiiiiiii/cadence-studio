@@ -2,7 +2,7 @@
 
 > **Cadence 说明**：本文是用户提供的 `workbench-2026-11-03` 参考文档的仓库内副本，用于查阅标签原文与规则。运行时使用的规范化标签表是 [`taxonomy.json`](../../src/cadence_studio/resources/taxonomy.json)，由 [`tools/build_taxonomy.py`](../../tools/build_taxonomy.py) 从同版本快照生成。本文中的旧工具命令与旧项目路径属于来源项目，不是本仓库的命令。规则是否被系统自动执行，以 [字段契约](annotation-schema.md) 和测试为准。
 
-本文整理项目默认音乐标签体系，包含 **641 个基础标签 + 100 个 QT 补充标签（共 741 个）、15 条标注规则、7 组标签公式**，以及单独保存的情绪规则。
+本文整理项目默认音乐标签体系，包含 **641 个基础标签 + 96 个 QT 补充标签（共 737 个）、15 条标注规则、7 组标签公式**，以及单独保存的情绪规则。
 
 - 标签体系版本：`workbench-2026-11-03`。
 - 来源快照：[taxonomy.source.json](../../src/cadence_studio/resources/taxonomy.source.json)；SHA-256：`7d5c041eae9078e8d03c14497dcc82479972816c26fa10869a598c345f9d3035`。
@@ -21,12 +21,12 @@
 | --- | --- | --- |
 | 场景 | `Scene` | 103 |
 | 情绪 | `Mood` | 33 |
-| 曲风 | `Genre` | 338 |
+| 曲风 | `Genre` | 334 |
 | 语言 | `Language` | 23 |
 | 人声 | `Vocal` | 45 |
 | 乐器 | `Instrument` | 171 |
 | 补充标签与体裁 | `Extra` | 28 |
-| **合计** |  | **741** |
+| **合计** |  | **737** |
 
 > **QT 补充标签（100 个）**：来自 `QT_音乐caption精标规则文档.md` 的乐器表和 `对外曲风标签_迭代版0903.xlsx`，保存在 [`taxonomy.additions.json`](../../src/cadence_studio/resources/taxonomy.additions.json)。运行时由 `Taxonomy` 合并，不修改基础 `taxonomy.source.json` 快照。下表保留基础标签；补充标签的完整定义以 additions 文件为准。
 
@@ -227,7 +227,7 @@
 | --- | --- | --- | --- | --- | --- |
 | 33 | `mood-34` | 无心情/无情绪 | No Mood | 34 | 歌曲或音乐没有任何情绪偏向，或无法定义任何情绪 |
 
-### 曲风（Genre，338 个；下表为 273 个基础标签，另见 supplement）
+### 曲风（Genre，334 个；下表为 273 个基础标签，另见 supplement）
 
 #### 流行（25 个）
 

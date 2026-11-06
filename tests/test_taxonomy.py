@@ -7,9 +7,9 @@ from cadence_studio.taxonomy import get_taxonomy
 def test_taxonomy_counts_and_version():
     tax = get_taxonomy()
     assert tax.version == "workbench-2026-11-03"
-    assert len(tax.tags) == 741
+    assert len(tax.tags) == 737
     counts = {category: len(tax.category_tags(category)) for category in tax.categories}
-    assert counts == {"Genre": 338, "Mood": 33, "Scene": 103, "Instrument": 171, "Vocal": 45, "Language": 23, "Extra": 28}
+    assert counts == {"Genre": 334, "Mood": 33, "Scene": 103, "Instrument": 171, "Vocal": 45, "Language": 23, "Extra": 28}
     assert tax.category_tags("Genre")[0]["seq"] == 1
     assert tax.category_tags("Scene")[0]["seq"] == 1
     assert tax.get("genre-6")["seq"] == 5
@@ -45,7 +45,7 @@ def test_normalizer_prompt_only_requested_catalog():
 
 def test_qt_supplement_resolves_new_and_aliased_instruments():
     tax = get_taxonomy()
-    assert tax.payload["source"]["supplement"]["tag_count"] == 100
+    assert tax.payload["source"]["supplement"]["tag_count"] == 96
     kick = tax.resolve("Kick Drum", "Instrument")
     assert kick and kick["zh"] == "底鼓"
     assert tax.resolve("Handpan", "Instrument")["id"] == "instrument-30"
@@ -62,7 +62,7 @@ def test_prompt_metrics_shrink_with_modules():
     large = prompt_metrics(BatchSpec(modules=["caption", "genre", "mood", "scene", "instruments", "vocal", "language", "extra"]))
     assert small["catalog_chars"] == 0
     assert large["catalog_chars"] > small["catalog_chars"]
-    assert large["taxonomy_tags"] == 741  # Extra is included in genre, but not double-counted
+    assert large["taxonomy_tags"] == 737  # Extra is included in genre, but not double-counted
 
 
 

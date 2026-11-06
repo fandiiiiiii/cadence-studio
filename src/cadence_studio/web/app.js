@@ -712,7 +712,7 @@
           </div>
           <div class="hero-proof">
             <span>${icon("shield")}本地工作台</span>
-            <span>${icon("tag")}${state.taxonomy?.source?.label_count || 741} 个规范标签</span>
+            <span>${icon("tag")}${state.taxonomy?.source?.label_count || 737} 个规范标签</span>
             <span>${icon("cpu")}HF 专用端点</span>
           </div>
         </div>
@@ -787,7 +787,7 @@
                 <button class="btn primary" data-action="new-batch">${icon("plus")}新建批次</button>
                 <button class="btn" data-action="seed-demo">${icon("spark")}载入演示批次</button>
               </div>
-              <div class="first-run-meta"><span>741 个规范标签</span><span>15 个标注模块</span><span>原始 + 规范化双轨结果</span></div>
+              <div class="first-run-meta"><span>737 个规范标签</span><span>15 个标注模块</span><span>原始 + 规范化双轨结果</span></div>
             </div>`
       }
     `;
@@ -856,7 +856,7 @@
             )
             .join("")}
         </div>
-        <div class="taxonomy-mini-foot"><span>${state.taxonomy?.source?.label_count || 741} 个标签 · ${state.taxonomy?.rule_count || 15} 条规则</span><a href="#/taxonomy" class="section-link">浏览 ${icon("arrow-right")}</a></div>
+        <div class="taxonomy-mini-foot"><span>${state.taxonomy?.source?.label_count || 737} 个标签 · ${state.taxonomy?.rule_count || 15} 条规则</span><a href="#/taxonomy" class="section-link">浏览 ${icon("arrow-right")}</a></div>
       </div>
     </section>`;
   }
@@ -1405,7 +1405,7 @@
     const tax = state.taxonomy;
     const categories = tax.categories || {};
     const counts = tax.source?.category_counts || {};
-    const total = tax.source?.label_count || 741;
+    const total = tax.source?.label_count || 737;
     const cats = Object.values(categories);
     const max = Math.max(...cats.map((c) => c.count), 1);
     $("#view").innerHTML = `
@@ -1413,7 +1413,7 @@
         <div>
           <div class="eyebrow"><span class="status-dot"></span> GOVERNANCE / TAXONOMY</div>
           <h1>一套说话算数的<br>声音标签语言。</h1>
-          <p>741 个正式标签、15 条标注规则与 7 组场景公式。模型不能发明标签；所有近似映射都会保留原始说法、规范 ID 与置信度，方便复核和回滚。</p>
+          <p>737 个正式标签、15 条标注规则与 7 组场景公式。模型不能发明标签；所有近似映射都会保留原始说法、规范 ID 与置信度，方便复核和回滚。</p>
           <div class="rule-callout" style="margin-top:16px"><span>${icon("shield")}</span><div>${escapeHtml(tax.mood_rule || "情绪标签应标尽标；五个心情节奏类标签互斥。")}</div></div>
         </div>
         <div class="taxonomy-stats">
@@ -1475,7 +1475,7 @@
 
   function renderCategoryTabs() {
     const cats = state.taxonomy?.categories || {};
-    return `<button class="category-tab ${state.tax.category === "all" ? "active" : ""}" data-tax-category="all">全部 <em>${state.taxonomy?.source?.label_count || 741}</em></button>${Object.values(cats)
+    return `<button class="category-tab ${state.tax.category === "all" ? "active" : ""}" data-tax-category="all">全部 <em>${state.taxonomy?.source?.label_count || 737}</em></button>${Object.values(cats)
       .map((cat) => `<button class="category-tab ${state.tax.category === cat.key ? "active" : ""}" data-tax-category="${attr(cat.key)}">${escapeHtml(categoryName(cat))} <em>${cat.count}</em></button>`)
       .join("")}`;
   }
@@ -1846,7 +1846,7 @@
         <div class="setting-card-head"><div class="setting-card-icon">${icon("tag")}</div><div><h3>标签与导出</h3><p>标签版本随批次冻结；导出默认包含原始与规范化两条轨道。</p></div></div>
         <div class="form-grid">
           <div class="field"><label>标签版本</label><input value="${attr(state.taxonomy?.version || "")}" disabled></div>
-          <div class="field"><label>标签数</label><input value="${state.taxonomy?.source?.label_count || 741}" disabled></div>
+          <div class="field"><label>标签数</label><input value="${state.taxonomy?.source?.label_count || 737}" disabled></div>
         </div>
       </div>`;
   }

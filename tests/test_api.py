@@ -23,7 +23,7 @@ def test_taxonomy_endpoint():
     with TestClient(app) as client:
         response = client.get("/api/taxonomy/meta")
         assert response.status_code == 200
-        assert response.json()["source"]["label_count"] == 741
+        assert response.json()["source"]["label_count"] == 737
         response = client.get("/api/taxonomy?category=Mood&limit=10")
         assert response.status_code == 200
         assert response.json()["total"] == 33

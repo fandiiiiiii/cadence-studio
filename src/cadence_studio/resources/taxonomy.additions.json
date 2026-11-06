@@ -78,30 +78,6 @@
       "priority": "P1"
     },
     {
-      "id": "genre-qt-004",
-      "category": "Genre",
-      "row": 0,
-      "group": "流行",
-      "path": "Pop / Electronic Pop",
-      "zh": "电子流行",
-      "en": "Electronic Pop",
-      "definition": "以电子合成器、鼓机和电脑音色为核心制作的流行乐。这种流派将电子乐的冷峻科技感与流行乐的悦耳旋律相结合，律动感强，常用于夜店或派对场景，一般带有明显的电子结构。",
-      "features": "优先级 P0",
-      "sentiment": "",
-      "aliases": [
-        "电子流行（Electronic Pop）",
-        "电子流行",
-        "Electronic Pop"
-      ],
-      "genre_level": 2,
-      "genre_parent_id": "genre-2",
-      "genre_lineage": [
-        "genre-2",
-        "genre-qt-004"
-      ],
-      "priority": "P0"
-    },
-    {
       "id": "genre-qt-005",
       "category": "Genre",
       "row": 0,
@@ -512,31 +488,6 @@
       "priority": "P1"
     },
     {
-      "id": "genre-qt-022",
-      "category": "Genre",
-      "row": 0,
-      "group": "爵士",
-      "path": "Jazz / Jazz-Funk",
-      "zh": "爵士融合/爵士放克",
-      "en": "Jazz Fusion / Jazz-Funk",
-      "definition": "60 年代末的实验浪潮。引入了电吉他、合成器等电子乐器，并将 Funk 的强劲律动融入爵士即兴。音乐充满了多变的音色和复杂的结构，技术性与力量感兼备。",
-      "features": "优先级 P1",
-      "sentiment": "",
-      "aliases": [
-        "爵士融合 (Jazz Fusion)/爵士放克",
-        "Jazz Fusion",
-        "Jazz-Funk",
-        "爵士放克"
-      ],
-      "genre_level": 2,
-      "genre_parent_id": "genre-134",
-      "genre_lineage": [
-        "genre-134",
-        "genre-qt-022"
-      ],
-      "priority": "P1"
-    },
-    {
       "id": "genre-qt-023",
       "category": "Genre",
       "row": 0,
@@ -559,30 +510,6 @@
         "genre-qt-023"
       ],
       "priority": "P1"
-    },
-    {
-      "id": "genre-qt-024",
-      "category": "Genre",
-      "row": 0,
-      "group": "古典",
-      "path": "Classical / Romantic",
-      "zh": "浪漫主义时期",
-      "en": "Romantic",
-      "definition": "情感爆发的时代。音乐不再拘泥于形式，转而追求个人情感的极致表达。旋律起伏巨大，编曲宏大且富于色彩感，充满了对自然、爱与死亡的狂热想象。",
-      "features": "优先级 P0",
-      "sentiment": "",
-      "aliases": [
-        "浪漫主义时期 (Romantic)",
-        "浪漫主义时期",
-        "Romantic"
-      ],
-      "genre_level": 2,
-      "genre_parent_id": "genre-176",
-      "genre_lineage": [
-        "genre-176",
-        "genre-qt-024"
-      ],
-      "priority": "P0"
     },
     {
       "id": "genre-qt-025",
@@ -631,30 +558,6 @@
         "genre-qt-026"
       ],
       "priority": "P1"
-    },
-    {
-      "id": "genre-qt-027",
-      "category": "Genre",
-      "row": 0,
-      "group": "民谣",
-      "path": "Folk / Pop Folk",
-      "zh": "流行民谣",
-      "en": "Pop Folk",
-      "definition": "民谣与流行乐的融合产物。它保留了民谣的木吉他基调和叙事性，但在编曲上更加精致、抓耳，符合现代流行审美。听起来清新、明快，往往带有很强的传唱度，是大众最易接受的民谣形式。",
-      "features": "优先级 P0",
-      "sentiment": "",
-      "aliases": [
-        "流行民谣 (Pop Folk)",
-        "流行民谣",
-        "Pop Folk"
-      ],
-      "genre_level": 2,
-      "genre_parent_id": "genre-34",
-      "genre_lineage": [
-        "genre-34",
-        "genre-qt-027"
-      ],
-      "priority": "P0"
     },
     {
       "id": "genre-qt-028",
@@ -2204,6 +2107,35 @@
       "aliases": [
         "Synth String",
         "合成器弦乐"
+      ]
+    },
+    {
+      "id": "genre-24",
+      "aliases": [
+        "电子流行",
+        "Electronic Pop"
+      ]
+    },
+    {
+      "id": "genre-139",
+      "aliases": [
+        "爵士放克",
+        "Jazz-Funk",
+        "Jazz Fusion / Jazz-Funk"
+      ]
+    },
+    {
+      "id": "genre-181",
+      "aliases": [
+        "浪漫主义时期",
+        "Romantic"
+      ]
+    },
+    {
+      "id": "genre-36",
+      "aliases": [
+        "流行民谣",
+        "Pop Folk"
       ]
     }
   ]

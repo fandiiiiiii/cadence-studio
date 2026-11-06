@@ -64,7 +64,7 @@ All notable changes to Cadence Studio are documented here.
 - Common video containers are accepted: MP4, M4V, MOV, MKV, WEBM, AVI, MPEG,
   MPG, WMV, FLV, 3GP. ffmpeg extracts the audio track; videos without an audio
   stream are skipped with a clear import warning.
-- QT taxonomy supplement: 65 new Genre labels from `对外曲风标签_迭代版0903.xlsx`
+- QT taxonomy supplement: 61 new Genre labels from `对外曲风标签_迭代版0903.xlsx`
   and 35 new Instrument/timbre labels from `QT_音乐caption精标规则文档.md`,
   plus 7 alias additions. The vendored 641-tag snapshot is unchanged; the
   supplement is merged at load time from `taxonomy.additions.json`. Mood and

@@ -15,7 +15,7 @@
 | [架构决策](architecture/adr/) | 工程 | 本地优先、自定义容器、标签治理、生命周期 |
 | [API 参考](api/reference.md) | 集成方 | 端点、错误码、SSE、示例 |
 | [基准与容量](quality/benchmark.md) | 产品、运维 | 验收、500 首算术、真实测试记录 |
-| [标签原文](product/taxonomy-reference.md) | 标注、产品 | 741 标签定义与规则来源 |
+| [标签原文](product/taxonomy-reference.md) | 标注、产品 | 737 标签定义与规则来源 |
 
 ## 阅读顺序
 

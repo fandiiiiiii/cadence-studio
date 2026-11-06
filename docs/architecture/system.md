@@ -41,7 +41,7 @@ flowchart LR
 | LLM | `llm.py` | OpenAI-compatible JSON 调用、重试、错误分类 |
 | Prompts | `prompts.py` | 任务提示、目录提示、规范化 JSON 契约 |
 | Normalizer | `normalizer.py` | JSON 提取、标签校验、互斥、时间裁剪、映射 |
-| Taxonomy | `taxonomy.py` | 741 标签加载、别名解析、紧凑目录、规则 |
+| Taxonomy | `taxonomy.py` | 737 标签加载、别名解析、紧凑目录、规则 |
 | Media | `media.py` | 上传、探测、转码、演示音频 |
 | Exports | `exports.py` | XLSX/JSON/MD/CSV/ZIP；曲风层级列 |
 | Hardware presets | `hardware.py` | T4–H200 的并发/音频上限/参考价 |
@@ -88,7 +88,7 @@ Browser multipart
 ```text
 claim (queued → preprocessing)
   → 探测 / 转码 96kbps mp3
-  → 组装音频提示（不含 741 目录）
+  → 组装音频提示（不含 737 目录）
   → ensure endpoint ready（必要时 resume）
   → POST /v1/annotate
   → 保存 raw_text
