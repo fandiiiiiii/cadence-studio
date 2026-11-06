@@ -429,6 +429,14 @@
       state.loaded = true;
       await refreshOverview();
       await refreshSidebarBatches();
+      // Start the live stream at the newest event. Otherwise every page load
+      // replays all historical item_failed events as fresh error toasts.
+      try {
+        const latest = await api("/activity?limit=1");
+        state.lastEventId = latest.items?.[0]?.id || 0;
+      } catch (error) {
+        state.lastEventId = 0;
+      }
       renderShell();
       await route();
       refreshEndpointStatus();
