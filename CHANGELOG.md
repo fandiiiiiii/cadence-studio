@@ -2,6 +2,15 @@
 
 All notable changes to Cadence Studio are documented here.
 
+## [0.2.5] — 2026-11-06
+
+### Added
+
+- Flamingo Think container mode (`MODEL_FAMILY=flamingo-thinking`). The server
+  removes `<think>...</think>` reasoning and returns only the final answer, so
+  the normalizer sees clean text. MOSS Think continues to use
+  `MODEL_FAMILY=moss-thinking` and the existing `cadence-moss` image.
+
 ## [0.2.4] — 2026-11-05
 
 ### Fixed

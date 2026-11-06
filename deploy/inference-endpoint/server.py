@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -267,6 +268,16 @@ def _dry_run_text(prompt: str, duration: float) -> str:
     )
 
 
+def _strip_thinking(text: str) -> str:
+    """Drop a leading reasoning block; keep the final answer only."""
+    text = (text or "").strip()
+    if "<think>" in text:
+        text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+    if "</think>" in text:
+        text = text.split("</think>")[-1].strip()
+    return text
+
+
 def _generate_moss(audio_path: Path, prompt: str, max_new_tokens: int) -> tuple[str, dict[str, Any]]:
     import torchaudio
 
@@ -300,8 +311,8 @@ def _generate_moss(audio_path: Path, prompt: str, max_new_tokens: int) -> tuple[
     input_len = inputs["input_ids"].shape[1]
     output_ids = generated[0, input_len:]
     text = processor.decode(output_ids, skip_special_tokens=True).strip()
-    if MODEL_FAMILY == "moss-thinking" and "</think>" in text:
-        text = text.split("</think>")[-1].strip()
+    if MODEL_FAMILY.endswith("-thinking"):
+        text = _strip_thinking(text)
     return text, {
         "input_tokens": input_tokens,
         "output_tokens": int(output_ids.numel()),
@@ -345,6 +356,8 @@ def _generate_flamingo(audio_path: Path, prompt: str, max_new_tokens: int) -> tu
     input_len = inputs["input_ids"].shape[1]
     output_ids = generated[0, input_len:]
     text = processor.batch_decode(output_ids.unsqueeze(0), skip_special_tokens=True)[0].strip()
+    if MODEL_FAMILY.endswith("-thinking"):
+        text = _strip_thinking(text)
     return text, {
         "input_tokens": input_tokens,
         "output_tokens": int(output_ids.numel()),
