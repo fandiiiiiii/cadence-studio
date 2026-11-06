@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field
 from . import __version__
 from .config import AUDIO_DIR, DATA_DIR, TMP_DIR
 from .demo import create_demo_batch, remove_demo
+from .documents import extract_references, safe_reference_name
 from .exports import export_batch
 from .hardware import PROFILES
 from .media import (
@@ -33,7 +34,7 @@ from .media import (
 from .modules import ALL_MODULE_IDS, BatchSpec, module_catalog
 from .normalizer import Normalizer
 from .pipeline import BatchStateError
-from .prompts import prompt_metrics
+from .prompts import build_prompt_planner_messages, prompt_metrics
 from .services import SERVICES
 from .taxonomy import get_taxonomy
 
@@ -392,6 +393,7 @@ def create_batch(
     name: str = Form(""),
     note: str = Form(""),
     spec: str = Form("{}"),
+    project_files: list[UploadFile] = File(default=[]),
     auto_start: bool = Form(True),
 ) -> dict[str, Any]:
     if not files:
@@ -414,6 +416,42 @@ def create_batch(
     items: list[dict[str, Any]] = []
     seen_hashes: set[str] = set()
     try:
+        if project_files:
+            ref_dir = batch_dir / "references"
+            ref_dir.mkdir(parents=True, exist_ok=True)
+            reference_paths: list[tuple[str, Path]] = []
+            for index, upload in enumerate(project_files, 1):
+                original = safe_reference_name(upload.filename or f"reference-{index}.txt")
+                target = ref_dir / f"{index:02d}-{original}"
+                try:
+                    save_stream_to_file(upload.file, target, 15 * 1024 * 1024)
+                    reference_paths.append((original, target))
+                except Exception as exc:  # noqa: BLE001
+                    warnings.append(f"{upload.filename or original}：参考资料保存失败（{exc}）")
+            context, accepted, ref_warnings = extract_references(reference_paths)
+            warnings.extend(ref_warnings)
+            batch_spec.project_context = context
+            batch_spec.project_files = accepted
+        if batch_spec.project_instruction.strip() or batch_spec.project_context.strip():
+            planner_messages = build_prompt_planner_messages(batch_spec, get_taxonomy())
+            llm_route = SERVICES.config.llm_route()
+            try:
+                planner = SERVICES.llm.complete(
+                    llm_route["id"],
+                    planner_messages,
+                    json_mode=False,
+                    temperature=0.2,
+                    max_tokens=1800,
+                )
+            except Exception as exc:  # noqa: BLE001
+                _raise(f"DeepSeek 项目规则解析失败：{exc}", code="planner_failed")
+            generated = str(planner.get("content") or "").strip()
+            if not generated:
+                _raise("DeepSeek 没有生成音频提示词，请缩短项目规则或参考资料后重试。", code="planner_empty")
+            if len(generated) > 4000:
+                _raise("DeepSeek 生成的音频提示词超过 4000 字符，请缩短项目规则或参考资料。", code="planner_too_long")
+            batch_spec.audio_model_prompt = generated
+
         for index, upload in enumerate(files, 1):
             original = safe_filename(upload.filename or f"audio-{index}.mp3")
             ext = Path(original).suffix.lower()

@@ -205,7 +205,7 @@
     route: { name: "overview", id: null },
     routeToken: 0,
     filters: { batchQuery: "", batchStatus: "", itemQuery: "", itemStatus: "", itemSort: "position" },
-    upload: { files: [], busy: false, progress: 0, modules: new Set(), advanced: false, metrics: null },
+    upload: { files: [], projectFiles: [], busy: false, progress: 0, modules: new Set(), advanced: false, metrics: null },
     drawer: null,
     palette: { open: false, index: 0, items: [] },
     lastEventId: 0,
@@ -1984,6 +1984,7 @@
     if (!state.settings) return;
     state.upload = {
       files: [],
+      projectFiles: [],
       busy: false,
       progress: 0,
       modules: new Set(state.modules.filter((m) => m.default).map((m) => m.id)),
@@ -2022,7 +2023,14 @@
               <div class="module-grid" id="module-grid">${renderModuleToggles()}</div>
             </div>
             <div class="form-section">
-              <div class="form-section-head"><span class="step-num">04</span><strong>输出选项</strong><small>规范标签与语言</small></div>
+              <div class="form-section-head"><span class="step-num">04</span><strong>项目规则（DeepSeek）</strong><small>只给规划与规范化模型</small></div>
+              <div class="field"><label>项目规则 / 评分标准</label><textarea id="project-instruction" placeholder="例如：这是某品牌广告曲库；优先判断 15 秒卡点是否成立；不要使用过于文学化的描述。"></textarea></div>
+              <div class="field" style="margin-top:9px"><label>参考资料（可多选：docx / pdf / xlsx / txt / md / csv / json）</label><input type="file" id="project-files" multiple accept=".docx,.pdf,.xlsx,.txt,.md,.markdown,.csv,.json,.yaml,.yml,.log"></div>
+              <div class="file-picked-list hidden" id="project-files-list"></div>
+              <p class="route-note">${icon("bot")}参考资料只发送给 DeepSeek；音频模型只会收到 DeepSeek 整理后的提示词。扫描版 PDF 若无文字，会提示先 OCR。</p>
+            </div>
+            <div class="form-section">
+              <div class="form-section-head"><span class="step-num">05</span><strong>输出选项</strong><small>规范标签与语言</small></div>
               <div class="form-grid three">
                 <div class="field"><label>自然语言</label><select id="batch-language"><option value="zh">简体中文</option><option value="en">English</option><option value="bilingual">中英双语 Caption</option></select></div>
                 <div class="field"><label>Caption 长度</label><select id="caption-length"><option value="short">短 · 2–3 句</option><option value="medium" selected>中 · 4–6 句</option><option value="long">长 · 8–12 句</option></select></div>
@@ -2030,7 +2038,7 @@
               </div>
               <div class="advanced-toggle" id="advanced-toggle" data-action="toggle-advanced">${icon("chevron")}额外要求 / 自定义字段</div>
               <div class="advanced-panel hidden" id="advanced-panel">
-                <div class="field"><label>额外提示词（会同时影响音频模型与规范化）</label><textarea id="custom-instruction" placeholder="例如：重点判断是否适合 15 秒短视频卡点；Caption 要提到情绪转折。"></textarea></div>
+                <div class="field"><label>自定义模块要求（仅在勾选“自定义”模块时进入音频提示词）</label><textarea id="custom-instruction" placeholder="例如：重点判断是否适合 15 秒短视频卡点；Caption 要提到情绪转折。"></textarea></div>
                 <div class="field" style="margin-top:9px"><label>自定义输出字段（逗号分隔，可选）</label><input id="custom-fields" placeholder="sync_suitability, trailer_moment"></div>
               </div>
             </div>
@@ -2055,6 +2063,7 @@
       </div>`;
     const input = $("#batch-files");
     input.addEventListener("change", (event) => setUploadFiles(event.target.files));
+    $("#project-files")?.addEventListener("change", (event) => setProjectFiles(event.target.files));
     const dropzone = $("#batch-dropzone");
     dropzone.addEventListener("click", () => input.click());
     dropzone.addEventListener("keydown", (event) => {
@@ -2171,6 +2180,41 @@
     });
   }
 
+  function setProjectFiles(fileList) {
+    const allowed = /\.(docx|pdf|xlsx|txt|md|markdown|csv|json|yaml|yml|log)$/i;
+    const incoming = Array.from(fileList || []).filter((file) => allowed.test(file.name));
+    if (incoming.length !== Array.from(fileList || []).length) {
+      toast("已忽略不支持的参考资料格式。", { type: "warn" });
+    }
+    const combined = [...state.upload.projectFiles, ...incoming];
+    const max = 6;
+    state.upload.projectFiles = combined.slice(0, max);
+    if (combined.length > max) toast("参考资料最多 6 个文件。", { type: "warn" });
+    renderProjectFiles();
+  }
+
+  function renderProjectFiles() {
+    const list = $("#project-files-list");
+    if (!list) return;
+    if (!state.upload.projectFiles.length) {
+      list.classList.add("hidden");
+      list.innerHTML = "";
+      return;
+    }
+    list.classList.remove("hidden");
+    list.innerHTML = state.upload.projectFiles
+      .map(
+        (file, index) => `<div class="file-picked">${icon("caption")}<span class="name">${escapeHtml(file.name)}</span><span class="size">${bytes(file.size)}</span><button type="button" class="remove" data-remove-project-file="${index}" aria-label="移除">${icon("x")}</button></div>`
+      )
+      .join("");
+    list.querySelectorAll("[data-remove-project-file]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.upload.projectFiles.splice(Number(button.dataset.removeProjectFile), 1);
+        renderProjectFiles();
+      });
+    });
+  }
+
   function localPromptMetrics(modules) {
     const categories = new Set();
     modules.forEach((module) => {
@@ -2227,6 +2271,7 @@
       custom_fields: fields,
       audio_model_prompt: "",
       output_language_note: "",
+      project_instruction: $("#project-instruction")?.value.trim() || "",
     };
   }
 
@@ -2248,6 +2293,7 @@
     bar.classList.remove("hidden");
     const form = new FormData();
     state.upload.files.forEach((file) => form.append("files", file));
+    state.upload.projectFiles.forEach((file) => form.append("project_files", file));
     form.append("name", $("#batch-name")?.value.trim() || "");
     form.append("note", $("#batch-note")?.value.trim() || "");
     form.append("spec", JSON.stringify(spec));

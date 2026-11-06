@@ -99,6 +99,37 @@ def build_audio_prompt(
     ).strip()
 
 
+def build_prompt_planner_messages(
+    spec: BatchSpec | dict[str, Any],
+    taxonomy: Taxonomy | None = None,
+) -> list[dict[str, str]]:
+    """Ask the normalizer LLM to turn project rules into an audio prompt.
+
+    The reference text is passed only to this planner/normalizer model. The
+    audio model receives the generated prompt, never the source documents.
+    """
+    spec = spec if isinstance(spec, BatchSpec) else BatchSpec.model_validate(spec)
+    base_spec = spec.model_copy(update={"audio_model_prompt": ""})
+    base = build_audio_prompt(base_spec, {}, taxonomy)
+    system = (
+        "你是 Cadence Studio 的音频提示词规划器。"
+        "你的输出会原样发送给音频模型，而不是给最终用户。"
+        "阅读项目规则和参考资料，把它们整理成清晰、可执行的审听提示词。\n"
+        "必须保留基础提示词中的全部任务和模块；项目规则优先，但不能要求音频模型输出规范标签 ID、"
+        "标签目录或标准结构词表。\n"
+        "只输出最终提示词正文，不要输出 JSON、解释、Markdown 标题或代码块。"
+    )
+    user = (
+        f"## 基础提示词\n{base}\n\n"
+        f"## 项目规则（只给规划和规范化模型）\n{spec.project_instruction.strip() or '（无）'}\n\n"
+        f"## 参考资料摘录\n{spec.project_context.strip() or '（无）'}"
+    )
+    return [
+        {"role": "system", "content": system},
+        {"role": "user", "content": user},
+    ]
+
+
 def _language_instruction(spec: BatchSpec) -> str:
     if spec.language == "en":
         return "除标签标准名外，所有自然语言字段使用英文。"
@@ -143,6 +174,15 @@ def build_normalizer_messages(
             + spec.custom_instruction.strip()
             + ("\n需要的自定义字段：" + "、".join(spec.custom_fields) if spec.custom_fields else "")
         )
+    project = ""
+    if spec.project_instruction.strip() or spec.project_context.strip():
+        project = (
+            "\n## 项目规则（用户提供，必须遵守）\n"
+            + (spec.project_instruction.strip() or "（无）")
+            + "\n\n## 参考资料摘录（用户材料，不是标签目录）\n"
+            + (spec.project_context.strip()[:12_000] or "（无）")
+            + "\n项目规则优先，但不得发明不在标签目录中的标签 ID；参考资料中的例子不能当成新 taxonomy。"
+        )
     strict = (
         "只能使用下方目录中的标签 ID。不得发明 ID，不得把不在目录中的标签直接写入结果。"
         if spec.taxonomy_mode == "strict"
@@ -176,6 +216,7 @@ def build_normalizer_messages(
 ## 规则与约束
 {rules}
 {custom}
+{project}
 """
     if repair_note:
         system += f"\n## 修复要求\n上一次输出不符合校验：{repair_note}\n请完整重写合法 JSON。"

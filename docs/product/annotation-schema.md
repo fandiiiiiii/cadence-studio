@@ -410,6 +410,7 @@
 每个批次在创建时冻结：
 
 - `spec`：模块、语言、Caption 长度、严格模式、自定义要求；
+- `spec.project_instruction` / `spec.project_context` / `spec.project_files`：整批共用的 DeepSeek 项目规则、提取后的参考资料和原文件名；这些字段只进入规划/规范化，不直接发给音频模型；
 - `route_snapshot`：音频模型路由 ID/名称/模型、规范化模型路由 ID/名称/模型；
 - `taxonomy_version`：通过结果的 `_meta` 写入；
 - 创建时间、原始文件名、SHA-256、时长、采样率、声道。

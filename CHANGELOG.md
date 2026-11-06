@@ -53,6 +53,14 @@ All notable changes to Cadence Studio are documented here.
 - Per-module label language settings for genre, mood, scene, instruments,
   vocal, language, and supplemental tags; the same settings drive the UI and
   XLSX/CSV/Markdown exports.
+- DeepSeek project rules and reference files at batch creation:
+  `.docx`, digital `.pdf`, `.xlsx`, `.txt`, `.md`, `.csv`, and `.json` are
+  extracted, summarized into an audio-model prompt by DeepSeek, and injected
+  into normalization. Source documents go only to DeepSeek; the audio model
+  receives only the generated prompt. Scanned PDFs are rejected with an OCR
+  hint rather than silently ignored.
+- The SSE cursor now starts at the latest event on page load, so historical
+  `item_failed` events no longer replay as fresh error toasts.
 - The structure prompt now asks for real boundaries, full-duration coverage, and
   allows decimal seconds. It explicitly forbids fixed 15/30-second grids and
   template sections. The normalizer warns when structure stops far before the

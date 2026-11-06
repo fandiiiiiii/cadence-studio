@@ -209,6 +209,9 @@ class BatchSpec(BaseModel):
     custom_fields: list[str] = Field(default_factory=list)
     audio_model_prompt: str = Field(default="", max_length=4000)
     output_language_note: str = Field(default="", max_length=500)
+    project_instruction: str = Field(default="", max_length=12_000)
+    project_context: str = Field(default="", max_length=30_000)
+    project_files: list[str] = Field(default_factory=list)
 
     @field_validator("modules")
     @classmethod
@@ -252,4 +255,6 @@ def compact_spec(spec: BatchSpec | dict[str, Any]) -> dict[str, Any]:
         "caption_length": model.caption_length,
         "taxonomy_mode": model.taxonomy_mode,
         "custom_instruction": model.custom_instruction,
+        "project_instruction": model.project_instruction,
+        "project_files": model.project_files,
     }

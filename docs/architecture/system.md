@@ -67,14 +67,23 @@ Browser multipart
 - `route_snapshot`（音频模型 / 文字模型路由 ID、名称、模型）
 - 创建时间、文件名、SHA-256、音频技术信息
 
-### 3.2 曲风层级
+### 3.2 项目规则与参考资料
+
+新批次可携带整批共用的 `project_instruction` 和 `project_context`：
+
+- `project_files` 上传后由 `documents.py` 提取文字（docx / 数字版 PDF / xlsx / 纯文本）；
+- 有规则或上下文时，创建批次先调用规范化 LLM 生成 `audio_model_prompt`；
+- 音频模型只收到生成的提示词；原始参考资料只进入规划与规范化阶段；
+- 文本长度有上限，扫描版 PDF 无文字时返回 warning，不做 OCR。
+
+### 3.3 曲风层级
 
 - 标签表为每个 Genre 计算 `genre_parent_id`、`genre_level`、`genre_lineage`。
 - 例：K-Pop 的 path=`Pop`，父级为 Pop，level=2；输出 `path=["Pop","K-Pop"]`。
 - `genre.items` 完整保留模型观察到的多个曲风；`primary`/`secondary` 只是展示投影，不参与删减。
 - `Extra` 是补充曲风词表，默认随 Genre 注入规范化目录；音频模型不会被单独提醒。
 
-### 3.3 单项处理
+### 3.4 单项处理
 
 ```text
 claim (queued → preprocessing)
@@ -98,7 +107,7 @@ claim (queued → preprocessing)
 - 规范化失败时可将阶段设为 `resume_normalize`，下次只重跑 LLM；
 - 非可重试错误（媒体损坏、401、413、配置缺失）直接 failed。
 
-### 3.4 实时进度
+### 3.5 实时进度
 
 - `items.status` / `stage` / `progress` 写入 SQLite；
 - 每次状态变化写 `events`；

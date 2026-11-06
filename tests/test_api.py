@@ -1,4 +1,8 @@
 
+import io
+import json
+import wave
+
 from fastapi.testclient import TestClient
 
 from cadence_studio.api import SERVICES
@@ -72,6 +76,36 @@ def test_hardware_profiles_and_workspace_goal():
         assert response.json()["workspace"]["daily_goal"] == 137
         overview = client.get("/api/system/overview").json()
         assert overview["daily_goal"] == 137
+
+
+def test_batch_with_project_reference_uses_planner(monkeypatch):
+    def fake_complete(route_id, messages, **kwargs):
+        assert "15 秒卡点" in messages[1]["content"]
+        return {"content": "请优先判断 15 秒卡点，并保持品牌语气克制。"}
+
+    monkeypatch.setattr(SERVICES.llm, "complete", fake_complete)
+    buffer = io.BytesIO()
+    with wave.open(buffer, "wb") as handle:
+        handle.setnchannels(1)
+        handle.setsampwidth(2)
+        handle.setframerate(8000)
+        handle.writeframes(b"\0\0" * 8000 * 3)
+    wav = buffer.getvalue()
+    spec = {"modules": ["caption"], "project_instruction": "优先判断 15 秒卡点。"}
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/batches",
+            files=[
+                ("files", ("test.wav", wav, "audio/wav")),
+                ("project_files", ("brief.txt", "品牌语气克制。".encode(), "text/plain")),
+            ],
+            data={"spec": json.dumps(spec, ensure_ascii=False), "auto_start": "false"},
+        )
+    assert response.status_code == 200, response.text
+    batch = response.json()["batch"]
+    assert "品牌语气克制" in batch["spec"]["project_context"]
+    assert batch["spec"]["project_files"] == ["brief.txt"]
+    assert "15 秒卡点" in batch["spec"]["audio_model_prompt"]
 
 
 def test_demo_and_exports():

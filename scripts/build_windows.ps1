@@ -17,6 +17,8 @@ if ($LASTEXITCODE -ne 0) { throw "Could not install PyInstaller." }
   --add-data "src\cadence_studio\web;cadence_studio\web" `
   --add-data "src\cadence_studio\resources;cadence_studio\resources" `
   --collect-all openpyxl `
+  --collect-all docx `
+  --collect-all pypdf `
   --collect-submodules uvicorn `
   --collect-submodules fastapi `
   --collect-submodules starlette `

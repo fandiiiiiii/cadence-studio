@@ -85,6 +85,14 @@ curl -X POST http://127.0.0.1:8765/api/batches \
 
 > `genre` 自动包含 `Extra`。结果中每个曲风见 `items[].level`、`items[].path`、`items[].hierarchy`；一首歌可以有多个 `items`。
 
+项目规则与参考资料：
+
+- `spec.project_instruction`：整批共用的 DeepSeek 规则；
+- multipart 字段 `project_files`：最多 6 个 docx/pdf/xlsx/txt/md/csv/json；
+- 服务端提取文本后写入 `spec.project_context` 和 `spec.project_files`；
+- 有规则/参考资料时，创建批次会先调用 DeepSeek 生成 `spec.audio_model_prompt`，再开始音频处理；
+- 原始参考资料只发送给 DeepSeek，音频模型只收到生成的提示词。
+
 返回：
 
 ```json
